@@ -1,7 +1,11 @@
 
 import './App.css'
-import Banner from './components/Banner'
-import Header from './components/Header'
+import Banner from './components/homepage/Banner'
+import Footer from './components//homepage/Footer'
+import BestSelling from './components/homepage/BestSelling'
+import Brands from './components/homepage/Brands'
+import Header from './components/homepage/Header'
+
 
 function App() {
 
@@ -9,6 +13,9 @@ function App() {
     <>
       <Header/>
       <Banner/>
+      <BestSelling/>
+      <Brands/>
+      <Footer/>
     </>
   )
 }

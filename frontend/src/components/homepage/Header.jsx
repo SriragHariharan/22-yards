@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import '../styles/Header.css'
+import '../../styles/homepage/Header.css'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   MDBContainer,

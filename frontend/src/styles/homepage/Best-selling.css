@@ -1,0 +1,30 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
+*{
+    font-family: 'Poppins', sans-serif;
+
+}
+
+.best-selling{
+    margin-top: 20px;
+    background-color: #ededed;
+    padding: 25px;
+}
+
+.title{
+    font-size: 35px;
+    font-family: 'Poppins', sans-serif;
+    margin-bottom: 30px;
+}
+
+.card{
+    width: 18vmax;
+    margin-bottom:40px ;
+}
+
+.card-image{
+    height: 230px;
+}
+
+.card-body{
+    /* background-color: #EAEAEA; */
+}
