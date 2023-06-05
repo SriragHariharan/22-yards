@@ -1,0 +1,28 @@
+.header-1{
+    padding: 15px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.brand-name{
+    font-size: 25px;
+}
+
+.logos{
+    margin-top: 5px;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.logos div{
+    margin-left: 0px;
+}
+
+.cart-icon{
+    margin-top: 16px;
+}
+
+
+
