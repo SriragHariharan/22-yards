@@ -1,21 +1,20 @@
 
 import './App.css'
-import Banner from './components/homepage/Banner'
-import Footer from './components//homepage/Footer'
-import BestSelling from './components/homepage/BestSelling'
-import Brands from './components/homepage/Brands'
+import Footer from './components/homepage/Footer'
 import Header from './components/homepage/Header'
+import Login from './pages/Login'
+
+import Signup from './pages/Signup'
 
 
 function App() {
 
   return (
     <>
-      <Header/>
-      <Banner/>
-      <BestSelling/>
-      <Brands/>
-      <Footer/>
+    <Header/>
+      <Signup/>
+      <Login/>
+    <Footer/>
     </>
   )
 }
