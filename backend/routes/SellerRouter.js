@@ -1,7 +1,7 @@
 const router = require('express').Router()
 
 const { AddNewSeller, LoginSeller } = require('../controllers/Seller/SellerAuthController');
-const { deleteProduct } = require('../controllers/Seller/SellerProductController');
+const { deleteProduct, getAProduct, editAProduct } = require('../controllers/Seller/SellerProductController');
 const { getProducts } = require('../controllers/Seller/SellerProductController');
 const { AddNewProduct } = require('../controllers/Seller/SellerProductController');
 
@@ -21,6 +21,12 @@ router.get('/', SellerAuthMiddleware, getProducts  )
 
 //delete a product
 router.delete('/delete-product/:id', SellerAuthMiddleware, deleteProduct )
+
+//get details of a single product
+router.get('/get-product/:id', SellerAuthMiddleware, getAProduct)
+
+//edit a product
+router.patch('/edit-product/:id', SellerAuthMiddleware, editAProduct)
 
 
 module.exports = router

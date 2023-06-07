@@ -2,16 +2,19 @@
 const Products = require("../../models/ProductsModel");
 
 const uploadPath ='./uploads/product-images/'       
-const fs = require("fs")
+const fs = require("fs");
+const mongoose = require('mongoose')
 
+
+//add new product
 const AddNewProduct = async(req, res) => {
     try {
         let sellerID = req.sellerID
-        let {brand, productName, features, originalPrice, offerPrice, stock, size } = req.body;
+        let {brand, productName, features, category, originalPrice, offerPrice, stock, size } = req.body;
         originalPrice = Number(originalPrice);
         offerPrice    = Number(offerPrice);
         stock= Number(stock)
-        let newProduct = new Products({ sellerID, brand, productName, features, originalPrice, offerPrice, stock, size });
+        let newProduct = new Products({ sellerID, brand, productName, features, category, originalPrice, offerPrice, stock, size });
         let productFromDB = await newProduct.save()
         //file upload
 
@@ -41,15 +44,22 @@ const getProducts = async(req, res) => {
     }
 }
 
+
+//delete products of sellers
 const deleteProduct = async(req, res) => {
     try {
         let productID = req.params.id;
+        //validate mongoose objectID
+        let isObjectIDValid = mongoose.Types.ObjectId.isValid(productID);
+        if(!isObjectIDValid){
+            return res.json({ success:false, message:"Unable to find product", error_code:400, data:{} })
+        }
         let product = await Products.findOne({_id:productID})
         if(product === null){
             return res.json({ success:false, message:"Unable to find product", error_code:500, data:{} })
         }
         if(product.sellerID !== req.sellerID){
-            return res.json({ success:false, message:"Unable to delete", error_code:500, data:{} })
+            return res.json({ success:false, message:"Unauthorized request", error_code:500, data:{} })
         }
         let deletedResponse = await Products.deleteOne({_id:productID})
         if(deletedResponse.deletedCount === 0){
@@ -66,10 +76,62 @@ const deleteProduct = async(req, res) => {
 }
 
 
+//get a single product
+const getAProduct = async(req, res) => {
+    try 
+    {
+        let productID = req.params.id;
+        //validate mongoose objectID
+        let isObjectIDValid = mongoose.Types.ObjectId.isValid(productID);
+        if(!isObjectIDValid){
+            return res.json({ success:false, message:"Unable to find product", error_code:400, data:{} })
+        }
+        let product = await Products.findOne({_id:productID})
+        if(product === null || product === undefined){
+            return res.json({success:false, message:"Unable to find product", error_code:400, data:{} })
+        }
+        if(req.sellerID !== product.sellerID){
+            return res.json({ success:false, message:"Unauthorized request", error_code:400, data:{} })
+        }
+        return res.json({success:true, message:"Product fetched", data:{product}})       
+    } 
+    catch (error) 
+    {
+        return res.json({success:false, message:error.message, error_code:400, data:{} })        
+    }
+}    
+
+//edit a product by seller
+const editAProduct = async(req, res) => {
+    try {
+        let editedDetails = req.body;
+        const productID = req.params.id;
+        //validate mongodb object id
+        let isObjectIDValid = mongoose.Types.ObjectId.isValid(productID);
+        if(!isObjectIDValid){
+            return res.json({ success:false, message:"Unable to update", error_code:400, data:{} })
+        }
+        let product = await Products.findOne({_id:productID})
+        if(product.sellerID !== req.sellerID){
+            return res.json({ success:false, message:"Unauthorized request", error_code:400, data:{} })
+        }
+        let updatedProduct = await Products.updateOne({_id:productID}, {$set:{...editedDetails}});
+        if(updatedProduct.modifiedCount === 0){
+            return res.json({ success:false, message:"Unable to update", error_code:400, data:{} })
+        }
+        return res.json({success:true, message:"Product updated", data:{} })    
+    } 
+    catch (error) 
+    {
+        return res.json({success:false, message:error.message, error_code:400, data:{} })            
+    }
+}
 
 module.exports = {
     AddNewProduct,
     getProducts,
-    deleteProduct
+    deleteProduct,
+    getAProduct,
+    editAProduct
 }
 
