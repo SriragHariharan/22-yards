@@ -10,6 +10,9 @@ app.use(bodyparser.json())
 app.use(bodyparser.urlencoded({ extended: false }))
 app.use(fileUpload({ createParentPath: true, }) );
 
+//access static images
+app.use(express.static('uploads'))
+
 //mongodb connection code
 const mongoose = require('mongoose')
 mongoose.connect(process.env.DATABASE_URL || 'mongodb://localhost:27017/22Yards')
