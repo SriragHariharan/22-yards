@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import {
     MDBInputGroup,
     MDBInput,
+    MDBTextArea,
     MDBBtn,
     MDBModal,
     MDBModalDialog,
@@ -23,8 +24,9 @@ library.add( faSeedling, faHandHoldingDollar, faHandPeace, faMagnifyingGlass, fa
 import '../styles/Homepage.css'
 import Footer from '../components/Footer';
 
+export default function Welcomepage() {
 
-export default function Homepage() {
+    //login modal form code
     const [loginModal, setLoginModal] = useState(false);
     const toggleLoginModal = () => setLoginModal(!loginModal);
     const { register, formState: { errors }, handleSubmit, reset } = useForm();
@@ -33,17 +35,32 @@ export default function Homepage() {
         reset()
     }
      
+    // signup modal form code
+    const [signupModal, setSignupModal] = useState(false);
+    const toggleSignupModal = () => setSignupModal(!signupModal);
+    const {
+        register: registerSignup,
+        formState: { errors: errorsSignup },
+        handleSubmit: handleSignup,
+        reset:resetSignup,
+        watch,
+      } = useForm();
+      const onSubmitSignup = (data) => {
+        console.log(data);
+        resetSignup()
+      };
+
 
     return (
         <>
-        {/* header starts here */}
+            {/* header starts here */}
             <div className="header">
                 <div className="brand-name">
                     <img width='60px' src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSH-196UvngLppQ7fGE1-TQfG75ZKli2l6IdAkNCgK83g&s" alt="" />
                     <p> <b>22Yards</b>  <br /> Seller Hub</p>
                 </div>
                 <div className="auth">
-                    <MDBBtn className='me-5 p-3 btn' color='warning'>
+                    <MDBBtn className='me-5 p-3 btn' color='warning' onClick={toggleSignupModal}>
                         <div>Signup</div>
                     </MDBBtn>
                     <MDBBtn className='me-5 p-3 btn' color='info' onClick={toggleLoginModal}>
@@ -68,7 +85,7 @@ export default function Homepage() {
                     <form onSubmit={handleSubmit(onSubmit)}>
                     
                         <MDBInputGroup className='mb-3'>
-                            <MDBInput label='email id' type='email' size='lg' 
+                            <MDBInput label='email id' type='email' size='lg'
                                 {...register("email", { required: true, pattern:/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i })} 
                             />
                         </MDBInputGroup>
@@ -77,7 +94,7 @@ export default function Homepage() {
                         
                         <MDBInputGroup className='mb-3'>
                             <MDBInput label='password' type='password' size='lg'
-                            {...register("password", { required: true, minLength:6, maxLength:16 })}
+                            {...register("password", { required: true, minLength:6, maxLength:24 })}
                             />
                         </MDBInputGroup>
                         {errors.password?.type === 'required'   && <p style={{color:'red', marginTop:'-17px'}}>password required</p>}
@@ -96,6 +113,87 @@ export default function Homepage() {
                 </MDBModalDialog>
             </MDBModal>
             {/* login modal ends here */}
+
+            {/* signup modal starts here */}
+            <MDBModal show={signupModal} setShow={setSignupModal} tabIndex='-1'>
+                <MDBModalDialog>
+                <MDBModalContent>
+                    <MDBModalHeader>
+                    <MDBModalTitle><b> SELLER SIGNUP </b></MDBModalTitle>
+                    <MDBBtn className='btn-close' color='none' onClick={toggleSignupModal}></MDBBtn>
+                    </MDBModalHeader>
+                    <MDBModalBody>
+                        <div className="text-center mb-5">
+                            <img width='130px' src="https://www.svgrepo.com/show/334967/user-circle.svg" alt="" />
+                        </div>
+                        <form onSubmit={handleSignup(onSubmitSignup)}>
+                            <MDBInputGroup className='mb-3'>
+                                <MDBInput label='email id' type='email'  size='lg'
+                                {...registerSignup("email", { required: true, pattern:/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i })} 
+                                />                        
+                            </MDBInputGroup>
+                            {errorsSignup.email?.type === 'required'  && <p style={{color:'red', marginTop:'-17px'}}>email required</p>}
+                            {errorsSignup.email?.type === 'pattern'   && <p style={{color:'red', marginTop:'-17px'}}>email too short</p>}
+                            
+                            <MDBInputGroup className='mb-3'>
+                                <MDBInput label='Seller name' type='text'  size='lg'
+                                {...registerSignup("sellerName", { required: true, minLength:6 })} 
+                                />                        
+                            </MDBInputGroup>
+                            {errorsSignup.sellerName?.type === 'required'  && <p style={{color:'red', marginTop:'-17px'}}>Seller name required</p>}
+                            {errorsSignup.sellerName?.type === 'minLength' && <p style={{color:'red', marginTop:'-17px'}}>Seller name too short</p>}
+
+                            <MDBInputGroup className='mb-3' textBefore='+ 91 '  size='lg'>
+                                <MDBInput label='mobile number' type='tel' 
+                                {...registerSignup("mobile", { required: true, minLength:10, maxLength:10 })} 
+                                />                        
+                            </MDBInputGroup>
+                            {errorsSignup.mobile?.type === 'required'  && <p style={{color:'red', marginTop:'-17px'}}> Mobile number required</p>}
+                            {errorsSignup.mobile?.type === 'minLength' && <p style={{color:'red', marginTop:'-17px'}}> Mobile number invalid</p>}
+                            {errorsSignup.mobile?.type === 'maxLength'  && <p style={{color:'red', marginTop:'-17px'}}> Mobile number invalid</p>}
+
+                            <MDBInputGroup className='mb-3'>
+                                {/* <MDBTextArea label='Address' */}
+                                <MDBInput label='address' type='text' size='lg'
+                                    {...registerSignup("address", { required: true, minLength:15 })} 
+                                    />                      
+                            </MDBInputGroup>
+                            {errorsSignup.address?.type === 'required'  && <p style={{color:'red', marginTop:'-17px'}}> Address required</p>}
+                            {errorsSignup.address?.type === 'minLength' && <p style={{color:'red', marginTop:'-17px'}}> Address too short</p>}
+
+                            <MDBInputGroup className='mb-3'>
+                                <MDBInput label='password' type='password'  size='lg'
+                                {...registerSignup("password", { required: true, minLength:6, maxLength:24 })}                                 
+                                />                        
+                            </MDBInputGroup>
+                            {errorsSignup.password?.type === 'required'  && <p style={{color:'red', marginTop:'-17px'}}>Password required</p>}
+                            {errorsSignup.password?.type === 'minLength' && <p style={{color:'red', marginTop:'-17px'}}>Password too short</p>}
+                            {errorsSignup.password?.type === 'maxLength' && <p style={{color:'red', marginTop:'-17px'}}>Password too long</p>}
+
+                            <MDBInputGroup className='mb-4'>
+                                <MDBInput label='confirm password' type='password'  size='lg'
+                                {...registerSignup("confirmPassword", { required: true, validate: (string) => {
+                                    if (watch('password') != string) {
+                                    return "Passwords no match";
+                                    }
+                                } })}                                 
+                                />                        
+                            </MDBInputGroup>
+                            {errorsSignup.confirmPassword?.type === 'validate'  && <p style={{color:'red', marginTop:'-17px'}}>Password doesnot match</p>}
+
+                            
+                            <MDBModalFooter>
+                            <MDBBtn color='secondary' className='me-3' onClick={toggleSignupModal}>
+                                Close
+                            </MDBBtn>
+                            <input className='btn btn-primary' type="submit" value='SIGNUP' />
+                            </MDBModalFooter>
+                        </form>
+                    </MDBModalBody>
+                </MDBModalContent>
+                </MDBModalDialog>
+            </MDBModal>
+            {/* signup modal ends here */}
 
             {/* quotes section starts here*/}
             <Container className='p-5'>
@@ -168,7 +266,9 @@ export default function Homepage() {
 
             {/* become a seller now */}
             <div className="text-center mt-5 p-5 mb-5">
-                <p  className='btn p-4 btn-info' style={{color:"black", letterSpacing:'5px'}}>BECOME A SELLER NOW</p>
+                <p onClick={toggleSignupModal}  className='btn p-4 btn-info' style={{color:"black", letterSpacing:'5px'}}>
+                    BECOME A SELLER NOW
+                </p>
             </div>
 
             <Footer/>
