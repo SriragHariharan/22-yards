@@ -1,6 +1,7 @@
 
 import './App.css'
-import Homepage from './Seller/pages/Welcomepage'
+import Header from './Seller/components/Header'
+import Homepage from './Seller/pages/Homepage'
 
 
 
@@ -8,6 +9,7 @@ function App() {
 
   return (
     <>
+      <Header/>
       <Homepage/>
     </>
   )

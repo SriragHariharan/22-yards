@@ -21,7 +21,7 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import {     faSeedling, faHandHoldingDollar, faHandPeace, faMagnifyingGlass, faBoxesPacking, faLocationDot } from "@fortawesome/free-solid-svg-icons";
 library.add( faSeedling, faHandHoldingDollar, faHandPeace, faMagnifyingGlass, faBoxesPacking, faLocationDot);
 
-import '../styles/Homepage.css'
+import '../styles/Welcomepage.css'
 import Footer from '../components/Footer';
 
 export default function Welcomepage() {
