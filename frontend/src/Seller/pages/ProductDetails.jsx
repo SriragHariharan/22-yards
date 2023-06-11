@@ -1,11 +1,16 @@
 import React, {useState} from 'react'
+
 //fontawesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { library } from "@fortawesome/fontawesome-svg-core";
 import {  faPenToSquare,    } from "@fortawesome/free-solid-svg-icons";
+library.add( faPenToSquare, );
+
+// modals
 import EditProductName from '../components/product-details/EditProductName';
 import EditPriceModal from '../components/product-details/EditPriceModal';
-library.add( faPenToSquare, );
+
+
 
 export default function ProductDetails() {
     const [image, setImage] = useState('01');
