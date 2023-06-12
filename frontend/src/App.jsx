@@ -1,6 +1,6 @@
 
 import './App.css'
-import Homepage from './Buyer/pages/Homepage'
+import AllProducts from './Seller/pages/AllProducts'
 
 
 
@@ -9,7 +9,7 @@ function App() {
 
   return (
     <>
-      <Homepage/>
+      <AllProducts/>
     </>
   )
 }
