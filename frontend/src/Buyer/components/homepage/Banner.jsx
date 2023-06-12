@@ -1,5 +1,5 @@
 import React from 'react'
-import image from '../../assets/Banner.jpg'
+import image from '../../../assets/Banner.jpg'
 import '../../styles/homepage/Banner.css'
 import { Container, Row, Col } from 'react-bootstrap';
 

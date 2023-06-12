@@ -1,10 +1,7 @@
 
 import './App.css'
-import Footer from './Seller/components/Footer'
-import Header from './Seller/components/Header'
-import AddNewProduct from './Seller/pages/AddNewProduct'
+import Homepage from './Buyer/pages/Homepage'
 
-import ProductDetails from './Seller/pages/ProductDetails'
 
 
 
@@ -12,9 +9,7 @@ function App() {
 
   return (
     <>
-      <Header/>
-      <AddNewProduct/>
-      <Footer/>
+      <Homepage/>
     </>
   )
 }

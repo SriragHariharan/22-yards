@@ -2,15 +2,16 @@ import React from 'react'
 import '../../styles/homepage/Best-selling.css'
 
 import { Container, Row, Col } from 'react-bootstrap';
+
 //images import
-import image1 from '../../assets/best-selling/sg test.jpg'
-import image2 from '../../assets/best-selling/IMG_7218-copy-1-scaled.jpg'
-import image3 from '../../assets/best-selling/RP-Lite-2-1-scaled.jpg'
-import image4 from '../../assets/best-selling/helmet.jpg'
-import image5 from '../../assets/best-selling/mrf.jpg'
-import image6 from '../../assets/best-selling/shoes.jpg'
-import image7 from '../../assets/best-selling/megalite.jpg'
-import image8 from '../../assets/best-selling/kit-bag.jpg'
+import image1 from '../../../assets/best-selling/sg test.jpg'
+import image2 from '../../../assets/best-selling/IMG_7218-copy-1-scaled.jpg'
+import image3 from '../../../assets/best-selling/RP-Lite-2-1-scaled.jpg'
+import image4 from '../../../assets/best-selling/helmet.jpg'
+import image5 from '../../../assets/best-selling/mrf.jpg'
+import image6 from '../../../assets/best-selling/shoes.jpg'
+import image7 from '../../../assets/best-selling/megalite.jpg'
+import image8 from '../../../assets/best-selling/kit-bag.jpg'
 import BSCard from './BSCard';
 
 
