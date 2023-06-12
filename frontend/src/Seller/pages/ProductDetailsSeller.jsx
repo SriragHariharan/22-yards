@@ -12,7 +12,7 @@ import EditPriceModal from '../components/product-details/EditPriceModal';
 
 
 
-export default function ProductDetails() {
+export default function ProductDetailsSeller() {
     const [image, setImage] = useState('01');
 
     //edit product name modal

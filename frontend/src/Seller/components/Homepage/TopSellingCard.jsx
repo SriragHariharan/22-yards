@@ -1,25 +1,17 @@
 import React from 'react'
-import {
-    MDBCard,
-    MDBCardBody,
-    MDBCardTitle,
-    MDBCardImage,
-    MDBRipple
-  } from 'mdb-react-ui-kit';
+import Card from 'react-bootstrap/Card';
 
 
 //   this card is a component of the homepage
 
 export default function TopSellingCard() {
   return (
-    <MDBCard className='mb-5'>
-        <MDBRipple rippleColor='warning' rippleTag='div' className='bg-image hover-overlay'>
-            <MDBCardImage src='https://mdbootstrap.com/img/new/standard/nature/111.webp' fluid alt='...' />
-        </MDBRipple>
-                <div className='mask' style={{ backgroundColor: 'rgba(251, 251, 251, 0.15)' }}></div>
-            <MDBCardBody>
-                <MDBCardTitle>Card title</MDBCardTitle>
-            </MDBCardBody>
-    </MDBCard>
+    <Card style={{ margin:'5px' }}>
+      <Card.Img variant="top" src="http://localhost:4000/product-images/648083cf0480f37ae5a5ea65-02.jpg" className='w-50 text-center' />
+      <Card.Body>
+        <Card.Title>Card Title</Card.Title>
+      </Card.Body>
+    </Card>
   )
 }
+

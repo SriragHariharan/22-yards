@@ -1,9 +1,10 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 export default function ProductsCard() {
   return (
     <div>
-        <div className="card shadow p-4 m-3" style={{backgroundColor:'#ececec'}}>
+        <div className="shadow p-4 m-3" style={{backgroundColor:'#ececec'}}>
             <div className="row align-items-center">
                 <aside className="col-md-3">
                     <a>
@@ -12,7 +13,7 @@ export default function ProductsCard() {
                 </aside> 
                 <div className="col-md-6">
                     <div className="info-main">
-                        <a className="h5 title"> Apple Watch Series 3 </a>
+                        <div className="h5 title"> Apple Watch Series 3 </div>
                         <div className="mt-3">
                         </div>
                         <p>Monitor your health. Track your workouts. Get the motivation you need to achieve your fitness goals. And stay connected to the people and information you care about.</p>
@@ -27,9 +28,9 @@ export default function ProductsCard() {
                     </div> 
                     <span className="text-success medium mt-3">Stock : 3 left</span>
                     <div className="d-grid gap-2 mt-4">
-                        <a className="btn btn-info btn-sm mb-5">
+                        <Link to={'/seller/home/view-product/'} className="btn btn-info btn-sm mb-5">
                             Details
-                        </a>
+                        </Link>
                     </div>
                 </div> 
             </div> 

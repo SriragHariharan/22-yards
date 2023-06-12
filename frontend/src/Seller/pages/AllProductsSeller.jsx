@@ -3,7 +3,7 @@ import { Container, Row, Col } from 'react-bootstrap';
 import ProductsCard from '../components/all-products/ProductsCard';
 
 
-export default function AllProducts() {
+export default function AllProductsSeller() {
   return (
     <div>
         <Container>
