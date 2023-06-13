@@ -10,18 +10,23 @@ const mongoose = require('mongoose')
 const AddNewProduct = async(req, res) => {
     try {
         let sellerID = req.sellerID
-        let {brand, productName, features, category, originalPrice, offerPrice, stock, size } = req.body;
-        originalPrice = Number(originalPrice);
+        let { productName, brand, category, mrp, offerPrice, size, stock, description, specification, feature1, feature2, feature3, feature4, productColor, productMaterial, itemsInBox, warranty, weight} = JSON.parse(req.body.data);
+        
+        //type conversion String  ==> Number
+        mrp = Number(mrp);
         offerPrice    = Number(offerPrice);
         stock= Number(stock)
-        let newProduct = new Products({ sellerID, brand, productName, features, category, originalPrice, offerPrice, stock, size });
+        
+        //saving to db
+        let newProduct = new Products({ sellerID, productName, brand, category, mrp, offerPrice, size, stock, description, specification, feature1, feature2, feature3, feature4, productColor, productMaterial, itemsInBox, warranty, weight });
         let productFromDB = await newProduct.save()
+        
         //file upload
-
         let image1 = req.files.image1;
         let image2 = req.files.image2;
         let image3 = req.files.image3;
 
+        //moving files to uploads folder
         image1.mv(uploadPath + productFromDB._id +"-01.jpg", function(err) { if (err) return res.json({success:false, message:"Server Error", error_code:500, data:{} }) })           
         image2.mv(uploadPath + productFromDB._id +"-02.jpg", function(err) { if (err) return res.json({success:false, message:"Server Error", error_code:500, data:{} }) })           
         image3.mv(uploadPath + productFromDB._id +"-03.jpg", function(err) { if (err) return res.json({success:false, message:"Server Error", error_code:500, data:{} }) })           

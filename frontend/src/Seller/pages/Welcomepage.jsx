@@ -27,10 +27,13 @@ import { useDispatch } from 'react-redux';
 import { AdminLogin } from '../../redux-tk/reducers/AdminReducer';
 import Alert from 'react-bootstrap/Alert';
 
+//axios instance
+import useSellerAuthInstance from '../axios/useSellerAuthInstance';
 
 export default function Welcomepage() {
     
     const dispatch = useDispatch()
+    const [sellerAuthInstance] = useSellerAuthInstance();
 
     //login modal form code
     const [loginModal, setLoginModal] = useState(false);
@@ -39,7 +42,7 @@ export default function Welcomepage() {
     const [error, setError] = useState(null)
 
     const onSubmit = (data) => {
-        axios.post('http://localhost:4000/api/seller/auth/login',{...data})
+        sellerAuthInstance.post('login',{...data})
         .then(resp => {
             if(resp.data.success === false){
                 setError(resp.data.message)
@@ -66,8 +69,7 @@ export default function Welcomepage() {
 
       const onSubmitSignup = (data) => {
         //posting data to backend using axios
-        axios.post('http://localhost:4000/api/seller/auth/signup',
-        {...data})
+        sellerAuthInstance.post('signup',{...data})
         .then(resp => {
            if(resp.data.success === false){
             setError2(resp.data.message)

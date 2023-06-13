@@ -15,6 +15,9 @@ import {
 import { useForm } from "react-hook-form";
 import { MDBInput } from 'mdb-react-ui-kit';
 import { Container, Row, Col } from 'react-bootstrap';
+import Form from 'react-bootstrap/Form';
+import Alert from 'react-bootstrap/Alert';
+import { ToastContainer, toast } from 'react-toastify';
 
 //fontawesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -22,12 +25,18 @@ import { library } from "@fortawesome/fontawesome-svg-core";
 import {  faBox, faPhotoFilm, faPen   } from "@fortawesome/free-solid-svg-icons";
 library.add( faBox, faPhotoFilm, faPen );
 
+import { useSelector } from 'react-redux';
+import AddNewProductModal from '../components/add-new-product/AddNewProductModal';
+
+
 
 export default function AddNewProduct() {
     const [scrollableModal, setScrollableModal] = useState(false);
     const { register, formState: { errors }, handleSubmit } = useForm();
-    
+    const Token = useSelector(state => state?.Admin.seller.token)
 
+    //error state
+    const [error, setError] = useState(null)
 
     //code to preview 3 product images image selected using file
     const [image1, setImage1] = useState(null);
@@ -45,10 +54,38 @@ export default function AddNewProduct() {
         setImage3(URL.createObjectURL(e.target.files[0]));
     };
     
+    //toast message
+    const showToastMessage = () => {
+        toast.success('New Product Has been added succcessfully !', {
+            position: toast.POSITION.TOP_CENTER
+        });
+    }
+
     //submit the modal
-    const onSubmit = (data) => {
-        console.log("Submit ::: ",data.image3[0]);
-  
+    const onSubmit = async(data) => {
+        const formData = new FormData();
+        formData.append("image1", data.image1[0] );
+        formData.append("image2", data.image2[0] );
+        formData.append("image3", data.image3[0] );
+        formData.append('data', JSON.stringify(data))
+
+        fetch('http://localhost:4000/api/seller/add-new-product',{
+            method:"POST",
+            body:formData,
+            headers: {
+                'Authorization': `Bearer ${Token}`        
+            }
+        }).then(resp => resp.json())
+        .then(data => {
+            if(data.success === false){
+                setError(data.message)
+            }else{
+                setScrollableModal(false)
+                showToastMessage()
+            }
+        })
+        .catch(err => setError(err.message))
+
     } 
 
     //hard coded values for forms
@@ -58,6 +95,7 @@ export default function AddNewProduct() {
   
     return (
     <>
+    <ToastContainer/>
     <Container>
       <Row>
         <h4 className='text-center mt-3 mb-5 p-5'>
@@ -96,6 +134,9 @@ export default function AddNewProduct() {
               ></MDBBtn>
             </MDBModalHeader>
             <MDBModalBody  className='p-4'>
+
+            {error && <Alert variant={'danger'}>{error}</Alert>}
+
             <form onSubmit={handleSubmit(onSubmit)} encType='multipart/form data'>
 
             <p className='text-center m-5'> 
@@ -148,7 +189,22 @@ export default function AddNewProduct() {
             </div>
             {errors.brand?.type === 'required' && <p style={{color:'red', marginTop:'-24px'}}>This field required</p>}
 
-            <div className="mb-4">
+            <div className="mt-2 mb-4">
+                <Form.Label>Category</Form.Label>
+                <Form.Select size="sm" {...register("category", { required: true })} >
+                    <option value="cricket bat">Cricket bat</option>
+                    <option value="gloves">Gloves</option>
+                    <option value="pads">Pads</option>
+                    <option value="protection">Protection</option>
+                    <option value="cricket ball">Balls</option>
+                    <option value="wearables">Wearables</option>
+                    <option value="others">Others</option>
+                </Form.Select>
+            </div>
+            {errors.category?.type === 'required' && <p style={{color:'red', marginTop:'-24px'}}>This field required</p>}
+
+
+            <div className="mt-4 mb-4">
                 <MDBInput label='MRP (₹)' type='number' size='lg' value={4999}
                 {...register("mrp", { required: true })} 
                 />
@@ -281,3 +337,4 @@ export default function AddNewProduct() {
     </>
   );
 }
+

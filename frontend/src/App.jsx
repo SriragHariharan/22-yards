@@ -9,6 +9,8 @@ import { RouterProvider } from "react-router-dom";
   //router custom hook
   import useRouter from './Router/useRouter';
 
+  //react-toastify
+  import 'react-toastify/dist/ReactToastify.css';
 
 
 

@@ -5,15 +5,11 @@ const productSchema = new mongoose.Schema({
         required:true,
         type:String,
     },
-    brand:{
-        required:true,
-        type:String,
-    },
     productName:{
         required:true,
         type:String,
     },
-    features:{
+    brand:{
         required:true,
         type:String,
     },
@@ -21,7 +17,7 @@ const productSchema = new mongoose.Schema({
         required:true,
         type:String,
     },
-    originalPrice:{
+    mrp:{
         required:true,
         type:Number,
     },
@@ -29,14 +25,58 @@ const productSchema = new mongoose.Schema({
         required:true,
         type:Number,
     },
+    size:{
+        required:true,
+        type:String,
+    },
     stock:{
         required:true,
         type:Number,
     },
-    size:{
+    description:{
         required:true,
         type:String,
-    }
+    },
+    specification:{
+        required:true,
+        type:String,
+    },
+    feature1:{
+        required:true,
+        type:String,
+    },
+    feature2:{
+        required:true,
+        type:String,
+    },
+    feature3:{
+        required:true,
+        type:String,
+    },
+    feature4:{
+        required:true,
+        type:String,
+    },
+    productColor:{
+        required:true,
+        type:String,
+    },
+    productMaterial:{
+        required:true,
+        type:String,
+    },
+    itemsInBox:{
+        required:true,
+        type:String,
+    },
+    warranty:{
+        required:true,
+        type:String,
+    },
+    weight:{
+        required:true,
+        type:String,
+    },
 })
 
 module.exports = mongoose.model('Products', productSchema)
