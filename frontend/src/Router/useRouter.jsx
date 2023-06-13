@@ -47,7 +47,7 @@ export default function useRouter() {
                  <Route path="home" element={ SELLER ? <AuthorizedSellerLayout/> : <Navigate to={'/seller'}/> } >
                      <Route index element={ SELLER ? <HomepageSeller/> : <Navigate to={'/seller'}/>  } />
                      <Route path="view-all-products" element={ SELLER ? <AllProductsSeller/> : <Navigate to={'/seller'}/>} />
-                     <Route path="view-product" element={ SELLER ? <ProductDetailsSeller/> : <Navigate to={'/seller'}/> } />
+                     <Route path="view-product/:id" element={ SELLER ? <ProductDetailsSeller/> : <Navigate to={'/seller'}/> } />
                      <Route path="add-new-product" element={ SELLER ? <AddNewProduct/> : <Navigate to={'/seller'}/> } />
                  </Route>
              </Route>

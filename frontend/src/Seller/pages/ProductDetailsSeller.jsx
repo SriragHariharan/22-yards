@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 
 //fontawesome
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -9,11 +9,31 @@ library.add( faPenToSquare, );
 // modals
 import EditProductName from '../components/product-details/EditProductName';
 import EditPriceModal from '../components/product-details/EditPriceModal';
+import { useParams } from 'react-router-dom';
+import useSellerProductInstance from '../axios/useSellerProductInstance';
 
 
 
 export default function ProductDetailsSeller() {
+    const [error, setError] = useState(null)
+    const [product, setProduct] = useState({})
+    const [sellerProductInstance] = useSellerProductInstance()
     const [image, setImage] = useState('01');
+    const {id} = useParams()
+
+    //fetch product details on page load
+    useEffect(()=>{
+        sellerProductInstance.get('/get-product/'+id)
+        .then(resp => {
+            if(resp.data.success === false){
+                setError(resp.data.message)
+            }else{
+                console.log(resp.data.data.product)
+                setProduct(resp.data.data.product)
+            }
+        }).catch(err => setError(err.message))
+    },[])
+///get-product/:id
 
     //edit product name modal
     const [productNameModal, setProductNameModal] = useState(false);
@@ -38,18 +58,18 @@ export default function ProductDetailsSeller() {
         <aside className="col-lg-6">
             <div className="border rounded-4 mb-3 d-flex justify-content-center">
             <a onClick={() => setImage('01')} data-fslightbox="mygalley" className="rounded-4">
-                <img style={{maxWidth:'100%', maxHeight:'100vh', margin:"auto"}} className="rounded-4 fit" src={`http://localhost:4000/product-images/648083cf0480f37ae5a5ea65-${image}.jpg`} />
+                <img style={{maxWidth:'100%', maxHeight:'100vh', margin:"auto"}} className="rounded-4 fit" src={`http://localhost:4000/product-images/${product._id}-${image}.jpg`} />
             </a>
             </div>
             <div className="d-flex justify-content-center mb-3">
             <a onClick={() => setImage('01')} data-fslightbox="mygalley" className="border mx-1 rounded-2 item-thumb">
-                <img width="90" height="90" className="rounded-2" src="http://localhost:4000/product-images/648083cf0480f37ae5a5ea65-01.jpg" />
+                <img width="90" height="90" className="rounded-2" src={`http://localhost:4000/product-images/${product._id}-01.jpg`} />
             </a>
             <a onClick={() => setImage('02')} data-fslightbox="mygalley" className="border mx-1 rounded-2 item-thumb">
-                <img width="90" height="90" className="rounded-2" src="http://localhost:4000/product-images/648083cf0480f37ae5a5ea65-02.jpg" />
+                <img width="90" height="90" className="rounded-2" src={`http://localhost:4000/product-images/${product._id}-02.jpg`}  />
             </a>
             <a onClick={() => setImage('03')} data-fslightbox="mygalley" className="border mx-1 rounded-2 item-thumb" >
-                <img width="90" height="90" className="rounded-2" src="http://localhost:4000/product-images/648083cf0480f37ae5a5ea65-03.jpg" />
+                <img width="90" height="90" className="rounded-2" src={`http://localhost:4000/product-images/${product._id}-03.jpg`}  />
             </a>
             </div>
         </aside>
@@ -57,26 +77,24 @@ export default function ProductDetailsSeller() {
         <main className="col-lg-6">
             <div className="ps-lg-3">
             <h4 className="title text-dark">
-                Quality Men's Hoodie for Winter, Men's Fashion <br />
-                Casual Hoodie
-                &nbsp; &nbsp; <FontAwesomeIcon icon={faPenToSquare} onClick={toggleProductNameModal} />
+                {product.productName}  <FontAwesomeIcon icon={faPenToSquare} onClick={toggleProductNameModal} />
             </h4>
             <div className="mt-3 d-flex flex-row ">
                 <div className='me-4'>
-                    <span className="h4"><s> ₹ 1299.00</s></span>
+                    <span className="h4"><s> ₹ {product.mrp}</s></span>
                 </div>
                 <div  className='me-4'>
-                    <span className="h4">₹ 1099.00</span>
+                    <span className="h4">₹ {product.offerPrice}</span>
                     &nbsp; &nbsp; <FontAwesomeIcon icon={faPenToSquare} onClick={toggleProductPriceModal} />
                 </div>
                 <div>
-                    <span className="h4 text-success">₹ 299.00 off</span>
+                    <span className="h4 text-success">₹ {product.mrp - product.offerPrice} off</span>
                 </div>
             </div>
 
 
             <div className="d-flex flex-row my-3">               
-                <span className="text-muted"><i className="fas fa-shopping-basket fa-sm mx-1"></i>154 orders</span>
+                <span className="text-muted"><i className="fas fa-shopping-basket fa-sm mx-1"></i>{product.stock} orders</span>
                 <span className="text-success ms-2">In stock</span>
             </div>
 
@@ -87,22 +105,21 @@ export default function ProductDetailsSeller() {
 
 
             <p>
-                Modern look and quality demo item is a streetwear-inspired collection that continues to break away from the conventions of mainstream fashion. Made in Italy, these black and brown clothing low-top shirts for
-                men.
+                {product.description}
             </p>
 
             <div className="row">
-                <dt className="col-3">Type:</dt>
-                <dd className="col-9">Regular</dd>
+                <dt className="col-3">Category</dt>
+                <dd className="col-9">{product.category}</dd>
 
                 <dt className="col-3">Color</dt>
-                <dd className="col-9">Brown</dd>
+                <dd className="col-9">{product.productColor}</dd>
 
                 <dt className="col-3">Material</dt>
-                <dd className="col-9">Cotton, Jeans</dd>
+                <dd className="col-9">{product.productMaterial}</dd>
 
                 <dt className="col-3">Brand</dt>
-                <dd className="col-9">Reebook</dd>
+                <dd className="col-9">{product.brand}</dd>
             </div>
 
             <hr />
@@ -131,20 +148,19 @@ export default function ProductDetailsSeller() {
                         <div className="tab-content" id="ex1-content">
                             <div className="tab-pane fade show active" id="ex1-pills-1" role="tabpanel" aria-labelledby="ex1-tab-1">
                             <p>
-                                With supporting text below as a natural lead-in to additional content. Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut
-                                enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla
+                                {product.specification}
                             </p>
-                            <div className="row mb-2">
+                            <div className="row mb-2 mt-5">
                                 <div className="col-12 col-md-6">
                                 <ul className="list-unstyled mb-0">
-                                    <li><i className="fas fa-check text-success me-2"></i>Some great feature name here</li>
-                                    <li><i className="fas fa-check text-success me-2"></i>Lorem ipsum dolor sit amet, consectetur</li>
+                                    <li><i className="fas fa-check text-success me-2"></i>{product.feature1}</li>
+                                    <li><i className="fas fa-check text-success me-2"></i>{product.feature2}</li>
                                 </ul>
                                 </div>
                                 <div className="col-12 col-md-6 mb-0">
                                 <ul className="list-unstyled">
-                                    <li><i className="fas fa-check text-success me-2"></i>Easy fast and ver good</li>
-                                    <li><i className="fas fa-check text-success me-2"></i>Some great feature name here</li>
+                                    <li><i className="fas fa-check text-success me-2"></i>{product.feature3}</li>
+                                    <li><i className="fas fa-check text-success me-2"></i>{product.feature4}</li>
                                 </ul>
                                 </div>
                             </div>
@@ -152,23 +168,23 @@ export default function ProductDetailsSeller() {
                                 <tbody>
                                     <tr>
                                     <th className="py-2">Brand:</th>
-                                    <td className="py-2">SG</td>
+                                    <td className="py-2">{product.brand}</td>
                                     </tr>
                                     <tr>
                                     <th className="py-2">Color:</th>
-                                    <td className="py-2">White</td>
+                                    <td className="py-2">{product.productColor}</td>
                                     </tr>
                                     <tr>
                                     <th className="py-2">Weight :</th>
-                                    <td className="py-2">700 g per pd</td>
+                                    <td className="py-2">{product.weight}</td>
                                     </tr>
                                     <tr>
                                     <th className="py-2">Items in box :</th>
-                                    <td className="py-2">A pair of SG Test batting Pads</td>
+                                    <td className="py-2">{product.itemsInBox}</td>
                                     </tr>
                                     <tr>
                                     <th className="py-2">Warranty :</th>
-                                    <td className="py-2">No seller or Product warranty</td>
+                                    <td className="py-2">{product.warranty}</td>
                                     </tr>
                                     <tr>
                                     <th className="py-2">Delivery :</th>

@@ -26,7 +26,6 @@ import {  faBox, faPhotoFilm, faPen   } from "@fortawesome/free-solid-svg-icons"
 library.add( faBox, faPhotoFilm, faPen );
 
 import { useSelector } from 'react-redux';
-import AddNewProductModal from '../components/add-new-product/AddNewProductModal';
 
 
 
