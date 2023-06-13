@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
-export default function ProductsCard({productName, stock, mrp, offerPrice, productID}) {
+export default function ProductsCard({productName, stock, mrp, offerPrice, productID, description}) {
   return (
     <div>
         <div className="shadow p-4 m-5" style={{backgroundColor:'#ececec'}}>
@@ -16,7 +16,7 @@ export default function ProductsCard({productName, stock, mrp, offerPrice, produ
                         <div className="h4 title"> {productName} </div>
                         <div className="mt-3">
                         </div>
-                        <p>Monitor your health. Track your workouts. Get the motivation you need to achieve your fitness goals. And stay connected to the people and information you care about.</p>
+                        <p>{description.slice(0,280)}.....</p>
                     </div>
                 </div> 
                 <div className="col-12 col-md-3">

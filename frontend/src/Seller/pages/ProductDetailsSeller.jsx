@@ -10,7 +10,7 @@ library.add( faPenToSquare, );
 // modals
 import EditProductName from '../components/product-details/EditProductName';
 import EditPriceModal from '../components/product-details/EditPriceModal';
-import { useParams } from 'react-router-dom';
+import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import useSellerProductInstance from '../axios/useSellerProductInstance';
 
 
@@ -22,6 +22,7 @@ export default function ProductDetailsSeller() {
     const [sellerProductInstance] = useSellerProductInstance()
     const [image, setImage] = useState('01');
     const {id} = useParams()
+    const navigate = useNavigate()
 
     //toast message
     const showToastMessage = () => {
@@ -50,6 +51,23 @@ export default function ProductDetailsSeller() {
     const [productPriceModal, setProductPriceModal] = useState(false);
     const toggleProductPriceModal = () => setProductPriceModal(!productPriceModal);
 
+    //delete a product
+    const handleDelete = (productID) => {
+        var response = confirm(`Are you sure you want to delete ${product.productName} ?`);  
+        if (response == true) {
+            sellerProductInstance.delete('/delete-product/'+productID)
+            .then(resp => {
+                if(resp.data.success === false){
+                    setError(resp.data.message)
+                }else{
+                    navigate('/seller/home/view-all-products/');
+                }
+            }).catch(err => setError(err.message))
+        }
+        else {  
+        return;  
+        }  
+    }
 
 
 

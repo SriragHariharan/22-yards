@@ -31,7 +31,7 @@ export default function AllProductsSeller() {
             <Row className='mt-5 p-3'>                    
               <Col xs={12} sm={12} md={12}>
                 {
-                  products.map(product => (<ProductsCard key={product._id} productName={product.productName} stock={product.stock} mrp={product.mrp} offerPrice ={product.offerPrice} productID={product._id}  />) )
+                  products.map(product => (<ProductsCard key={product._id} productName={product.productName} stock={product.stock} mrp={product.mrp} offerPrice ={product.offerPrice} productID={product._id} description={product.description}  />) )
                 }
                   
               
