@@ -3,7 +3,10 @@ const app = express()
 const bodyparser = require('body-parser')
 require('dotenv').config()
 const fileUpload = require("express-fileupload");
-const path = require("path");
+const cors = require('cors');
+
+//cors
+app.use(cors());
 
 //middlewares
 app.use(bodyparser.json())

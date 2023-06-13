@@ -1,8 +1,8 @@
 import React, { useState } from 'react';
+import axios from 'axios'
 import {
     MDBInputGroup,
     MDBInput,
-    MDBTextArea,
     MDBBtn,
     MDBModal,
     MDBModalDialog,
@@ -23,20 +23,38 @@ library.add( faSeedling, faHandHoldingDollar, faHandPeace, faMagnifyingGlass, fa
 
 import '../styles/Welcomepage.css'
 import Footer from '../components/Footer';
+import { useDispatch } from 'react-redux';
+import { AdminLogin } from '../../redux-tk/reducers/AdminReducer';
+import Alert from 'react-bootstrap/Alert';
+
 
 export default function Welcomepage() {
+    
+    const dispatch = useDispatch()
 
     //login modal form code
     const [loginModal, setLoginModal] = useState(false);
     const toggleLoginModal = () => setLoginModal(!loginModal);
     const { register, formState: { errors }, handleSubmit, reset } = useForm();
+    const [error, setError] = useState(null)
+
     const onSubmit = (data) => {
-        console.log(data);
-        reset()
+        axios.post('http://localhost:4000/api/seller/auth/login',{...data})
+        .then(resp => {
+            if(resp.data.success === false){
+                setError(resp.data.message)
+            }else{
+                dispatch(AdminLogin(resp.data.data))
+                localStorage.setItem('22YardsAdmin', JSON.stringify(resp.data.data))
+                reset()
+                setError(null)
+            }
+        }).catch(err => setError(err.message))
     }
      
     // signup modal form code
     const [signupModal, setSignupModal] = useState(false);
+    const [error2, setError2] = useState(null)
     const toggleSignupModal = () => setSignupModal(!signupModal);
     const {
         register: registerSignup,
@@ -45,9 +63,22 @@ export default function Welcomepage() {
         reset:resetSignup,
         watch,
       } = useForm();
+
       const onSubmitSignup = (data) => {
-        console.log(data);
-        resetSignup()
+        //posting data to backend using axios
+        axios.post('http://localhost:4000/api/seller/auth/signup',
+        {...data})
+        .then(resp => {
+           if(resp.data.success === false){
+            setError2(resp.data.message)
+           }else{
+           dispatch(AdminLogin(resp.data.data))
+            localStorage.setItem('22YardsAdmin', JSON.stringify(resp.data.data))
+            resetSignup()
+            setError2(null)
+           } 
+        })
+        .catch(err => setError2(err.message))
       };
 
 
@@ -73,43 +104,48 @@ export default function Welcomepage() {
             {/* login modal starts here */}
             <MDBModal show={loginModal} setShow={setLoginModal} tabIndex='-1'>
                 <MDBModalDialog>
-                <MDBModalContent>
-                    <MDBModalHeader>
-                    <MDBModalTitle><b> SELLER LOGIN </b></MDBModalTitle>
-                    <MDBBtn className='btn-close' color='none' onClick={toggleLoginModal}></MDBBtn>
-                    </MDBModalHeader>
-                    <MDBModalBody>
-                        <div className="text-center mb-5">
-                            <img width='130px' src="https://www.svgrepo.com/show/334967/user-circle.svg" alt="" />
-                        </div>
-                    <form onSubmit={handleSubmit(onSubmit)}>
-                    
-                        <MDBInputGroup className='mb-3'>
-                            <MDBInput label='email id' type='email' size='lg'
-                                {...register("email", { required: true, pattern:/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i })} 
-                            />
-                        </MDBInputGroup>
-                        {errors.email?.type === 'required' && <p style={{color:'red', marginTop:'-17px'}}>email id required</p>}
-                        {errors.email?.type === 'pattern'  && <p style={{color:'red', marginTop:'-17px'}}>invalid email</p>}
+                    <MDBModalContent>
+                        <MDBModalHeader>
+                        <MDBModalTitle><b> SELLER LOGIN </b></MDBModalTitle>
+                        <MDBBtn className='btn-close' color='none' onClick={toggleLoginModal}></MDBBtn>
+                        </MDBModalHeader>
+                        <MDBModalBody>
+                            <div className="text-center mb-5">
+                                <img width='130px' src="https://www.svgrepo.com/show/334967/user-circle.svg" alt="" />
+                            </div>
+                            {
+                                error &&    <Alert variant={'danger'} className='text-center m-5'>
+                                                {error}
+                                            </Alert>
+                            }
                         
-                        <MDBInputGroup className='mb-3'>
-                            <MDBInput label='password' type='password' size='lg'
-                            {...register("password", { required: true, minLength:6, maxLength:24 })}
-                            />
-                        </MDBInputGroup>
-                        {errors.password?.type === 'required'   && <p style={{color:'red', marginTop:'-17px'}}>password required</p>}
-                        {errors.password?.type === 'minLength'  && <p style={{color:'red', marginTop:'-17px'}}>Password too short</p>}
-                        {errors.password?.type === 'maxLength'  && <p style={{color:'red', marginTop:'-17px'}}>Password too long</p>}
-                        
-                        <MDBModalFooter>
-                        <MDBBtn color='secondary' className='me-3' onClick={toggleLoginModal}>
-                            Close
-                        </MDBBtn>
-                        <input className='btn btn-primary' type="submit" value='LOGIN' />
-                        </MDBModalFooter>
-                    </form>
-                    </MDBModalBody>
-                </MDBModalContent>
+                            <form onSubmit={handleSubmit(onSubmit)}>
+                                <MDBInputGroup className='mb-3'>
+                                    <MDBInput label='email id' type='email' size='lg'
+                                        {...register("email", { required: true, pattern:/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i })} 
+                                    />
+                                </MDBInputGroup>
+                                {errors.email?.type === 'required' && <p style={{color:'red', marginTop:'-17px'}}>email id required</p>}
+                                {errors.email?.type === 'pattern'  && <p style={{color:'red', marginTop:'-17px'}}>invalid email</p>}
+                                
+                                <MDBInputGroup className='mb-3'>
+                                    <MDBInput label='password' type='password' size='lg'
+                                    {...register("password", { required: true, minLength:6, maxLength:24 })}
+                                    />
+                                </MDBInputGroup>
+                                {errors.password?.type === 'required'   && <p style={{color:'red', marginTop:'-17px'}}>password required</p>}
+                                {errors.password?.type === 'minLength'  && <p style={{color:'red', marginTop:'-17px'}}>Password too short</p>}
+                                {errors.password?.type === 'maxLength'  && <p style={{color:'red', marginTop:'-17px'}}>Password too long</p>}
+                                
+                                <MDBModalFooter>
+                                <MDBBtn color='secondary' className='me-3' onClick={toggleLoginModal}>
+                                    Close
+                                </MDBBtn>
+                                <input className='btn btn-primary' type="submit" value='LOGIN' />
+                                </MDBModalFooter>
+                            </form>        
+                        </MDBModalBody>
+                    </MDBModalContent>
                 </MDBModalDialog>
             </MDBModal>
             {/* login modal ends here */}
@@ -126,6 +162,11 @@ export default function Welcomepage() {
                         <div className="text-center mb-5">
                             <img width='130px' src="https://www.svgrepo.com/show/334967/user-circle.svg" alt="" />
                         </div>
+                        {
+                            error2 &&    <Alert variant={'danger'} className='text-center m-5'>
+                                            {error2}
+                                        </Alert>
+                        }                        
                         <form onSubmit={handleSignup(onSubmitSignup)}>
                             <MDBInputGroup className='mb-3'>
                                 <MDBInput label='email id' type='email'  size='lg'
@@ -143,7 +184,7 @@ export default function Welcomepage() {
                             {errorsSignup.sellerName?.type === 'required'  && <p style={{color:'red', marginTop:'-17px'}}>Seller name required</p>}
                             {errorsSignup.sellerName?.type === 'minLength' && <p style={{color:'red', marginTop:'-17px'}}>Seller name too short</p>}
 
-                            <MDBInputGroup className='mb-3' textBefore='+ 91 '  size='lg'>
+                            <MDBInputGroup className='mb-3'  size='lg'>
                                 <MDBInput label='mobile number' type='tel' 
                                 {...registerSignup("mobile", { required: true, minLength:10, maxLength:10 })} 
                                 />                        

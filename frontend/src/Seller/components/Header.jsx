@@ -7,17 +7,26 @@ import {
     MDBNavbarToggler,
     MDBIcon,
     MDBNavbarNav,
-    MDBNavbarItem,
     MDBNavbarLink,
     MDBBtn,
-    MDBDropdown,
-    MDBDropdownToggle,
-    MDBDropdownMenu,
-    MDBDropdownItem,
+
     MDBCollapse,
   } from 'mdb-react-ui-kit';
+import { useSelector, useDispatch } from 'react-redux';
+import { AdminLogout } from '../../redux-tk/reducers/AdminReducer';
+
+
 export default function Header() {
     const [showBasic, setShowBasic] = useState(false);
+    const dispatch = useDispatch()
+    //handle logout
+    const handleLogout = () => {
+        localStorage.setItem('22YardsAdmin', null);
+        dispatch(AdminLogout(null))
+    }
+
+    const seller = useSelector(state => state?.Admin.seller?.seller)
+
   return (
     <>
         <div className="header">
@@ -26,14 +35,16 @@ export default function Header() {
                 <p> <b>22Yards</b>  <br /> Seller Hub</p>
             </div>
             <div className="auth">
-                {/* <MDBBtn className='me-5 p-3 btn' color='tertiary'>
-                    <div><b> Hi Srirag</b></div>
-                </MDBBtn> */}
-                <MDBBtn className='me-5 p-3 btn' color='info'>
+                <MDBBtn className='me-2 btn' color='tertiary'>
+                    <div>Hi {seller?.sellerName} !</div>
+                </MDBBtn>
+                <MDBBtn className='me-5 p-3 btn' color='info' onClick={handleLogout}>
                     <div>Logout</div>
                 </MDBBtn>
             </div> 
         </div>
+
+        {/* nav2 */}
         <MDBNavbar expand='md' light className='header-2 p-4'>
             <MDBContainer fluid>
                 <MDBNavbarToggler
