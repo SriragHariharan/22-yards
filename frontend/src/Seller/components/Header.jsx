@@ -14,6 +14,7 @@ import {
   } from 'mdb-react-ui-kit';
 import { useSelector, useDispatch } from 'react-redux';
 import { AdminLogout } from '../../redux-tk/reducers/AdminReducer';
+import { NavLink } from 'react-router-dom';
 
 
 export default function Header() {
@@ -57,11 +58,11 @@ export default function Header() {
                     </MDBNavbarToggler>
                     <MDBCollapse navbar show={showBasic}>
                         <MDBNavbarNav className='mr-auto mb-2 mb-lg-0 d-flex justify-content-center'>
-                            <MDBNavbarLink> Home             </MDBNavbarLink>
-                            <MDBNavbarLink> All Products     </MDBNavbarLink>
-                            <MDBNavbarLink> Orders           </MDBNavbarLink>
-                            <MDBNavbarLink> Add new Product  </MDBNavbarLink>
-                            <MDBNavbarLink> FAQ     </MDBNavbarLink>
+                            <NavLink to={'/seller/home'} className='NavLink'>                         Home             </NavLink>
+                            <NavLink to={'/seller/home/view-all-products'} className='NavLink'>       All Products     </NavLink>
+                            <NavLink to={'/seller/home'} className='NavLink'>                         Orders           </NavLink>
+                            <NavLink to={'/seller/home/add-new-product'} className='NavLink'>         Add new Product  </NavLink>
+                            <NavLink to={'/seller/home'} className='NavLink'>                         FAQ              </NavLink>
                         </MDBNavbarNav>
                     </MDBCollapse>
             </MDBContainer>
