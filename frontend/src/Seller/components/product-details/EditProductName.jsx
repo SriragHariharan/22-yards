@@ -13,7 +13,9 @@ import {
 } from 'mdb-react-ui-kit';
 import { useForm } from "react-hook-form";
 import useSellerProductInstance from '../../axios/useSellerProductInstance';
-
+import { useDispatch } from 'react-redux';
+import { editProductName } from '../../../redux-tk/reducers/EditProductDetails';
+import Alert from 'react-bootstrap/Alert';
 
 export default function EditProductName({productNameModal, setProductNameModal, toggleProductNameModal, productID, showToastMsg}) {
 
@@ -21,6 +23,10 @@ export default function EditProductName({productNameModal, setProductNameModal, 
     const [sellerProductInstance] = useSellerProductInstance()
     const [productName, setProductName] = useState(null)
     const [error, setError] = useState(null)
+    
+    //rtk
+    const dispatch = useDispatch()
+
 
     //load details on mount
     useEffect( () => {
@@ -37,6 +43,7 @@ export default function EditProductName({productNameModal, setProductNameModal, 
         if(resp.data.success === false){
           setError(resp.data.message)
         }else{
+          dispatch(editProductName(data.productName))
           toggleProductNameModal(false)
           setTimeout(()=>showToastMsg(true), 1000)
         }
@@ -55,7 +62,7 @@ return (
               <MDBModalTitle><b>EDIT PRODUCT NAME</b></MDBModalTitle>
               <MDBBtn className='btn-close' color='none' onClick={toggleProductNameModal}></MDBBtn>
             </MDBModalHeader>
-            {error && <p>{error}</p>}
+            {error && <Alert variant={'danger'}>{error}</Alert>}
             
             <MDBModalBody>
               <p>

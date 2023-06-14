@@ -13,6 +13,8 @@ import {
 } from 'mdb-react-ui-kit';
 import { useForm } from 'react-hook-form';
 import useSellerProductInstance from '../../axios/useSellerProductInstance';
+import { useDispatch } from 'react-redux';
+import { editProductPrice } from '../../../redux-tk/reducers/EditProductDetails';
 
 
 export default function EditPriceModal({productPriceModal, setProductPriceModal, toggleProductPriceModal, productID, showToastMsg }) {
@@ -20,7 +22,11 @@ export default function EditPriceModal({productPriceModal, setProductPriceModal,
     const [productPrice, setProductPrice] = useState(null)
     const [error, setError] = useState(null)
     const [sellerProductInstance] = useSellerProductInstance()
-  
+
+
+    //rtk
+    const dispatch = useDispatch()
+
     //load details on mount
    useEffect( () => {
     sellerProductInstance.get('/get-product/'+productID)
@@ -34,6 +40,7 @@ export default function EditPriceModal({productPriceModal, setProductPriceModal,
         if(resp.data.success === false){
           setError(resp.data.message)
         }else{
+          dispatch(editProductPrice(data.offerPrice))
           toggleProductPriceModal(false)
           setTimeout(()=>showToastMsg(true), 1000)
         }

@@ -12,21 +12,27 @@ import EditProductName from '../components/product-details/EditProductName';
 import EditPriceModal from '../components/product-details/EditPriceModal';
 import { Navigate, useNavigate, useParams } from 'react-router-dom';
 import useSellerProductInstance from '../axios/useSellerProductInstance';
+import { useDispatch, useSelector } from 'react-redux';
 
+import { removeProductDetails, setProductDetails } from '../../redux-tk/reducers/EditProductDetails';
 
 
 export default function ProductDetailsSeller() {
     const [error, setError] = useState(null)
-    const [product, setProduct] = useState(null)
     const [toastMsg, showToastMsg] = useState(false)
     const [sellerProductInstance] = useSellerProductInstance()
     const [image, setImage] = useState('01');
     const {id} = useParams()
     const navigate = useNavigate()
+    
+    //rtkit
+    const dispatch = useDispatch();
+    const product = useSelector(state => state.editProduct.productDetails);
+
 
     //toast message
     const showToastMessage = () => {
-        toast.success(<h6 style={{color:'red'}}>Product details edited successfully. <br /> Refresh page to see updates...!</h6>, {
+        toast.success(<h6>Product details edited successfully...!</h6>, {
             position: toast.POSITION.TOP_CENTER
         });
     }
@@ -38,10 +44,11 @@ export default function ProductDetailsSeller() {
             if(resp.data.success === false){
                 setError(resp.data.message)
             }else{
-                setProduct(resp.data.data.product)
+                dispatch(setProductDetails(resp.data.data.product))
             }
         }).catch(err => setError(err.message))
-    },[])
+        return () => {dispatch(removeProductDetails())}
+    }, [])
 
     //edit product name modal
     const [productNameModal, setProductNameModal] = useState(false);
@@ -113,7 +120,7 @@ export default function ProductDetailsSeller() {
                 <main className="col-lg-6">
                     <div className="ps-lg-3">
                     <h4 className="title text-dark">
-                        {product.productName}  <FontAwesomeIcon icon={faPenToSquare} onClick={toggleProductNameModal} />
+                        {product.productName}  <FontAwesomeIcon icon={faPenToSquare} onClick={toggleProductNameModal}  style={{cursor:'pointer'}} />
                     </h4>
                     <div className="mt-3 d-flex flex-row ">
                         <div className='me-4'>
@@ -121,7 +128,7 @@ export default function ProductDetailsSeller() {
                         </div>
                         <div  className='me-4'>
                             <span className="h4">₹ {product.offerPrice}</span>
-                            &nbsp; &nbsp; <FontAwesomeIcon icon={faPenToSquare} onClick={toggleProductPriceModal} />
+                            &nbsp; &nbsp; <FontAwesomeIcon icon={faPenToSquare} onClick={toggleProductPriceModal}  style={{cursor:'pointer'}} />
                         </div>
                         <div>
                             <span className="h4 text-success">{Math.floor(((product.mrp - product.offerPrice)/product.offerPrice)*100)} % off</span>
