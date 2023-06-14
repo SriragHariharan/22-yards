@@ -1,16 +1,18 @@
 import React from 'react'
 import Card from 'react-bootstrap/Card';
-
+import { Link } from 'react-router-dom';
 
 //   this card is a component of the homepage
 
-export default function TopSellingCard() {
+export default function TopSellingCard({productID, productName}) {
   return (
     <Card style={{ margin:'5px' }}>
-      <Card.Img variant="top" src="http://localhost:4000/product-images/648083cf0480f37ae5a5ea65-02.jpg" className='w-50 text-center' />
-      <Card.Body>
-        <Card.Title>Card Title</Card.Title>
-      </Card.Body>
+      <Link to={'/seller/home/view-product/'+productID} className='NavLink'>
+          <Card.Img variant="top" width='20px' height='200px' src={`http://localhost:4000/product-images/${productID}-02.jpg`} className=' text-center' />
+          <Card.Body>
+            <Card.Title>{productName.slice(0,15)}...</Card.Title>
+          </Card.Body>
+      </Link>
     </Card>
   )
 }
