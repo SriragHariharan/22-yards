@@ -62,7 +62,7 @@ export default function Header() {
                             <NavLink to={'/seller/home/view-all-products'} className='NavLink'>       All Products     </NavLink>
                             <NavLink to={'/seller/home'} className='NavLink'>                         Orders           </NavLink>
                             <NavLink to={'/seller/home/add-new-product'} className='NavLink'>         Add new Product  </NavLink>
-                            <NavLink to={'/seller/home'} className='NavLink'>                         FAQ              </NavLink>
+                            <NavLink to={'/seller/home/faq'} className='NavLink'>                     FAQ              </NavLink>
                         </MDBNavbarNav>
                     </MDBCollapse>
             </MDBContainer>

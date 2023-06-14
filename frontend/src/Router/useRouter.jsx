@@ -25,6 +25,7 @@ import {
     import ProductDetailsSeller from "../Seller/pages/ProductDetailsSeller";
     import AddNewProduct from "../Seller/pages/AddNewProduct";
     import AllProductsSeller from "../Seller/pages/AllProductsSeller";
+    import Faq from "../Seller/pages/Faq";
 
     import { useSelector } from "react-redux";
 
@@ -49,6 +50,7 @@ export default function useRouter() {
                      <Route path="view-all-products" element={ SELLER ? <AllProductsSeller/> : <Navigate to={'/seller'}/>} />
                      <Route path="view-product/:id" element={ SELLER ? <ProductDetailsSeller/> : <Navigate to={'/seller'}/> } />
                      <Route path="add-new-product" element={ SELLER ? <AddNewProduct/> : <Navigate to={'/seller'}/> } />
+                     <Route path="faq" element={ SELLER ? <Faq/> : <Navigate to={'/seller'}/> } />
                  </Route>
              </Route>
        </Route>
