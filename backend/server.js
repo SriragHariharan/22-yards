@@ -25,9 +25,10 @@ db.once('open', () => console.log("database connected..."))
 
 //routes
 const sellerRouter = require('./routes/SellerRouter')
+const buyerRouter = require('./routes/BuyerRouter')
 
 app.use('/api/seller', sellerRouter)
-
+app.use('/api/buyer', buyerRouter)
 
 
 
