@@ -28,6 +28,7 @@ import {
     import Faq from "../Seller/pages/Faq";
 
     import { useSelector } from "react-redux";
+import Page404 from "../Buyer/pages/Page404";
 
 export default function useRouter() {
     const SELLER = useSelector(state => state?.Admin?.seller)
@@ -53,6 +54,7 @@ export default function useRouter() {
                      <Route path="faq" element={ SELLER ? <Faq/> : <Navigate to={'/seller'}/> } />
                  </Route>
              </Route>
+             <Route path="*" element={<Page404/>} />
        </Route>
      )
     );
