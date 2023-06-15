@@ -1,0 +1,17 @@
+
+.cat-item .cat-img img,
+.product-item .product-img img {
+  transition: .9s;
+}
+
+.cat-item:hover .cat-img img,
+.product-item:hover .product-img img {
+  transform: scale(1.2);
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+}
+
+
