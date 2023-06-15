@@ -31,36 +31,31 @@ function Header() {
   return (
     <div>
         {/* nav1 start */}
-        <div className="header-1">
+        {/* <div className="header-1">
             <div className="brand-name">
-                <img width='60px' src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSH-196UvngLppQ7fGE1-TQfG75ZKli2l6IdAkNCgK83g&s" alt="" />
-            </div>
+            </div>                <img width='60px' src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSH-196UvngLppQ7fGE1-TQfG75ZKli2l6IdAkNCgK83g&s" alt="" />
+
             <div className="logos">
                 <div className='cart-icon'>
                     <FontAwesomeIcon icon={faCartShopping} size="lg" /> 
                     <MDBBadge pill color='dark' light><b>999</b></MDBBadge>
                 </div>
                 <div>
-                <MDBDropdown group className='shadow-0'>
-                    <MDBDropdownToggle color='light'>
-                        <FontAwesomeIcon icon={faUser} size="xl" />
-                        <MDBBadge className='p-3' pill color='success' light><b>Hariharan</b></MDBBadge>
-                    </MDBDropdownToggle>
-                    <MDBDropdownMenu style={{ margin: 0 }}>
-                        <MDBDropdownItem link>Hi Srirag Hariharan</MDBDropdownItem>
-                        <MDBDropdownItem divider />
-                        <MDBDropdownItem link>Update Profile</MDBDropdownItem>
-                        <MDBDropdownItem link>Logout</MDBDropdownItem>
-                    </MDBDropdownMenu>
-                </MDBDropdown>
+                    <MDBDropdown group className='shadow-0'>
+                        <MDBDropdownToggle color='light'>
+                            <FontAwesomeIcon icon={faUser} size="xl" />
+                            <MDBBadge className='p-3' pill color='success' light><b>Hariharan</b></MDBBadge>
+                        </MDBDropdownToggle>
+                        <MDBDropdownMenu style={{ margin: 0 }}>
+                            <MDBDropdownItem link>Hi Srirag Hariharan</MDBDropdownItem>
+                            <MDBDropdownItem divider />
+                            <MDBDropdownItem link>Update Profile</MDBDropdownItem>
+                            <MDBDropdownItem link>Logout</MDBDropdownItem>
+                        </MDBDropdownMenu>
+                    </MDBDropdown>
                 </div>
-               
-        {/* nav 2 start */}
-      <div>
             </div>
-        </div>
-            
-        </div>
+        </div> */}
 
         {/* nav2 start */}
         <div className="header-2">
