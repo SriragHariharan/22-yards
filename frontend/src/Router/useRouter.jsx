@@ -29,6 +29,7 @@ import {
 
     import { useSelector } from "react-redux";
 import Page404 from "../Buyer/pages/Page404";
+import AllProducts from "../Buyer/pages/AllProducts";
 
 export default function useRouter() {
     const SELLER = useSelector(state => state?.Admin?.seller)
@@ -43,6 +44,7 @@ export default function useRouter() {
                      <Route path='login' element={<Login />} />
                      <Route path='signup' element={<Signup />} />
                  </Route>
+             <Route path='all-products' element={<AllProducts/>} />
              </Route>
              <Route path="seller" element={<SellerRootLayout/> }>
                  <Route index element={ SELLER ? <Navigate to={'/seller/home'} /> : <Welcomepage/>} />
