@@ -7,6 +7,7 @@ import NewOrders from '../components/Homepage/NewOrders';
 import TopSellingCard from '../components/Homepage/TopSellingCard';
 import { Link } from 'react-router-dom';
 import useSellerProductInstance from '../axios/useSellerProductInstance';
+import Error from '../components/general/Error';
 
 
 export default function HomepageSeller() {
@@ -32,6 +33,9 @@ export default function HomepageSeller() {
 
     return (
     <>
+        {error && <Error error={error} />}
+        {!error && 
+        <>
         <Container>
             <Row className='mt-5'>
                 <h3>TOP VIEWED</h3>
@@ -71,7 +75,8 @@ export default function HomepageSeller() {
                 </Col>
             </Row>
         </Container>
-
+    </>
+    }
     </>
   )
 }

@@ -8,7 +8,8 @@ const adminSlice = createSlice({
             state.seller = action.payload;
         },
         AdminLogout : (state, action) => {
-            state.seller = action.payload;
+            localStorage.removeItem('22YardsAdmin')
+            state.seller = null;
         },
     },
 })
