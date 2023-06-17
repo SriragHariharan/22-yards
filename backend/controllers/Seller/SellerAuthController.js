@@ -3,7 +3,7 @@ const Seller = require('../../models/SellerModel')
 const jwt = require('jsonwebtoken');
 
 const JWToken = (sellerID) => {
-    return jwt.sign({sellerID}, process.env.JWT_SECRET, {expiresIn:'30s'} )
+    return jwt.sign({sellerID}, process.env.JWT_SECRET, {expiresIn:'1d'} )
 }
 
 //Add new seller to the database

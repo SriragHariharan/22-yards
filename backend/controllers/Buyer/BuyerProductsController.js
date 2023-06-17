@@ -52,7 +52,7 @@ const sortByDate = async(req, res) => {
 const sortByPrice = async (req, res) => {
     try {
         const id = req.params.id;
-        const products = await Products.find({}).sort({price:id})
+        const products = await Products.find({}).sort({mrp:id})
         return res.json({ success:true, message:"Product sorted by price", data:{products} }) 
     } 
     catch (error) {
