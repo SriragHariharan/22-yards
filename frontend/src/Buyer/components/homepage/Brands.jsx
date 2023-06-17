@@ -8,9 +8,9 @@ function Brands() {
         <Container>
             <Row>
                 <Col xs={12} sm={12} md={12}>
-                    <div className="brands-title text-center">
-                        BRANDS
-                    </div>
+                <div className="text-center mb-5">
+                    <h4 className="section-title px-5"><span className="px-2">Brands</span></h4>
+                </div>
                 </Col>
 
                 <Col xs={2} sm={2} md={2}>
