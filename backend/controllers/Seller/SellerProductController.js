@@ -5,6 +5,7 @@ const uploadPath ='./uploads/product-images/'
 const fs = require("fs");
 const mongoose = require('mongoose')
 
+const sharp = require('sharp');
 
 //add new product
 const AddNewProduct = async(req, res) => {
@@ -21,15 +22,37 @@ const AddNewProduct = async(req, res) => {
         let newProduct = new Products({ sellerID, productName, brand, category, mrp, offerPrice, size, stock, description, specification, feature1, feature2, feature3, feature4, productColor, productMaterial, itemsInBox, warranty, weight });
         let productFromDB = await newProduct.save()
         
-        //file upload
-        let image1 = req.files.image1;
-        let image2 = req.files.image2;
-        let image3 = req.files.image3;
+        
+
+        //node-sharp to convert 3 images to desired size
+        sharp(req.files.image1.data)
+        .resize(1024, 1024, {
+            fit: 'contain',
+            background: { r: 255, g: 255, b: 255 }
+        })
+        .toFile(uploadPath+productFromDB._id +"-01.jpg")
+        .then().catch(err => console.log(err))
+
+        sharp(req.files.image2.data)
+        .resize(1024, 1024, {
+            fit: 'contain',
+            background: { r: 255, g: 255, b: 255 }
+        })
+        .toFile(uploadPath+productFromDB._id +"-02.jpg")
+        .then().catch(err => console.log(err))
+
+        sharp(req.files.image3.data)
+        .resize(1024, 1024, {
+            fit: 'contain',
+            background: { r: 255, g: 255, b: 255 }
+        })
+        .toFile(uploadPath+productFromDB._id +"-03.jpg")
+        .then().catch(err => console.log(err))
 
         //moving files to uploads folder
-        image1.mv(uploadPath + productFromDB._id +"-01.jpg", function(err) { if (err) return res.json({success:false, message:"Server Error", error_code:500, data:{} }) })           
-        image2.mv(uploadPath + productFromDB._id +"-02.jpg", function(err) { if (err) return res.json({success:false, message:"Server Error", error_code:500, data:{} }) })           
-        image3.mv(uploadPath + productFromDB._id +"-03.jpg", function(err) { if (err) return res.json({success:false, message:"Server Error", error_code:500, data:{} }) })           
+        // image1.mv(uploadPath + productFromDB._id +"-01.jpg", function(err) { if (err) return res.json({success:false, message:"Server Error", error_code:500, data:{} }) })           
+        // image2.mv(uploadPath + productFromDB._id +"-02.jpg", function(err) { if (err) return res.json({success:false, message:"Server Error", error_code:500, data:{} }) })           
+        // image3.mv(uploadPath + productFromDB._id +"-03.jpg", function(err) { if (err) return res.json({success:false, message:"Server Error", error_code:500, data:{} }) })           
 
         return res.json({success:true, message:"New product has been added successfully", data:{product:productFromDB}})
     } 
