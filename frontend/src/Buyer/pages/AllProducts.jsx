@@ -34,7 +34,6 @@ useEffect(() => {
 },[])
 
 //fetching products based on filter selected by user
-
 switch (filter?.value) {
     case 'random':
         BuyerProductInstance.get('all-products')
@@ -104,6 +103,11 @@ switch (filter?.value) {
         break;
 }
 
+//react pagination
+const productsPerPage = 1;
+const [currentPage, setCurrentPage] = useState(1)
+const lastIndex = currentPage * productsPerPage;
+const firstIndex = lastIndex - productsPerPage;
 
 
 return (
@@ -116,7 +120,7 @@ return (
                     { listView &&
                         <div className="row justify-content-center mb-3">
                             {
-                                products?.map(product => (<ListView key={product._id} productName={product.productName} description={product.description} mrp={product.mrp} offerPrice={product.offerPrice} stock={product.stock} productID={product._id} />))
+                                products?.slice(firstIndex, lastIndex).map(product => (<ListView key={product._id} productName={product.productName} description={product.description} mrp={product.mrp} offerPrice={product.offerPrice} stock={product.stock} productID={product._id} />))
                             }
                         </div>
                     }
@@ -124,14 +128,14 @@ return (
                     { !listView &&
                         <div className="row justify-content-center ">
                             {
-                                products?.map(product => (<CardView key={product._id} productName={product.productName} mrp={product.mrp} offerPrice={product.offerPrice} stock={product.stock} productID={product._id} description={product.description} />))
+                                products?.slice(firstIndex, lastIndex).map(product => (<CardView key={product._id} productName={product.productName} mrp={product.mrp} offerPrice={product.offerPrice} stock={product.stock} productID={product._id} description={product.description} />))
                             }
                         </div>
                     }
 
                     <hr />
                     {/* <!-- Pagination --> */}
-                        <Pagination/>
+                        <Pagination productsNo = {products?.length} productsPerPage={productsPerPage} setCurrentPage={setCurrentPage} currentPage={currentPage} />
                 </div>
             </div>
         </div>
