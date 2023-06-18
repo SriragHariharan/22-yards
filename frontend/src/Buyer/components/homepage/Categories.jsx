@@ -12,10 +12,11 @@ import image7 from '../../../assets/categories/ball.jpg'
 import image8 from '../../../assets/categories/kit-bag.jpg'
 import image9 from '../../../assets/categories/wearable.jpg'
 import image10 from '../../../assets/categories/grips.jpg'
+import { Link } from 'react-router-dom'
 
 const CategoriesCard = ({categoryName, imageNo}) => {
     return (
-            <div className="col-lg-2 col-md-6 col-6 pb-1">
+            
                 <div className="cat-item d-flex flex-column border mb-4" style={{padding: "30px"}}>
                     <p style={{textAlign:'right', color:'#A5A5A9', fontSize:'10px'}}>10 <sup>+</sup> &nbsp;  Products</p>
                     <a className="cat-img position-relative overflow-hidden mb-3">
@@ -23,7 +24,6 @@ const CategoriesCard = ({categoryName, imageNo}) => {
                     </a>
                     <h5 className="text-center font-weight-semi-bold m-0">{categoryName}</h5>
                 </div>
-            </div>
     )
 }
 
@@ -36,16 +36,69 @@ export default function Categories() {
                 <h2 className="section-title px-5"><span className="px-2">Categories</span></h2>
             </div>
 
-            <CategoriesCard categoryName={'Bats'} imageNo ={image2} />
-            <CategoriesCard categoryName={'Leg guards'} imageNo ={image1} />
-            <CategoriesCard categoryName={'Gloves'} imageNo ={image3} />
-            <CategoriesCard categoryName={'Balls'} imageNo ={image7} />
-            <CategoriesCard categoryName={'Kit bags'} imageNo ={image8} />
-            <CategoriesCard categoryName={'Shoes'} imageNo ={image6} />
-            <CategoriesCard categoryName={'Helmets'} imageNo ={image4} />
-            <CategoriesCard categoryName={'Protection'} imageNo ={image5} />
-            <CategoriesCard categoryName={'Wearables'} imageNo ={image9} />
-            <CategoriesCard categoryName={'Accessories'} imageNo ={image10} />
+            <div className="col-lg-2 col-md-6 col-6 pb-1">
+                <Link className='link' to={'/category/cricket-bat/'}>
+                    <CategoriesCard categoryName={'cricket bat'} imageNo ={image2} />
+                </Link> 
+            </div>
+
+            <div className="col-lg-2 col-md-6 col-6 pb-1">
+                <Link className='link' to={'/category/leg-guard/'}>
+                    <CategoriesCard categoryName={'leg guard'} imageNo ={image1} />
+                </Link> 
+            </div>
+
+
+            <div className="col-lg-2 col-md-6 col-6 pb-1">
+                <Link className='link' to={'/category/gloves/'}>
+                    <CategoriesCard categoryName={'Gloves'} imageNo ={image3} />
+                </Link> 
+            </div>
+
+            
+            <div className="col-lg-2 col-md-6 col-6 pb-1">
+                <Link className='link' to={'/category/cricket-ball/'}>
+                    <CategoriesCard categoryName={'Cricket Balls'} imageNo ={image7} />
+                </Link> 
+            </div>
+
+            <div className="col-lg-2 col-md-6 col-6 pb-1">
+                <Link className='link' to={'/category/kit-bag'}>
+                    <CategoriesCard categoryName={'Kit bags'} imageNo ={image8} />
+                </Link> 
+            </div>
+
+            <div className="col-lg-2 col-md-6 col-6 pb-1">
+                <Link className='link' to={'/category/shoes/'}>
+                    <CategoriesCard categoryName={'Shoes'} imageNo ={image6} />
+                </Link> 
+            </div>
+
+            <div className="col-lg-2 col-md-6 col-6 pb-1">
+                <Link className='link' to={'/category/helmet/'}>
+                    <CategoriesCard categoryName={'helmet'} imageNo ={image4} />
+                </Link> 
+            </div>
+
+            <div className="col-lg-2 col-md-6 col-6 pb-1">
+                <Link className='link' to={'/category/protection/'}>
+                    <CategoriesCard categoryName={'Protection'} imageNo ={image5} />
+                </Link> 
+            </div>
+
+            <div className="col-lg-2 col-md-6 col-6 pb-1">
+                <Link className='link' to={'/category/wearables/'}>
+                    <CategoriesCard categoryName={'Wearables'} imageNo ={image9} />
+                </Link> 
+            </div>
+
+            <div className="col-lg-2 col-md-6 col-6 pb-1">
+                <Link className='link' to={'/category/accessories/'}>
+                    <CategoriesCard categoryName={'Accessories'} imageNo ={image10} />
+                </Link> 
+            </div>
+
+            
 
         </div>
     </div>

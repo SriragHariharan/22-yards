@@ -60,6 +60,19 @@ const sortByPrice = async (req, res) => {
     }
 }
 
+const getProductsByCategory = async(req, res) => {
+    try {
+        const category = req.params.id;
+        let products = await Products.find({category});
+        if(!products){
+            return res.json({success:false, message:"Cannot find products", error_code:404, data:{}})
+        }
+        return res.json({success:true, message:"Data fetched", data:{products}})
+    } catch (error) {
+        return res.json({success:false, message:error.message, error_code:404, data:{}})        
+    }
+}
+
 
 
 
@@ -68,4 +81,5 @@ module.exports={
     getSingleProduct,
     sortByDate,
     sortByPrice,
+    getProductsByCategory,
 }

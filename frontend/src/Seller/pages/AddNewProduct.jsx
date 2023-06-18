@@ -172,7 +172,7 @@ export default function AddNewProduct() {
                         BASIC DETAILS
                     </p>
                     <div className="mb-4">
-                        <MDBInput label='Product name' type='text' size='lg' value="SG Test batting pads" 
+                        <MDBInput label='Product name' type='text' size='lg'  
                         {...register("productName", { required: true })} 
                         />
                     </div>
@@ -180,7 +180,7 @@ export default function AddNewProduct() {
 
 
                     <div className="mb-4">
-                        <MDBInput label='Brand' type='text' size='lg' value="SG"
+                        <MDBInput label='Brand' type='text' size='lg'
                         {...register("brand", { required: true })} 
                         />
                     </div>
@@ -189,27 +189,31 @@ export default function AddNewProduct() {
                     <div className="mt-2 mb-4">
                         <Form.Label>Category</Form.Label>
                         <Form.Select size="sm" {...register("category", { required: true })} >
-                            <option value="cricket bat">Cricket bat</option>
-                            <option value="gloves">Gloves</option>
-                            <option value="pads">Pads</option>
-                            <option value="protection">Protection</option>
-                            <option value="cricket ball">Balls</option>
-                            <option value="wearables">Wearables</option>
-                            <option value="others">Others</option>
+                            <option>Select one</option>
+                            <option value="cricket-bat">    Cricket bat     </option>
+                            <option value="leg-guard">      Leg guards            </option>
+                            <option value="gloves">         Gloves          </option>
+                            <option value="cricket-ball">   Balls           </option>
+                            <option value="kit-bag">        Bag             </option>
+                            <option value="shoes">          Shoes           </option>
+                            <option value="helmet">         Helmet          </option>
+                            <option value="protection">     Protection      </option>
+                            <option value="wearables">      Wearables       </option>
+                            <option value="accessories">    Accessories     </option>
                         </Form.Select>
                     </div>
                     {errors.category?.type === 'required' && <p style={{color:'red', marginTop:'-24px'}}>This field required</p>}
 
 
                     <div className="mt-4 mb-4">
-                        <MDBInput label='MRP (₹)' type='number' size='lg' value={4999}
+                        <MDBInput label='MRP (₹)' type='number' size='lg'
                         {...register("mrp", { required: true })} 
                         />
                     </div>
                     {errors.mrp?.type === 'required' && <p style={{color:'red', marginTop:'-24px'}}>This field required</p>}
 
                     <div className="mb-4">
-                        <MDBInput label='Offer Price (₹)' type='number' size='lg' value={4499}
+                        <MDBInput label='Offer Price (₹)' type='number' size='lg'
                         {...register("offerPrice", { required: true })} 
                         />
                     </div>

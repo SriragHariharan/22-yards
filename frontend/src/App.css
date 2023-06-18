@@ -9,3 +9,12 @@
     text-decoration: none;
     color: #727170
 }
+
+.link{
+    text-decoration: none;
+    color: #727170;   
+}
+
+.link:hover{
+    color: #727170;
+}

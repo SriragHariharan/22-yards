@@ -26,7 +26,7 @@ export default function JustArrived() {
         </div>
         <div className="row px-xl-5 pb-3">
             
-            { products?.map(product => (
+            { products?.slice(0,7).map(product => (
                 <div className="col-lg-3 col-md-6 col-6 pb-1 text-center">
                     <div className="cat-item d-flex flex-column border mb-4" style={{padding: "30px"}}>
                         <p style={{textAlign:'right', color:'#A5A5A9', fontSize:'10px'}}>10 <sup>+</sup> &nbsp;  Products</p>

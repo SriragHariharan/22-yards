@@ -1,6 +1,6 @@
 const router = require('express').Router()
 
-const { getAllProducts, getSingleProduct, sortByDate, sortByPrice } = require('../controllers/Buyer/BuyerProductsController');
+const { getAllProducts, getSingleProduct, sortByDate, sortByPrice, getProductsByCategory } = require('../controllers/Buyer/BuyerProductsController');
 
 //get all products
 router.get('/all-products/', getAllProducts);
@@ -13,5 +13,8 @@ router.get('/sort-by-date/:id', sortByDate);
 
 //sort by price
 router.get('/sort-by-price/:id', sortByPrice);
+
+//get products by category
+router.get('/category/:id', getProductsByCategory)
 
 module.exports = router;
