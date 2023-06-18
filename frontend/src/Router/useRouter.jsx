@@ -31,10 +31,11 @@
     import Faq from "../Seller/pages/Faq";
     import Page404 from "../Buyer/pages/Page404";
     import AllProducts from "../Buyer/pages/AllProducts";
+    import ProductsbyCategory from "../Buyer/pages/ProductsbyCategory";
+    import ViewProductDetails from "../Buyer/pages/ViewProductDetails";
 
     import { useSelector, useDispatch } from "react-redux";
     import { AdminLogout } from "../redux-tk/reducers/AdminReducer";
-import ProductsbyCategory from "../Buyer/pages/ProductsbyCategory";
 
 export default function useRouter() {
   
@@ -65,6 +66,7 @@ export default function useRouter() {
                  </Route>
              <Route path='all-products' element={<AllProducts/>} />
              <Route path='category/:id' element={<ProductsbyCategory/>} />
+             <Route path='view-product/:id' element={<ViewProductDetails/>} />
              </Route>
 
              <Route path="seller" element={<SellerRootLayout/> }>

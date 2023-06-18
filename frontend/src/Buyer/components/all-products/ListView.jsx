@@ -1,19 +1,29 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 export default function ListView({productName, description, mrp, offerPrice, stock, productID}) {
+
+    //add commas automatically to prices
+    function numberWithCommas(x) {
+        return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    }
+    let offerPrice1 = numberWithCommas(offerPrice);
+    let mrp1= numberWithCommas(mrp)
+
   return (
         <div className="col-md-10">
             <div className="card shadow-0 border rounded-3">
                 <div className="card-body">
+                <Link to={'../view-product/'+productID} className='link'>
                     <div className="row g-0">
                         <div className="col-xl-3 col-md-3 d-flex justify-content-center">
                             <div className="bg-image hover-zoom ripple rounded ripple-surface me-md-3 mb-3 mb-md-0">
                             <img src={`http://localhost:4000/product-images/${productID}-01.jpg`} className="w-50" />
-                            <a href="#!">
+                            <div>
                                 <div className="hover-overlay">
                                 <div className="mask" style={{backgroundColor: "rgba(253, 253, 253, 0.15)"}}></div>
                                 </div>
-                            </a>
+                            </div>
                             </div>
                         </div>
 
@@ -39,8 +49,8 @@ export default function ListView({productName, description, mrp, offerPrice, sto
 
                         <div className="col-xl-3 col-md-3 col-sm-5">
                             <div className="d-flex flex-row align-items-center mb-1">
-                                <h4 className="mb-1 me-2"> ₹ {offerPrice}</h4>
-                                <span className="text-danger me-2"><s> ₹ {mrp}</s></span>
+                                <h4 className="mb-1 me-2"> ₹ {offerPrice1}</h4>
+                                <span className="text-danger me-2"><s> ₹ {mrp1}</s></span>
                                 <span className=" text-success mb-1 me-2"> {Math.floor(((mrp-offerPrice)/offerPrice)*100)}% off</span>
                             </div>
                             <h6 className="text-success">Free shipping</h6>
@@ -51,6 +61,7 @@ export default function ListView({productName, description, mrp, offerPrice, sto
                         </div>
 
                     </div>
+                </Link>
                 </div>
             </div>
     </div>

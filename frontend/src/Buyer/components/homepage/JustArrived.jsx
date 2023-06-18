@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import '../../styles/homepage/Justarrived.css'
 import BuyerProductInstance from '../../axios/BuyerProductInstance'
+import { Link } from 'react-router-dom';
 
 
 export default function JustArrived() {
@@ -26,15 +27,17 @@ export default function JustArrived() {
         </div>
         <div className="row px-xl-5 pb-3">
             
-            { products?.slice(0,7).map(product => (
+            { products?.slice(0,8).map(product => (
                 <div className="col-lg-3 col-md-6 col-6 pb-1 text-center">
-                    <div className="cat-item d-flex flex-column border mb-4" style={{padding: "30px"}}>
-                        <p style={{textAlign:'right', color:'#A5A5A9', fontSize:'10px'}}>10 <sup>+</sup> &nbsp;  Products</p>
-                        <a href="" className="cat-img position-relative overflow-hidden mb-3">
-                            <img className="img-fluid" src={`http://localhost:4000/product-images/${product._id}-01.jpg`} alt="" />
-                        </a>
-                        <h5 className="text-center font-weight-semi-bold m-0">{product.productName.slice(0,20)}.....</h5>
-                    </div>
+                    <Link className='link' to={'/view-product/'+product?._id}>
+                        <div className="cat-item d-flex flex-column border mb-4" style={{padding: "30px"}}>
+                            <p style={{textAlign:'right', color:'#A5A5A9', fontSize:'10px'}}>10 <sup>+</sup> &nbsp;  Products</p>
+                            <a href="" className="cat-img position-relative overflow-hidden mb-3">
+                                <img className="img-fluid" src={`http://localhost:4000/product-images/${product._id}-01.jpg`} alt="" />
+                            </a>
+                            <h5 className="text-center font-weight-semi-bold m-0">{product.productName.slice(0,20)}.....</h5>
+                        </div>
+                    </Link>
                 </div>
             ))
             }
