@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import SimilarItemsCard from '../components/view-product-details/SimilarItemsCard'
-import { useParams } from 'react-router-dom'
+import { Link, useParams } from 'react-router-dom'
 import BuyerProductInstance from '../axios/BuyerProductInstance';
 import Error from '../../Seller/components/general/Error';
 
@@ -113,7 +113,7 @@ export default function ViewProductDetails() {
 
                                     <hr />
 
-                                    <div className="btn btn-warning shadow-0 me-5"> Buy now </div>
+                                    <Link to={'/checkout/'+product?._id} className="btn btn-warning shadow-0 me-5"> Buy now </Link>
                                     <div className="btn btn-primary shadow-0 me-5"> <i className="me-1 fa fa-shopping-basket"></i> Add to cart </div>
                                 </div>
                             </main>

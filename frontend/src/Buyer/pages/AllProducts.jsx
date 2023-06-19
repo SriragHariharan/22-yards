@@ -104,7 +104,7 @@ switch (filter?.value) {
 }
 
 //react pagination
-const productsPerPage = 1;
+const productsPerPage = 10;
 const [currentPage, setCurrentPage] = useState(1)
 const lastIndex = currentPage * productsPerPage;
 const firstIndex = lastIndex - productsPerPage;

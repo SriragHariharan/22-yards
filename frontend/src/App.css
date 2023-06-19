@@ -18,3 +18,7 @@
 .link:hover{
     color: #727170;
 }
+
+.error{
+    color:red;
+}

@@ -36,6 +36,7 @@
 
     import { useSelector, useDispatch } from "react-redux";
     import { AdminLogout } from "../redux-tk/reducers/AdminReducer";
+import Checkout from "../Buyer/pages/Checkout";
 
 export default function useRouter() {
   
@@ -67,6 +68,7 @@ export default function useRouter() {
              <Route path='all-products' element={<AllProducts/>} />
              <Route path='category/:id' element={<ProductsbyCategory/>} />
              <Route path='view-product/:id' element={<ViewProductDetails/>} />
+             <Route path='checkout/:id' element={<Checkout/>} />
              </Route>
 
              <Route path="seller" element={<SellerRootLayout/> }>

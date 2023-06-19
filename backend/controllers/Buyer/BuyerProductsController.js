@@ -1,4 +1,5 @@
 const Products = require('../../models/ProductsModel')
+const Orders =  require('../../models/OrdersModal')
 var mongoose = require('mongoose');
 
 
@@ -73,6 +74,22 @@ const getProductsByCategory = async(req, res) => {
     }
 }
 
+//create an order for a single product selected using buy now
+const createOrder = async(req, res) => {
+    try {
+        //console.log(req.body)
+        if(req.body === {} || req.body === null || req.body === undefined){
+            return res.json({   success:false, message:"Cannot proceed furthur", error_code:404, data:{} })
+        }
+        let newOrder =  new Orders({...req.body});
+        let savedNewOrder = await newOrder.save()
+        return res.json({success:true, message:"Order placed successfully", data:{orderID:savedNewOrder._id, billAmount : savedNewOrder.billAmount, fullName:savedNewOrder.fullName, mobile:savedNewOrder.mobile}})
+    } catch (error) {
+        console.log(error)
+        return res.json({   success:false, message:error.message, error_code:404, data:{} })
+    }
+}
+
 
 
 
@@ -82,4 +99,5 @@ module.exports={
     sortByDate,
     sortByPrice,
     getProductsByCategory,
+    createOrder,
 }
