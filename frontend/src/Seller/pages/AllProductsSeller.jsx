@@ -31,8 +31,8 @@ export default function AllProductsSeller() {
             <Container fluid={true}>
                 <h4 className="text-center mt-5">All products you sell are listed here</h4>
                 <h5 className="text-center m-4">You sell {products.length} products on 22yards</h5>
-                <Row className='mt-5 p-3'>                    
-                  <Col xs={12} sm={12} md={12}>
+                <Row className=' justify-content-center mt-5 p-3'>                    
+                  <Col xs={12} sm={12} md={10}>
                     {
                       products.map(product => (<ProductsCard key={product._id} productName={product.productName} stock={product.stock} mrp={product.mrp} offerPrice ={product.offerPrice} productID={product._id} description={product.description}  />) )
                     }

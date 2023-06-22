@@ -65,7 +65,7 @@ const AddNewProduct = async(req, res) => {
 const getProducts = async(req, res) => {
     try {
         let sellerID = req.sellerID;
-        let products = await Products.find({sellerID})
+        let products = await Products.find({sellerID}).sort({createdAt:-1})
         return res.json({ success:true, message:"Data fetched", data:{products} })
     } catch (error) {
         return res.json({ success:false,error_code:400, message:error.message, data:{} })
