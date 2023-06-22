@@ -1,16 +1,31 @@
 import React, { useState, useEffect } from 'react'
 import SimilarItemsCard from '../components/view-product-details/SimilarItemsCard'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import BuyerProductInstance from '../axios/BuyerProductInstance';
 import Error from '../../Seller/components/general/Error';
+import { useSelector, useDispatch } from "react-redux";
+import { NewCartItem } from '../../redux-tk/reducers/CartReducer';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 
 export default function ViewProductDetails() {
     const {id} = useParams()
     const [product, setProduct] = useState(null);
     const [categorizedProducts, setCategorizedProducts] = useState(null)
     const [error, setError] = useState(null);
-    const [image, setImage] = useState(1)
+    const [image, setImage] = useState(1);
 
+    const dispatch = useDispatch();
+    const navigate = useNavigate()
+
+    //show toast message
+    const showToastMessage = () => {
+        toast.success('Item added to cart !', {
+            position: toast.POSITION.TOP_CENTER
+        });
+    };
+    
     //convert currency with commas
     function numberWithCommas(x) {
         return x?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
@@ -44,12 +59,30 @@ export default function ViewProductDetails() {
     let offerPrice1 = numberWithCommas(product?.offerPrice)
     let mrp1 = numberWithCommas(product?.mrp)
 
+    //handle add to cart functionality
+    const handleAddToCart = (productID,  productName, offerPrice, sellerID, size) => {
+        dispatch(NewCartItem({productID, productName, offerPrice, quantity:1, sellerID, size, totalPrice:offerPrice, orderStatus:"order placed" }));
+        showToastMessage()
+    }
+
+    //handle buy now
+    const handleBuyNow = (productID,  productName, offerPrice, sellerID, size) => {
+        dispatch(NewCartItem({productID, productName, offerPrice, quantity:1, sellerID, size, totalPrice:offerPrice, orderStatus:"order placed" }));
+        navigate('/cart')
+    }
+    
+    const cart = useSelector(state => state.cart.cart);  //here we get the cart items in this variable
+
+    //code to find whether product is found in cart
+    let productExistsInCart = cart.filter(item => item.productID === product?._id);
+
     return (
 
     <>
         {error && <Error error={error} />}
         {!error && (
             <>
+                <ToastContainer />
                 <section className="py-5">
                     <div className="container">
                         <div className="row gx-5">
@@ -113,8 +146,32 @@ export default function ViewProductDetails() {
 
                                     <hr />
 
-                                    <Link to={'/checkout/'+product?._id} className="btn btn-warning shadow-0 me-5"> Buy now </Link>
-                                    <div className="btn btn-primary shadow-0 me-5"> <i className="me-1 fa fa-shopping-basket"></i> Add to cart </div>
+                                                                        
+                                    <>
+                                    {
+                                        productExistsInCart[0] &&
+                                            <Link to={'/cart'}  className="link btn btn-success shadow-0 me-5">
+                                                <i className="me-3 fa fa-shopping-basket"></i> 
+                                                GO TO CART
+                                            </Link> 
+                                            
+                                    }
+                                    {
+                                        !productExistsInCart[0] && (
+                                            <>
+                                            <div onClick={() => handleAddToCart(product?._id, product?.productName, product?.offerPrice, product?.sellerID, product?.size, )} className="btn btn-primary shadow-0 me-5"> 
+                                                <i className="me-3 fa fa-shopping-basket"></i> 
+                                                    Add to cart 
+                                            </div>
+                                            <div onClick={() => handleBuyNow(product?._id, product?.productName, product?.offerPrice, product?.sellerID, product?.size, )} className="btn btn-warning shadow-0 me-5"> 
+                                                <i className="fas fa-bolt me-3"></i> 
+                                                BUY NOW 
+                                            </div>
+                                            </>
+                                        )
+                                    }   
+
+                                    </>
                                 </div>
                             </main>
 

@@ -4,8 +4,12 @@ import {
     MDBIcon
   } from 'mdb-react-ui-kit';
 
+import { useSelector } from "react-redux";
+import { Link } from 'react-router-dom';
+
 
 export default function Topbar() {
+  const cart = useSelector(state => state.cart.cart);
   return (
     // <!-- Jumbotron -->
     <div className="mt-3 mb-3 text-center bg-white">
@@ -22,9 +26,20 @@ export default function Topbar() {
           {/* <!-- Center elements --> */}
           <div className="order-lg-last col-lg-4 col-sm-8 col-8 mt-5">
             <div className="d-flex float-end">
-              <a className="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center"> <i className="fas fa-user-alt m-1 me-md-2"></i><p className="d-none d-md-block mb-0">Sign in</p> </a>
+              
+              <a className="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center"> 
+                <i className="fas fa-user-alt m-1 me-md-2"></i> 
+                  <sup className="text-success p">
+                    <i class="fa-solid fa-star-of-life" style={{color: "#0eff0a"}}></i>
+                  </sup>
+              </a>
+              
               {/* <a className="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center"> <i className="fas fa-heart m-1 me-md-2"></i><p className="d-none d-md-block mb-0">Wishlist</p> </a> */}
-              <a className="border rounded py-1 px-3 nav-link d-flex align-items-center"> <i className="fas fa-shopping-cart m-1 me-md-2"></i><p className="d-none d-md-block mb-0">My cart</p> </a>
+              
+              <Link to={'cart'} className="border rounded py-1 px-3 nav-link d-flex align-items-center"> 
+                  <i className="fas fa-shopping-cart"></i> &nbsp; &nbsp; <span className='h2' style={{color: "#0eff0a"}}><b>{cart?.length}</b></span>
+              </Link>
+
             </div>
           </div>
           {/* <!-- Center elements --> */}

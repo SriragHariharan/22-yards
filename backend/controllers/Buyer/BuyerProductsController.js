@@ -1,6 +1,7 @@
 const Products = require('../../models/ProductsModel')
 const Orders =  require('../../models/OrdersModal')
-var mongoose = require('mongoose');
+const mongoose = require('mongoose');
+const crypto = require('crypto')
 
 
 //get all products
@@ -77,19 +78,69 @@ const getProductsByCategory = async(req, res) => {
 //create an order for a single product selected using buy now
 const createOrder = async(req, res) => {
     try {
-        //console.log(req.body)
+        //console.log("req.body :::",req.body)
         if(req.body === {} || req.body === null || req.body === undefined){
             return res.json({   success:false, message:"Cannot proceed furthur", error_code:404, data:{} })
         }
         let newOrder =  new Orders({...req.body});
         let savedNewOrder = await newOrder.save()
-        return res.json({success:true, message:"Order placed successfully", data:{orderID:savedNewOrder._id, billAmount : savedNewOrder.billAmount, fullName:savedNewOrder.fullName, mobile:savedNewOrder.mobile}})
+        //console.log("SNO:::", savedNewOrder._id);
+        return res.json({success:true, message:"Order placed successfully", data:{savedNewOrder}})
     } catch (error) {
-        console.log(error)
         return res.json({   success:false, message:error.message, error_code:404, data:{} })
     }
 }
 
+
+//generate razorpay orderID
+const generateRzpOrderID = async(req, res) => {
+    try {
+        const Razorpay = require('razorpay');
+        var instance = new Razorpay({ key_id: process.env.RZP_KEY_ID, key_secret: process.env.RZP_KEY_SECRET })
+        const options = {
+            amount: req.body.totalBillAmount*100, // amount in smallest currency unit
+            currency: "INR",
+            receipt: req.body._id,
+        };
+        //creating a unique orderID based on given details
+        const order = await instance.orders.create(options);
+        if (!order) {
+            return res.json({ success:false, message:"Some error occured", error_code:500, data:{} });
+        }
+        return res.json({ success:true, message:"Order created", data:{order} }) 
+    } 
+    catch (error) {
+        return res.json({ success:false, message:error.message, error_code:500, data:{} });        
+    }
+}
+
+
+//verify payment done by razorpay
+const verifyRzpPayment = (req, res) => {
+    try {
+        const {
+            orderCreationId,
+            razorpayPaymentId,
+            razorpayOrderId,
+            razorpaySignature,
+        } = req.body;
+
+        const shasum = crypto.createHmac("sha256", process.env.RZP_KEY_SECRET);
+
+        shasum.update(`${orderCreationId}|${razorpayPaymentId}`);
+
+        const digest = shasum.digest("hex");
+
+        if (digest !== razorpaySignature){
+            return res.json({ success:false, message:"Payment not legit", error_code:400, data:{} })
+        }else{
+            return res.json({ success:true, message:"Payment sucessfull", data:{} });
+        }
+    } 
+    catch (error) {
+        return res.json({ success:false, message:error.message, error_code:400, data:{} })
+    }
+}
 
 
 
@@ -100,4 +151,6 @@ module.exports={
     sortByPrice,
     getProductsByCategory,
     createOrder,
+    generateRzpOrderID,
+    verifyRzpPayment,
 }

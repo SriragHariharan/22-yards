@@ -1,65 +1,46 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
 import BuyerProductInstance from '../axios/BuyerProductInstance';
 import { useForm } from "react-hook-form";
+import Payment from '../components/checkout/Payment';
+import CheckoutProductCard from '../components/checkout/CheckoutProductCard';
+import { useSelector } from 'react-redux';
 
 export default function Checkout() {
-
-    const {id} = useParams();
-    const [product, setProduct] = useState(null);
-    const [error, setError] = useState(null);
-    const [quantity, setQuantity] = useState(1)
+    const cart = useSelector(state => state.cart.cart);  //here we get the cart items in this variable
+    const billAmount = useSelector(state => state.cart.billAmount)
 
     //hook form
     const { register, formState: { errors }, handleSubmit } = useForm();
+    
+    const [order, setOrder] = useState(null);
+    const [error, setError] = useState(null);
+
     const onSubmit = (data) => {
-        let orderDetails = {}
-
-        orderDetails.fullName = data.fullName;
-        orderDetails.email = data.email;
-        orderDetails.mobile = data.mobile;
-        orderDetails.address = data.address+ ", "+data.city+", "+data.state+", "+"pin:"+data.pincode; 
-        orderDetails.landmark = data.landmark;
-
-        orderDetails.paymentSuccess=false;
-        orderDetails.deliveryStatus='order placed';
-        orderDetails.billAmount = product?.offerPrice * quantity;
-        orderDetails.quantity=quantity;
-        orderDetails.messageToSeller = data.messageToSeller;
-
-        orderDetails.product = {};
-        orderDetails.product._id = product?._id;
-        orderDetails.product.productName = product?.productName;
-        orderDetails.product.offerPrice = product?.offerPrice
-        orderDetails.product.sellerID = product.sellerID
-        //console.log(orderDetails);
-
-        BuyerProductInstance.post('create-order', {...orderDetails})
+        data.totalBillAmount = billAmount
+        data.paymentSuccess=false;
+        data.cart = cart;        
+        
+        BuyerProductInstance.post('create-order', {...data})
         .then(resp => {
             if(resp.data.success === false){
                 setError(resp.data.message)
             }else{
-                console.log(resp.data.data);
+                setOrder(resp.data.data.savedNewOrder);
             }
-        }).catch(err => setError(err.message))
-    } 
+        })        
+        .catch(err => setError(err.message))
+    }
+    
 
-    useEffect(() => {
-        BuyerProductInstance.get('get-single-product/'+id)
-            .then(resp => {
-                if(resp.data.success === false){
-                    setError(resp.data.message);
-                    return false;
-                }else{
-                    setProduct(resp.data.data.product);
-                    return resp.data.data.product.category;
-                }
-            }).catch(err => setError(err.message))
-    }, [id])
 
   return (
     <>
-        <section className="bg-light py-5">
+    {
+        cart.length === 0 && <div className='h1 text-center m-5 p-5 text-danger'>Nothing to checkout</div>
+    }
+    {
+        cart.length !== 0 && (
+            <section className="bg-light py-5">
             <div className="container">
                 <div className="row">
 
@@ -82,12 +63,6 @@ export default function Checkout() {
                             <div className="p-4">
                                 <h5 className="card-title mb-3">Guest checkout</h5>
 
-                                    {/* form errors */}
-                                    {/* {errors.mobile?.type === 'required' && <Error error={'Mobile number required'} /> }
-                                    {errors.mobile?.type === 'required' && <Error error={'Full name is required'} /> } */}
-
-
-
                                     <form onSubmit={handleSubmit(onSubmit)}>
                                         <div className="row">
                                         
@@ -98,13 +73,6 @@ export default function Checkout() {
                                                 </div>
                                             {errors.fullName?.type === 'required' && <p className='error'>Fullname required</p>}
                                             </div>
-
-                                            {/* <div className="col-6">
-                                                <p className="mb-0">Last name</p>
-                                                <div className="form-outline">
-                                                <input type="text" className="form-control border border-3" />
-                                                </div>
-                                            </div> */}
 
                                             <div className="col-6 mb-3">
                                                 <p className="mb-0">Phone</p>
@@ -196,35 +164,20 @@ export default function Checkout() {
                         
                         <h6 className="text-dark my-4">Items in cart</h6>
 
-                        <div className="d-flex align-items-center mb-4">
-                            <div className="me-3 position-relative">
-                                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-dark">
-                                    {quantity}
-                                </span>
-                                <img src={`http://localhost:4000/product-images/${product?._id}-01.jpg`} style={{height: "96px", width: "96x"}} className="img-sm rounded border" />
-                            </div>
-                            <div>
-                                <div>
-                                    {product?.productName}
-                                </div>
-                                <div className="price text-muted mb-3">Price: ₹ {product?.mrp}</div>
-                                <span className="btn btn-warning" onClick={() => quantity >1 && setQuantity(quantity - 1)}>-</span>
-                                <span>&nbsp; &nbsp; {quantity} &nbsp; &nbsp;</span>
-                                <span className="btn btn-success" onClick={() => quantity <5 && setQuantity(quantity + 1)}>+</span>
-                            </div>
-                        </div>
+
 
                         <hr />
+
+                        {
+                            cart.map(item => <CheckoutProductCard key={item.productID} item ={item} /> )
+                        }
                         
                         <h6 className="mb-3">Summary</h6>
                         <div className="d-flex justify-content-between">
                             <p className="mb-2">Total price:</p>
-                            <p className="mb-2">₹ {product?.mrp * quantity}.00</p>
+                            <p className="mb-2">₹ {billAmount}.00</p>
                         </div>
-                        <div className="d-flex justify-content-between">
-                            <p className="mb-2">Discount:</p>
-                            <p className="mb-2 text-danger">- ₹ {(product?.mrp - product?.offerPrice)*quantity}.00</p>
-                        </div>
+                        
                         <div className="d-flex justify-content-between">
                             <p className="mb-2">Shipping cost:</p>
                             <p className="mb-2 text-success">Free</p>
@@ -232,7 +185,7 @@ export default function Checkout() {
                         <hr />
                         <div className="d-flex justify-content-between">
                             <p className="mb-2">Total price:</p>
-                            <p className="mb-2 fw-bold">₹ {product?.offerPrice * quantity}.00</p>
+                            <p className="mb-2 fw-bold">₹ {billAmount}.00</p>
                         </div>
 
                         {/* <div className="input-group mt-3 mb-4">
@@ -240,43 +193,18 @@ export default function Checkout() {
                             <button className="btn btn-light text-primary border">Apply</button>
                         </div> */}
 
-                        
-                        
-
-                        {/* <div className="d-flex align-items-center mb-4">
-                            <div className="me-3 position-relative">
-                            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-dark">
-                                1
-                            </span>
-                            <img src="https://bootstrap-ecommerce.com/bootstrap5-ecommerce/images/items/5.webp" style={{height: "96px", width: "96x"}} className="img-sm rounded border" />
-                            </div>
-                            <div className="">
-                            <a className="nav-link">
-                                Apple Watch Series 4 Space <br />
-                                Large size
-                            </a>
-                            <div className="price text-muted">Total: $217.99</div>
-                            </div>
-                        </div>
-
-                        <div className="d-flex align-items-center mb-4">
-                            <div className="me-3 position-relative">
-                            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-dark">
-                                3
-                            </span>
-                            <img src="https://bootstrap-ecommerce.com/bootstrap5-ecommerce/images/items/1.webp" style={{height: "96px", width: "96x"}} className="img-sm rounded border" />
-                            </div>
-                            <div className="">
-                            <a className="nav-link">GoPro HERO6 4K Action Camera - Black</a>
-                            <div className="price text-muted">Total: $910.00</div>
-                            </div>
-                        </div> */}
-
                         </div>
                     </div>
                 </div>
             </div>
         </section>
+        )
+    }
+        
+
+        {
+            order && (<Payment order={order} />)
+        }
 
     </>
   )
