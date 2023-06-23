@@ -1,5 +1,6 @@
 //add a new product for sales by the seller
 const Products = require("../../models/ProductsModel");
+const Orders = require("../../models/OrdersModal");
 
 const uploadPath ='./uploads/product-images/'       
 const fs = require("fs");
@@ -155,11 +156,74 @@ const editAProduct = async(req, res) => {
     }
 }
 
+//get all orders for a particular seller
+
+const SellerGetAllOrders = async(req, res) => {
+    try {
+        let orders = await Orders.aggregate(
+            [
+                {
+                    $unwind : '$cart'
+                },
+                {
+                    $match:{
+                        'cart.sellerID' : req.sellerID
+                    }
+                },
+                {
+                    $sort:{createdAt : -1}
+                }
+            ]
+        );
+        return res.json({ success : true, message:"orders fetched successfully", data:{orders} })
+    } 
+    catch (error) {
+        return res.json({ success:false, message:error.message, error_code:404, data:{} })
+    }
+}
+
+
+//update product quantity
+const updateProductQuantity = (req, res) => {
+    try {
+        req.body.quantity = Number(req.body.quantity)
+        Products.updateOne({_id:req.body.productID}, {$inc : {  stock:-req.body.quantity}})
+        .then(resp => res.json({success:true, message:"product stock updated", data:{}}))
+        .catch(err =>res.json({success:false, message:err.message, data:{}}))
+    } 
+    catch (error) {
+        return res.json({success:false, message:err.message, data:{}})
+    }
+}
+
+//update order status
+const updateProductOrderStatus = async(req, res) => {
+    try {
+        let {orderID, productID} = req.body;
+
+        let response = await Orders.updateOne({_id:orderID, 'cart.productID':productID}, 
+        {"$set" :{ 'cart.$.orderStatus': "order shipped" }},
+        )
+        if(response.modifiedCount > 0){
+            return res.json({success:true, message:"order status updated", data:{} })
+        }else{
+            return res.json({ success:false, message:"Unable to proceed", error_code:404, data:{} })
+        }
+    } 
+    catch (error) {
+        return res.json({ success:false, message:error.message, error_code:404, data:{} })
+    }
+}
+
+
 module.exports = {
     AddNewProduct,
     getProducts,
     deleteProduct,
     getAProduct,
-    editAProduct
+    editAProduct,
+    SellerGetAllOrders,
+    updateProductQuantity,
+    updateProductOrderStatus,
 }
 

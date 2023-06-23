@@ -1,6 +1,6 @@
 const router = require('express').Router()
 
-const { getAllProducts, getSingleProduct, sortByDate, sortByPrice, getProductsByCategory, createOrder, generateRzpOrderID, verifyRzpPayment, } = require('../controllers/Buyer/BuyerProductsController');
+const { getAllProducts, getSingleProduct, sortByDate, sortByPrice, getProductsByCategory, createOrder, generateRzpOrderID, verifyRzpPayment, updatePaymentStatus } = require('../controllers/Buyer/BuyerProductsController');
 
 //get all products
 router.get('/all-products/', getAllProducts);
@@ -24,7 +24,9 @@ router.post('/create-order', createOrder )
 router.post('/generate-rzp-orderId', generateRzpOrderID);
 
 //verify razorpay payment
-router.post('/verify-payment/', verifyRzpPayment )
+router.post('/verify-payment/', verifyRzpPayment );
 
+//update paymentSuccess from false to true on payment success
+router.patch('/update-payment-status/:id', updatePaymentStatus)
 
 module.exports = router;

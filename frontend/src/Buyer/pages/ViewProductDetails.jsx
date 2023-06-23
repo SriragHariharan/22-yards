@@ -74,7 +74,7 @@ export default function ViewProductDetails() {
     const cart = useSelector(state => state.cart.cart);  //here we get the cart items in this variable
 
     //code to find whether product is found in cart
-    let productExistsInCart = cart.filter(item => item.productID === product?._id);
+    let productExistsInCart = cart?.filter(item => item.productID === product?._id);
 
     return (
 

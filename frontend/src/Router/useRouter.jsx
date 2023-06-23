@@ -39,6 +39,7 @@
 import Checkout from "../Buyer/pages/Checkout";
 import Cart from "../Buyer/pages/Cart";
 import PaymentStatus from "../Buyer/components/checkout/PaymentStatus";
+import Orders from "../Seller/pages/Orders";
 
 export default function useRouter() {
   
@@ -83,6 +84,7 @@ export default function useRouter() {
                      <Route path="view-product/:id" element={ SELLER ? <ProductDetailsSeller/> : <Navigate to={'/seller'}/> } />
                      <Route path="add-new-product" element={ SELLER ? <AddNewProduct/> : <Navigate to={'/seller'}/> } />
                      <Route path="faq" element={ SELLER ? <Faq/> : <Navigate to={'/seller'}/> } />
+                     <Route path="orders" element={ SELLER ? <Orders/> : <Navigate to={'/seller'}/> } />
                  </Route>
              </Route>
              <Route path="*" element={<Page404/>} />

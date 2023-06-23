@@ -142,6 +142,18 @@ const verifyRzpPayment = (req, res) => {
     }
 }
 
+//updatePaymentStatus
+const updatePaymentStatus = (req, res) => {
+    try {
+        let id = req.params.id;
+        Orders.updateOne({_id: id}, {$set:{paymentSuccess:true}})
+        .then(resp => res.json({success:true, message:"payment status updated", data:{} }))
+        .catch(err => res.json({success:false, message:err.message, error_code:404, data:{} }))
+    } catch (error) {
+        return res.json({success:false, message:err.message, error_code:404, data:{} })
+    }
+}
+
 
 
 module.exports={
@@ -153,4 +165,5 @@ module.exports={
     createOrder,
     generateRzpOrderID,
     verifyRzpPayment,
+    updatePaymentStatus,
 }

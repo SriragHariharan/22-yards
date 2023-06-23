@@ -61,8 +61,15 @@ function Payment({order}) {
                   if(resp.data.success === false){
                     navigate('/payment-status/'+false);
                   }else{
-                    dispatch(DeleteCart())
-                    navigate('/payment-status/'+true);
+                    BuyerProductInstance.patch('/update-payment-status/'+order?._id)
+                    .then(resp => {
+                        if(resp.data.success === true){
+                            dispatch(DeleteCart())
+                            navigate('/payment-status/'+true);
+                        }else{
+                            return;
+                        }
+                    })
                   }
                 })
                 .catch(err => alert(err.message));

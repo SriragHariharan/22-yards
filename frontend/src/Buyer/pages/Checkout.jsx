@@ -203,7 +203,7 @@ export default function Checkout() {
         
 
         {
-            order && (<Payment order={order} />)
+            order && (<Payment order={order} autoFocus={true} />)
         }
 
     </>
