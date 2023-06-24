@@ -154,6 +154,27 @@ const updatePaymentStatus = (req, res) => {
     }
 }
 
+//get all orders
+const getordersBuyer = async(req, res) => {
+    try {
+        let email = req.userEmail;
+        let orders = await Orders.aggregate([
+            {
+                $unwind : '$cart'
+            },
+            {
+                $match:{
+                    email:email
+                }
+            }
+        ])
+        return res.json({success:true, message:"Orders fetched", data:{orders}})
+    } 
+    catch (error) {
+        return res.json({success:false, message:err.message, error_code:404, data:{} })      
+    }
+}
+
 
 
 module.exports={
@@ -166,4 +187,5 @@ module.exports={
     generateRzpOrderID,
     verifyRzpPayment,
     updatePaymentStatus,
+    getordersBuyer,
 }

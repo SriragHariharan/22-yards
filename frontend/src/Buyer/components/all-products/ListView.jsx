@@ -40,7 +40,18 @@ export default function ListView({productName, description, mrp, offerPrice, sto
                                         4.5
                                     </span>
                                 </div>
-                                <span className="text-muted">{stock} in stock</span>
+                                <div>
+                                {
+                                    stock < 1 &&  <span className="text-danger">out of stock</span>
+                                }
+                                {
+                                    (stock >= 1 && stock <=3) &&  <span className="text-danger">Only {stock} items in stock</span>
+                                }
+                                {
+                                    stock > 5 && <span className="text-success">{stock} items in stock</span>
+                                }
+
+                                </div>
                             </div>
                             <p className="text mb-4 mb-md-0">
                                 {description.slice(0,100)}.....

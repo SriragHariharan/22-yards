@@ -33,49 +33,66 @@
     import AllProducts from "../Buyer/pages/AllProducts";
     import ProductsbyCategory from "../Buyer/pages/ProductsbyCategory";
     import ViewProductDetails from "../Buyer/pages/ViewProductDetails";
+    import Checkout from "../Buyer/pages/Checkout";
+    import Cart from "../Buyer/pages/Cart";
+    import PaymentStatus from "../Buyer/components/checkout/PaymentStatus";
+    import Orders from "../Seller/pages/Orders";
+    import Profile from "../Buyer/pages/Profile";
+    import OrdersBuyer from "../Buyer/pages/OrdersBuyer";
 
     import { useSelector, useDispatch } from "react-redux";
     import { AdminLogout } from "../redux-tk/reducers/AdminReducer";
-import Checkout from "../Buyer/pages/Checkout";
-import Cart from "../Buyer/pages/Cart";
-import PaymentStatus from "../Buyer/components/checkout/PaymentStatus";
-import Orders from "../Seller/pages/Orders";
+import { UserLogout } from "../redux-tk/reducers/UserReducer";
 
 export default function useRouter() {
   
 
-    
     const dispatch = useDispatch()
+
     let SELLER = useSelector(state => state?.Admin?.seller)
-    console.log(SELLER);
-    const token = SELLER?.token;
+    const SELLERtoken = SELLER?.token;
     
+    let BUYER = useSelector(state => state?.User?.user)
+
+
     //jwt expiration check
-    const isMyTokenExpired = isExpired(token);
+    var isMyTokenExpired = isExpired(SELLERtoken);
     if(isMyTokenExpired){
-    dispatch(AdminLogout(null));
-    localStorage.removeItem('22YardsAdmin');
-    
-  }
+        dispatch(AdminLogout(null));
+        localStorage.removeItem('22YardsAdmin');
+    }
+
+     //jwt expiration check
+    //  var isMyTokenExpired = isExpired(BUYERtoken);
+    //  if(isMyTokenExpired){
+    //      dispatch(UserLogout());
+    //      localStorage.removeItem('22YardsUser');
+    //  }
+     
     
 
     const router = createBrowserRouter(
      createRoutesFromElements(
        <Route path="/" element={<RootLayout />}>
+             
+             {/* buyer routes */}
              <Route path="/" element={<BuyerRootLayout />} >
                  <Route index element={<Homepage />} />
                  <Route path='user' element={<BuyerAuthLayout/>}>
-                     <Route path='login' element={<Login />} />
-                     <Route path='signup' element={<Signup />} />
+                     <Route path='login'    element = { !BUYER ? <Login />  : <Navigate to={'/profile'} />   } />
+                     <Route path='signup'   element = { !BUYER ? <Signup /> : <Navigate to={'/profile'} />   } />
                  </Route>
-             <Route path='all-products' element={<AllProducts/>} />
-             <Route path='category/:id' element={<ProductsbyCategory/>} />
-             <Route path='view-product/:id' element={<ViewProductDetails/>} />
-             <Route path='checkout' element={<Checkout/>} />
-             <Route path='cart' element={<Cart/>} />
-             <Route path='payment-status/:id' element={<PaymentStatus/>} />
+                <Route path='all-products' element={<AllProducts/>} />
+                <Route path='category/:id' element={<ProductsbyCategory/>} />
+                <Route path='view-product/:id' element={<ViewProductDetails/>} />
+                <Route path='checkout' element={<Checkout/>} />
+                <Route path='cart' element={<Cart/>} />
+                <Route path='payment-status/:id' element={<PaymentStatus/>} />
+                <Route path='profile' element={ BUYER ? <Profile/> : <Navigate to={'/user/login'}/> } />
+                <Route path='orders' element={ BUYER ? <OrdersBuyer/> : <Navigate to={'/user/login'}/> } />
              </Route>
 
+            {/* seller routes */}
              <Route path="seller" element={<SellerRootLayout/> }>
                  <Route index element={ SELLER ? <Navigate to={'/seller/home'} /> : <Welcomepage/>} />
                  <Route path="home" element={ SELLER ? <AuthorizedSellerLayout/> : <Navigate to={'/seller'}/> } >

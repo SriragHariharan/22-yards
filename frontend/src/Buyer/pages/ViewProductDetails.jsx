@@ -75,6 +75,7 @@ export default function ViewProductDetails() {
 
     //code to find whether product is found in cart
     let productExistsInCart = cart?.filter(item => item.productID === product?._id);
+    console.log("ProductInCart:::",productExistsInCart);
 
     return (
 
@@ -116,7 +117,7 @@ export default function ViewProductDetails() {
                                                 4.5
                                             </span>
                                         </div>
-                                        <span className="text-muted"><i className="fas fa-shopping-basket fa-sm mx-1"></i>{product?.stock}</span>
+                                        <span className="text-muted"><i className="fas fa-shopping-basket fa-sm mx-1"></i>{ product?.stock > 0 ? product?.stock : 'No Product ' }</span>
                                         <span className="text-success ms-2">In stock</span>
                                     </div>
 
@@ -149,22 +150,29 @@ export default function ViewProductDetails() {
                                                                         
                                     <>
                                     {
-                                        productExistsInCart[0] &&
-                                            <Link to={'/cart'}  className="link btn btn-success shadow-0 me-5">
-                                                <i className="me-3 fa fa-shopping-basket"></i> 
+                                        product?.stock < 1 &&
+                                        <div className="btn btn-danger p-5 h1 w-100"> 
+                                                <i class="fa-solid fa-box-open fa-2xl me-5"></i>
+                                                <b>PRODUCT OUT OF STOCK</b>
+                                            </div>
+                                    }
+                                    {
+                                        (product?.stock > 1 && productExistsInCart?.length !== 0) &&
+                                            <Link to={'/cart'}  className="link btn border border-5 p-3 w-100">
+                                                <i class="fa-solid fa-cart-shopping fa-xl me-4"></i>                                                
                                                 GO TO CART
                                             </Link> 
                                             
                                     }
                                     {
-                                        !productExistsInCart[0] && (
+                                        (product?.stock > 1 && productExistsInCart.length ===0) && (
                                             <>
-                                            <div onClick={() => handleAddToCart(product?._id, product?.productName, product?.offerPrice, product?.sellerID, product?.size, )} className="btn btn-primary shadow-0 me-5"> 
-                                                <i className="me-3 fa fa-shopping-basket"></i> 
-                                                    Add to cart 
+                                            <div onClick={() => handleAddToCart(product?._id, product?.productName, product?.offerPrice, product?.sellerID, product?.size, )} className="btn btn-info border p-3 border-5 w-50 "> 
+                                                <i class="fa-solid fa-cart-shopping fa-xl me-4"></i>                                                    
+                                                Add cart 
                                             </div>
-                                            <div onClick={() => handleBuyNow(product?._id, product?.productName, product?.offerPrice, product?.sellerID, product?.size, )} className="btn btn-warning shadow-0 me-5"> 
-                                                <i className="fas fa-bolt me-3"></i> 
+                                            <div onClick={() => handleBuyNow(product?._id, product?.productName, product?.offerPrice, product?.sellerID, product?.size, )} className="btn btn-warning border p-3 border-5 w-50"> 
+                                                <i className="fas fa-bolt fa-xl me-3"></i> 
                                                 BUY NOW 
                                             </div>
                                             </>
@@ -186,8 +194,8 @@ export default function ViewProductDetails() {
                             <div className="col-lg-8 mb-4">
                                 <div className="border rounded-2 px-3 py-2 bg-white">
                                 <ul className="nav nav-pills nav-justified mb-3">
-                                    <li className="nav-item d-flex" role="presentation">
-                                    <div className="nav-link d-flex align-items-center justify-content-center w-100 active" >Specification</div>
+                                    <li className="nav-item d-flex">
+                                        <div className="nav-link d-flex align-items-center justify-content-center w-100 border border-5" ><b>S p e c i f i c a t i o n</b></div>
                                     </li>
                                 </ul>
 

@@ -61,7 +61,7 @@ export default function OrdersCard({product}) {
                             <div className="nav-link">{product?.cart.productName}</div>
                             <small className="text-muted">Size : {product?.cart?.size}</small>                      <br />
                             <small className="text-muted">Quantity : {product?.cart?.quantity}</small>              <br />
-                            <small className="text-muted">Bill amount : ₹ {product?.cart.offerPrice}</small>        <br />
+                            <small className="text-muted">Bill amount : ₹ {product?.cart.totalPrice}</small>        <br />
                             <small className="text-muted">₹ {product?.cart.offerPrice} / <sub>item on offer</sub> </small>
                         </div>
                     </div>

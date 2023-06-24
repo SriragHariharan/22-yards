@@ -1,21 +1,43 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
 //css
 import '../styles/pages/auth.css'
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import BuyerProductInstance from '../axios/BuyerProductInstance';
+import { useDispatch } from 'react-redux';
+import { UserLogin } from '../../redux-tk/reducers/UserReducer';
+import Alert from 'react-bootstrap/Alert';
 
 
 export default function Login() {
-    const { register, formState: { errors }, watch, handleSubmit } = useForm(); //a part of react-hook-form
-    const onSubmit = (data) => console.log(data);
+    const { register, formState: { errors }, handleSubmit } = useForm(); //a part of react-hook-form
+    const [error, setError] = useState(null);
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
+
+    //submit data to backend api
+    const onSubmit = (data) => {
+      console.log(data);
+      BuyerProductInstance.post('/buyer-login', {...data})
+      .then(resp => {
+        if(resp.data.success === false){
+          setError(resp.data.message)
+        }else{
+          dispatch(UserLogin(resp.data.data));
+          navigate('../../profile/')
+        }
+      })
+    } 
   return (
     <div>
       <Container fluid={true} className='login-form'>
         <Row className=" d-flex justify-content-center align-items-center">
-          <Col  xl={4} lg={5} md={6} sm={11} xs={11} >
+          <Col  xl={4} lg={5} md={6} sm={12} xs={13} >
             <div className="border border-5 border-dark p-5">
                   <div className="login-title text-center mb-3">LOGIN</div>
+                  {/* for error */}
+                  {error && <Alert variant={'danger'} className='text-center'>{error}</Alert>}
                   <div className="mb-0 mt-md-5">
                     <div className="mb-3">
                       <Form onSubmit={handleSubmit(onSubmit)}>
