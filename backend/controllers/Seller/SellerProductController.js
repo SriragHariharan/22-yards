@@ -187,10 +187,10 @@ const SellerGetAllOrders = async(req, res) => {
 //update order status
 const updateProductOrderStatus = async(req, res) => {
     try {
-        let {orderID, productID} = req.body;
+        let {orderID, productID, status} = req.body;
 
         let response = await Orders.updateOne({_id:orderID, 'cart.productID':productID}, 
-        {"$set" :{ 'cart.$.orderStatus': "order shipped" }},
+        {"$set" :{ 'cart.$.orderStatus': status }},
         )
         if(response.modifiedCount > 0){
             return res.json({success:true, message:"order status updated", data:{} })

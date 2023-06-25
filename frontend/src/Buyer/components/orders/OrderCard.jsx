@@ -1,4 +1,9 @@
 import React from 'react'
+import OrderPlaced from './order-status/OrderPlaced'
+import OrderConfirmed from './order-status/OrderConfirmed'
+import OrderPacked from './order-status/OrderPacked'
+import OrderShipped from './order-status/OrderShipped'
+import OrderDelivered from './order-status/OrderDelivered'
 
 export default function OrderCard({order}) {
   return (
@@ -28,8 +33,27 @@ export default function OrderCard({order}) {
                         </div>
                             <p class="mb-1 mt-3">Amount payable : &nbsp; &nbsp; $ {order?.cart?.totalPrice}</p>
                             <p class="mb-1 mt-3">Payment status : &nbsp; &nbsp; {order?.paymentSuccess ? <span className="text-success  h6">Payment completed</span> : <span className="text-danger h6">Payment incomplete / failed</span> }</p>
-                            <p class="mb-1 mt-3">Delivery status : <span className="text-success h5">{order?.cart?.orderStatus}</span> </p>
+                            {
+                             order?.paymentSuccess && <p class="mb-1 mt-3">Delivery status : <span className="text-success h5">{order?.cart?.orderStatus}</span> </p>
+                            }
                         </div>
+                        
+                            {
+                                order?.paymentSuccess && order?.cart?.orderStatus === 'order placed' && <OrderPlaced/>
+                            }
+                            {
+                                order?.paymentSuccess && order?.cart?.orderStatus === 'order confirmed' && <OrderConfirmed/>
+                            }
+                            {
+                                order?.paymentSuccess && order?.cart?.orderStatus === 'order packed' && <OrderPacked/>
+                            }
+                            {
+                                order?.paymentSuccess && order?.cart?.orderStatus === 'order shipped' && <OrderShipped/>
+                            }
+                            {
+                                order?.paymentSuccess && order?.cart?.orderStatus === 'order delivered' && <OrderDelivered/>
+                            }
+
                     </div>
                 </div>
                 </div>

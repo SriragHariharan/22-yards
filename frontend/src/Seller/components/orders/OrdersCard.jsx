@@ -27,9 +27,9 @@ export default function OrdersCard({product}) {
     let date = new Date(product?.createdAt);
     date = date.toLocaleString('en-GB', {day:'numeric', month:'long', year:'numeric'});
 
-    // confirm order
-    let confirmOrder = ( productID ) => {
-        sellerProductInstance.post('/update-order-status', {orderID, productID})
+    // update product order status
+    let confirmOrder = ( productID, status ) => {
+        sellerProductInstance.post('/update-order-status', {orderID, productID, status})
         .then(resp => showToastMessage())
         .catch(err => errorToastMessage(err.message))
     }
@@ -71,11 +71,40 @@ export default function OrdersCard({product}) {
                     <div className="float-md-end">
                         <small>Order placed on : {date},&nbsp; &nbsp; {time}</small> <br />
                         <small>Payment status : {product?.paymentSuccess ? (<span className='text-success h6'>Payment Success</span>) : (<span className='text-danger h6'>Payment Failed</span>)}</small> <br />
-                        <small>Order status : <span className='text-warning h6'>{product?.cart?.orderStatus}</span> </small>
+                        <small className=' mt-5'>Order status : <span className='text-danger h5'><u>{product?.cart?.orderStatus}</u></span> </small>
+                        
+                        {/* click to confirm the order placed */}
                         {
-                            product?.cart?.orderStatus === 'order shipped' ? null : 
-                            <div onClick={() => confirmOrder( product?.cart?.productID)} className="w-100 mt-4 btn border  border-5 text-primary icon-hover-danger"> 
-                                Ship order &nbsp; &nbsp;
+                            product?.cart?.orderStatus === 'order placed' && 
+                            <div onClick={() => confirmOrder( product?.cart?.productID, 'order confirmed')} className="w-100 mt-4 btn btn-info border border-5 text-dark"> 
+                                Confirm order &nbsp; &nbsp;
+                                .....<i class="fa-solid fa-truck-fast">...</i>
+                            </div>
+                        }
+
+                        {/* if order is confirmed need to pack product for shipment */}
+                        {
+                            product?.cart?.orderStatus === 'order confirmed' && 
+                            <div onClick={() => confirmOrder( product?.cart?.productID, 'order packed')} className="w-100 mt-4 btn btn-info border border-5 text-dark"> 
+                                Order packed &nbsp; &nbsp;
+                                .....<i class="fa-solid fa-truck-fast">...</i>
+                            </div>
+                        }
+
+                        {/* if order is shipped click here */}
+                        {
+                            product?.cart?.orderStatus === 'order packed' && 
+                            <div onClick={() => confirmOrder( product?.cart?.productID, 'order shipped')} className="w-100 mt-4 btn btn-info border border-5 text-dark"> 
+                                Order shipped &nbsp; &nbsp;
+                                .....<i class="fa-solid fa-truck-fast">...</i>
+                            </div>
+                        }
+
+                        {/* if order is delivered change to delivered */}
+                        {
+                            product?.cart?.orderStatus === 'order shipped' && 
+                            <div onClick={() => confirmOrder( product?.cart?.productID, 'order delivered')} className="w-100 mt-4 btn btn-info border border-5 text-dark"> 
+                                Order delivered &nbsp; &nbsp;
                                 .....<i class="fa-solid fa-truck-fast">...</i>
                             </div>
                         }
