@@ -31,7 +31,6 @@ const cartSlice = createSlice({
         },
         SetCartTotal : (state, action) => {
             state.billAmount = action.payload; 
-            console.log("Bill :::",state.billAmount);
             localStorage.setItem("22YardsCartBill", JSON.stringify(state.billAmount)  )
         },
         DeleteCart :(state, action) => {

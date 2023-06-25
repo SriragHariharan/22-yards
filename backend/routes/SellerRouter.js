@@ -31,9 +31,6 @@ router.patch('/edit-product/:id', SellerAuthMiddleware, editAProduct)
 //seller get all orders
 router.get('/orders', SellerAuthMiddleware, SellerGetAllOrders)
 
-//update product Quantity on order confirm
-router.post('/update-product-quantity', SellerAuthMiddleware, updateProductQuantity)
-
 //update order status of product to confirmed
 router.post('/update-order-status', SellerAuthMiddleware, updateProductOrderStatus)
 

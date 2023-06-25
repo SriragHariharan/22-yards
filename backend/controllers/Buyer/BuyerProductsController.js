@@ -175,6 +175,22 @@ const getordersBuyer = async(req, res) => {
     }
 }
 
+//update product quantity
+const updateProductStock = (req, res) => {
+    try {
+        req.body.quantity = Number(req.body.quantity)
+        Products.updateOne({_id:req.body.productID}, {$inc : {  stock:-req.body.quantity}})
+        .then(resp => res.json({success:true, message:"product stock updated", data:{}}))
+        .catch(err => {
+            console.log(err);
+            res.json({success:false, message:err.message, data:{}})
+        })
+    } 
+    catch (error) {
+        return res.json({success:false, message:err.message, data:{}})
+    }
+}
+
 
 
 module.exports={
@@ -188,4 +204,5 @@ module.exports={
     verifyRzpPayment,
     updatePaymentStatus,
     getordersBuyer,
+    updateProductStock,
 }

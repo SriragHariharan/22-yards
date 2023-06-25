@@ -28,24 +28,10 @@ export default function OrdersCard({product}) {
     date = date.toLocaleString('en-GB', {day:'numeric', month:'long', year:'numeric'});
 
     // confirm order
-    let confirmOrder = ( productID, quantity ) => {
-        sellerProductInstance.post('/update-product-quantity/', {productID, quantity}).then(resp => {
-            if(resp.data.success === true){
-                return true;
-            }else{
-                return;
-            }
-        })
-        .then(resp => {
-            if(resp === true){
-                sellerProductInstance.post('/update-order-status', {orderID, productID})
-                .then(resp => showToastMessage())
-                .catch(err => errorToastMessage(err.message))
-            }else{
-                return;
-            }
-        })
-        .catch(err =>errorToastMessage(err.message))
+    let confirmOrder = ( productID ) => {
+        sellerProductInstance.post('/update-order-status', {orderID, productID})
+        .then(resp => showToastMessage())
+        .catch(err => errorToastMessage(err.message))
     }
 
   return (
@@ -88,7 +74,7 @@ export default function OrdersCard({product}) {
                         <small>Order status : <span className='text-warning h6'>{product?.cart?.orderStatus}</span> </small>
                         {
                             product?.cart?.orderStatus === 'order shipped' ? null : 
-                            <div onClick={() => confirmOrder( product?.cart?.productID, product?.cart?.quantity )} className="w-100 mt-4 btn border  border-5 text-primary icon-hover-danger"> 
+                            <div onClick={() => confirmOrder( product?.cart?.productID)} className="w-100 mt-4 btn border  border-5 text-primary icon-hover-danger"> 
                                 Ship order &nbsp; &nbsp;
                                 .....<i class="fa-solid fa-truck-fast">...</i>
                             </div>

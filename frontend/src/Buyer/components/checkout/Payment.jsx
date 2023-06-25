@@ -9,6 +9,9 @@ function Payment({order}) {
   const dispatch = useDispatch()
   console.log(order?.cart);
 
+  let productIDArray        = order?.cart?.map(item => item.productID)
+  let productQuantityArray  = order?.cart?.map(item => item.quantity)
+
     function loadScript(src) {
         return new Promise((resolve) => {
             const script = document.createElement("script");
@@ -64,6 +67,22 @@ function Payment({order}) {
                     BuyerProductInstance.patch('/update-payment-status/'+order?._id)
                     .then(resp => {
                         if(resp.data.success === true){
+                            //add iteration logic here
+                            for(let i=0; i<productIDArray?.length; i++){
+                                let productID = productIDArray[i];
+                                let quantity = productQuantityArray[i];
+                                BuyerProductInstance.post('/update-stock/', { productID, quantity })
+                                .then(resp => {
+                                    if(resp.data.success === false){
+                                        alert(resp.data.message);
+                                    }else{
+                                        return;
+                                    }
+                                })
+                                .catch(err => console.log(err.message))
+                            }
+                            
+                            
                             dispatch(DeleteCart())
                             navigate('/payment-status/'+true);
                         }else{

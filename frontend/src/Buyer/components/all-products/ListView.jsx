@@ -48,7 +48,7 @@ export default function ListView({productName, description, mrp, offerPrice, sto
                                     (stock >= 1 && stock <=3) &&  <span className="text-danger">Only {stock} items in stock</span>
                                 }
                                 {
-                                    stock > 5 && <span className="text-success">{stock} items in stock</span>
+                                    stock >= 3 && <span className="text-success">{stock} items in stock</span>
                                 }
 
                                 </div>

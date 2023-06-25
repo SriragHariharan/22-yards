@@ -18,7 +18,6 @@ export default function Login() {
 
     //submit data to backend api
     const onSubmit = (data) => {
-      console.log(data);
       BuyerProductInstance.post('/buyer-login', {...data})
       .then(resp => {
         if(resp.data.success === false){

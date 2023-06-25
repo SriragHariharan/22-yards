@@ -183,18 +183,6 @@ const SellerGetAllOrders = async(req, res) => {
 }
 
 
-//update product quantity
-const updateProductQuantity = (req, res) => {
-    try {
-        req.body.quantity = Number(req.body.quantity)
-        Products.updateOne({_id:req.body.productID}, {$inc : {  stock:-req.body.quantity}})
-        .then(resp => res.json({success:true, message:"product stock updated", data:{}}))
-        .catch(err =>res.json({success:false, message:err.message, data:{}}))
-    } 
-    catch (error) {
-        return res.json({success:false, message:err.message, data:{}})
-    }
-}
 
 //update order status
 const updateProductOrderStatus = async(req, res) => {
@@ -223,7 +211,6 @@ module.exports = {
     getAProduct,
     editAProduct,
     SellerGetAllOrders,
-    updateProductQuantity,
     updateProductOrderStatus,
 }
 

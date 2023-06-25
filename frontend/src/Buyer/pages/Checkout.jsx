@@ -4,16 +4,44 @@ import { useForm } from "react-hook-form";
 import Payment from '../components/checkout/Payment';
 import CheckoutProductCard from '../components/checkout/CheckoutProductCard';
 import { useSelector } from 'react-redux';
-
+import useBuyerAuthInstance from '../axios/useBuyerAuthInstance';
+import { Link } from 'react-router-dom';
 export default function Checkout() {
     const cart = useSelector(state => state.cart.cart);  //here we get the cart items in this variable
     const billAmount = useSelector(state => state.cart.billAmount)
+    const USER = useSelector(state => state.User?.user);
+
+    const [BuyerAuthInstance] = useBuyerAuthInstance()
+    const [profile, setProfile] = useState(null);
+    const [order, setOrder] = useState(null);
+    const [error, setError] = useState(null);
+    
+
 
     //hook form
     const { register, formState: { errors }, handleSubmit } = useForm();
-    
-    const [order, setOrder] = useState(null);
-    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        BuyerAuthInstance?.get('/profile')
+        .then(resp => setProfile(resp.data.data))
+        .catch(err => setError(err.message))
+    },[])
+
+    const handleProceedToPay = (data) => {
+        data.totalBillAmount = billAmount
+        data.paymentSuccess=false;
+        data.cart = cart;
+        
+        BuyerProductInstance.post('create-order', {...data})
+        .then(resp => {
+            if(resp.data.success === false){
+                setError(resp.data.message)
+            }else{
+                setOrder(resp.data.data.savedNewOrder);
+            }
+        })        
+        .catch(err => setError(err.message))
+    }
 
     const onSubmit = (data) => {
         data.totalBillAmount = billAmount
@@ -43,129 +71,165 @@ export default function Checkout() {
             <section className="bg-light py-5">
             <div className="container">
                 <div className="row">
-
-                    <div className="col-xl-8 col-lg-8 mb-4">
-                        <div className="card mb-4 border shadow-0">
-                            <div className="p-4 d-flex justify-content-between">
-                                <div className="">
-                                    <h5>Have an account?</h5>
-                                    <p className="mb-0 text-wrap ">Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
-                                    </div>
-                                    <div className="d-flex align-items-center justify-content-center flex-column flex-md-row">
-                                    <a className="btn btn-outline-primary me-0 me-md-2 mb-2 mb-md-0 w-100">Register</a>
-                                    <a className="btn btn-primary shadow-0 text-nowrap w-100">Sign in</a>
+                    {
+                        profile?.user?.address?.house && (
+                            <section className="col-xl-8 col-lg-8 mb-4">
+                                <div className="text-center card text-black">
+                                    <div className="card-body text-center">
+                                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
+                                        className="rounded-circle img-fluid" style={{width: "150px"}} />
+                                        <h5 className="my-3">{profile?.user?.fullName}</h5>
+                                        <p>{profile?.user?.address?.house},</p>
+                                        <p className="">{profile?.user?.address?.city}, {profile?.user?.address?.state},</p>
+                                        <p className="">Landmark : {profile?.user?.address?.landmark}.</p>
+                                        <p className="">Pincode : {profile?.user?.address?.pincode}.</p>
+                                        <p className=""> email : {profile?.user?.email}.</p>
+                                        <p className="">mobile : {profile?.user?.address?.mobile}.</p>
+                                    </div>  
+                                    <div className="float-end mb-5">
+                                        <button className="btn btn-danger   border me-3">Cancel</button>
+                                        <button onClick={() => handleProceedToPay({fullName:profile?.user?.fullName, mobile:profile?.user?.address?.mobile, email: profile?.user?.email, address:profile?.user?.address?.house, landmark:profile?.user?.address?.landmark, city:profile?.user?.address?.city, pincode:profile?.user?.address?.pincode, state:profile?.user?.address?.state })} 
+                                            className="btn btn-success  border me-3">PROCEED TO PAY</button>
+                                    </div>                          
                                 </div>
-                            </div>
-                        </div>
-
-
-                        <div className="card shadow-0 border">
-                            <div className="p-4">
-                                <h5 className="card-title mb-3">Guest checkout</h5>
-
-                                    <form onSubmit={handleSubmit(onSubmit)}>
-                                        <div className="row">
-                                        
-                                            <div className="col-12 mb-3">
-                                                <p className="mb-0">Full name</p>
-                                                <div className="form-outline">
-                                                    <input value='sriragHari' {...register("fullName", { required: true })} type="text" className="form-control border border-3" />
-                                                </div>
-                                            {errors.fullName?.type === 'required' && <p className='error'>Fullname required</p>}
+                            </section>
+                        ) 
+                    }
+                    {
+                        !profile?.user?.address?.house && (
+                            <div className="col-xl-8 col-lg-8 mb-4">
+                                {
+                                    profile?.user?.fullName && 
+                                    <div className="card mb-4 border shadow-0">
+                                        <div className="p-4 d-flex justify-content-between">
+                                            <div className="">
+                                                <h5>Hi {profile?.user?.fullName}</h5>
+                                                <p className="mb-0 text-wrap ">Add address for a smooth and hassle free delivery</p>
                                             </div>
-
-                                            <div className="col-6 mb-3">
-                                                <p className="mb-0">Phone</p>
-                                                <div className="form-outline">
-                                                <input value='9876543210' {...register("mobile", { required: true, minLength:10, maxLength:10 })} type="tel" className="form-control border border-3" />
-                                                </div>
-                                            {errors.mobile?.type === 'required' && <p className='error'>Mobile required</p>}
-                                            {errors.mobile?.type === ('minLength' || 'maxLength') && <p className='error'>Invalid mobile number</p>}
-                                            </div>
-
-                                            <div className="col-6 mb-3">
-                                                <p className="mb-0">Email</p>
-                                                <div className="form-outline">
-                                                    <input value='sri@tez.co' {...register("email", { required: true, pattern:/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i })} type="email" className="form-control border border-3" />
-                                                </div>
-                                            {errors.email?.type === 'required' && <p className='error'>email required</p>}
-                                            {errors.email?.type === 'pattern' && <p className='error'>invalid email</p>}
-                                            </div>
-
-                                        </div>
-
-                                        <hr className="my-4 mb-5" />
-
-                                        <div className="row">
-
-                                            <div className="col-sm-8 mb-3">
-                                                <p className="mb-0">Address</p>
-                                                <div className="form-outline">
-                                                    <input value='srira Vila' {...register("address", { required: true })} type="text" className="form-control border border-3" />
-                                                </div>
-                                                {errors.address?.type === 'required' && <p className='error'>address required</p>}
-                                            </div>
-
-                                            <div className="col-sm-4 mb-3">
-                                                <p className="mb-0">Landmark</p>
-                                                <div className="form-outline">
-                                                    <input value='Puliyal BT' {...register("landmark", { required: true })} type="text" id="typeText" className="form-control border border-3" />
-                                                </div>
-                                                {errors.landmark?.type === 'required' && <p className='error'>landmark required</p>}
-                                            </div>
-
-                                            <div className="col-sm-4 mb-3">
-                                                <p className="mb-0">City</p>
-                                                <div className="form-outline">
-                                                    <input value='palakkad12' {...register("city", { required: true })} type="text" id="typeText" className="form-control border border-3" />
-                                                </div>
-                                                {errors.city    ?.type === 'required' && <p className='error'>city   required</p>}
-                                            </div>
-
-                                            <div className="col-sm-4 col-6 mb-3">
-                                                <p className="mb-0">Postal code</p>
-                                                <div className="form-outline">
-                                                    <input value='678551abcd' {...register("pincode", { required: true, maxLength:10 })} type="text" id="typeText" className="form-control border border-3" />
-                                                </div>
-                                                {errors.pincode?.type === 'required' && <p className='error'>pincode required</p>}
-                                                {errors.pincode?.type === 'maxLength' && <p className='error'>pincode invalid</p>}
-                                            </div>
-
-                                            <div className="col-sm-4 col-6 mb-3">
-                                                <p className="mb-0">State</p>
-                                                <div className="form-outline">
-                                                    <input value='keralam123' {...register("state", { required: true })} type="text" id="typeText" className="form-control border border-3" />
-                                                </div>
-                                                {errors.state?.type === 'required' && <p className='error'>state required</p>}
-                                            </div>
-
-                                        </div>
-
-                                        <div className="mb-3">
-                                            <p className="mb-0">Message to seller</p>
-                                            <div className="form-outline">
-                                                <textarea {...register("messageToSeller")} className="form-control border border-3" rows="3"></textarea>
+                                            <div className="d-flex align-items-center justify-content-center flex-column flex-md-row">
+                                                <Link to={'/profile'} className="btn btn-outline-primary me-3  w-100">UPDATE PROFILE</Link>
                                             </div>
                                         </div>
-
-                                        <div className="float-end">
-                                            <button className="btn btn-danger border me-3">Cancel</button>
-                                            <input className="btn btn-success border me-3" type="submit" value="Proceed"/>
+                                    </div>
+                                }
+                                {
+                                !profile?.user?.fullName && 
+                                <>
+                                    <div className="card mb-4 border shadow-0">
+                                        <div className="p-4 d-flex justify-content-between">
+                                            <div className="">
+                                                <h5>Have an account?</h5>
+                                                <p className="mb-0 text-wrap ">Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
+                                            </div>
+                                            <div className="d-flex align-items-center justify-content-center flex-md-row">
+                                                <Link to={'/user/login' } className="btn btn-outline-primary me-4  w-100">LOGIN</Link>
+                                                <Link to={'/user/signup'} className="btn btn-primary shadow-0 w-100">REGISTER </Link>
+                                            </div>
                                         </div>
-                                    
-                                    </form>
-                            </div>
-                        </div>
+                                    </div>
+
+                                    <div className="card shadow-0 border">
+                                        <div className="p-4">
+                                            <h5 className="card-title mb-3">Guest checkout</h5>
+                                            <p className="mb-4">Just enter basic details and get your order placed. <br /> Signup/Login again with the given email ID and track your orders.</p>
+                                                <form onSubmit={handleSubmit(onSubmit)}>
+                                                    <div className="row">
+                                                    
+                                                        <div className="col-12 mb-3">
+                                                            <p className="mb-0">Full name</p>
+                                                            <div className="form-outline">
+                                                                <input value='sriragHari' {...register("fullName", { required: true })} type="text" className="form-control border border-3" />
+                                                            </div>
+                                                        {errors.fullName?.type === 'required' && <p className='error'>Fullname required</p>}
+                                                        </div>
+
+                                                        <div className="col-6 mb-3">
+                                                            <p className="mb-0">Phone</p>
+                                                            <div className="form-outline">
+                                                            <input value='9876543210' {...register("mobile", { required: true, minLength:10, maxLength:10 })} type="tel" className="form-control border border-3" />
+                                                            </div>
+                                                        {errors.mobile?.type === 'required' && <p className='error'>Mobile required</p>}
+                                                        {errors.mobile?.type === ('minLength' || 'maxLength') && <p className='error'>Invalid mobile number</p>}
+                                                        </div>
+
+                                                        <div className="col-6 mb-3">
+                                                            <p className="mb-0">Email</p>
+                                                            <div className="form-outline">
+                                                                <input value='sri@tez.co' {...register("email", { required: true, pattern:/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i })} type="email" className="form-control border border-3" />
+                                                            </div>
+                                                        {errors.email?.type === 'required' && <p className='error'>email required</p>}
+                                                        {errors.email?.type === 'pattern' && <p className='error'>invalid email</p>}
+                                                        </div>
+
+                                                    </div>
+
+                                                    <hr className="my-4 mb-5" />
+
+                                                    <div className="row">
+
+                                                        <div className="col-sm-8 mb-3">
+                                                            <p className="mb-0">Address</p>
+                                                            <div className="form-outline">
+                                                                <input value='srira Vila' {...register("address", { required: true })} type="text" className="form-control border border-3" />
+                                                            </div>
+                                                            {errors.address?.type === 'required' && <p className='error'>address required</p>}
+                                                        </div>
+
+                                                        <div className="col-sm-4 mb-3">
+                                                            <p className="mb-0">Landmark</p>
+                                                            <div className="form-outline">
+                                                                <input value='Puliyal BT' {...register("landmark", { required: true })} type="text" id="typeText" className="form-control border border-3" />
+                                                            </div>
+                                                            {errors.landmark?.type === 'required' && <p className='error'>landmark required</p>}
+                                                        </div>
+
+                                                        <div className="col-sm-4 mb-3">
+                                                            <p className="mb-0">City</p>
+                                                            <div className="form-outline">
+                                                                <input value='palakkad12' {...register("city", { required: true })} type="text" id="typeText" className="form-control border border-3" />
+                                                            </div>
+                                                            {errors.city    ?.type === 'required' && <p className='error'>city   required</p>}
+                                                        </div>
+
+                                                        <div className="col-sm-4 col-6 mb-3">
+                                                            <p className="mb-0">Postal code</p>
+                                                            <div className="form-outline">
+                                                                <input value='678551abcd' {...register("pincode", { required: true, maxLength:10 })} type="text" id="typeText" className="form-control border border-3" />
+                                                            </div>
+                                                            {errors.pincode?.type === 'required' && <p className='error'>pincode required</p>}
+                                                            {errors.pincode?.type === 'maxLength' && <p className='error'>pincode invalid</p>}
+                                                        </div>
+
+                                                        <div className="col-sm-4 col-6 mb-3">
+                                                            <p className="mb-0">State</p>
+                                                            <div className="form-outline">
+                                                                <input value='keralam123' {...register("state", { required: true })} type="text" id="typeText" className="form-control border border-3" />
+                                                            </div>
+                                                            {errors.state?.type === 'required' && <p className='error'>state required</p>}
+                                                        </div>
+
+                                                    </div>
+
+                                                    <div className="float-end">
+                                                        <button className="btn btn-danger border me-3">Cancel</button>
+                                                        <input className="btn btn-success border me-3" type="submit" value="Proceed"/>
+                                                    </div>
+                                                
+                                                </form>
+                                        </div>
+                                    </div>
+                                </>
+                                }
                     </div>
+                        )
+                    }
+                    
 
 
                     <div className="col-xl-4 col-lg-4 d-flex justify-content-center justify-content-lg-end">
                         <div className="ms-lg-4 mt-4 mt-lg-0" style={{maxWidth: "320px"}}>
                         
                         <h6 className="text-dark my-4">Items in cart</h6>
-
-
-
                         <hr />
 
                         {

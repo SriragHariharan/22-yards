@@ -1,7 +1,7 @@
 const router = require('express').Router()
 
 const { BuyerSignup, getProfile, updateProfile, BuyerLogin } = require('../controllers/Buyer/BuyerAuthController');
-const { getAllProducts, getSingleProduct, sortByDate, sortByPrice, getProductsByCategory, createOrder, generateRzpOrderID, verifyRzpPayment, updatePaymentStatus, getordersBuyer } = require('../controllers/Buyer/BuyerProductsController');
+const { getAllProducts, getSingleProduct, sortByDate, sortByPrice, getProductsByCategory, createOrder, generateRzpOrderID, verifyRzpPayment, updatePaymentStatus, getordersBuyer, updateProductStock } = require('../controllers/Buyer/BuyerProductsController');
 const BuyerAuthMiddleware = require('../middlewares/auth.buyer');
 
 //get all products
@@ -37,7 +37,6 @@ router.post('/buyer-signup', BuyerSignup)
 //buyer login
 router.post('/buyer-login', BuyerLogin)
 
-
 //get profile details
 router.get('/profile', BuyerAuthMiddleware, getProfile)
 
@@ -46,5 +45,7 @@ router.post('/update-profile', BuyerAuthMiddleware, updateProfile)
 
 //get all orders buyer
 router.get('/orders', BuyerAuthMiddleware, getordersBuyer)
+
+router.post('/update-stock', updateProductStock)
 
 module.exports = router;

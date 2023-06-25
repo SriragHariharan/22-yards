@@ -46,12 +46,11 @@ const BuyerLogin = async(req, res) => {
 }
 
 
-
-
 //get profile details of user
 const getProfile = async(req, res) => {
     try {
-        let userProfile = await Users.findOne({email:req.userEmail})
+        let email=req.userEmail;
+        let userProfile = await Users.findOne({email});
         return res.json({success:true, message:"Signup successfull", data:{user:userProfile}})
     } 
     catch (error) {

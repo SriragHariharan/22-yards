@@ -1,11 +1,29 @@
-import React, { useMemo } from 'react'
+import React, { useMemo, useState, useEffect } from 'react'
 import {  useDispatch, useSelector } from 'react-redux';
 import {ChangeProductQuantity, RemoveCartItem, SetCartTotal } from '../../../redux-tk/reducers/CartReducer';
 import { ToastContainer, toast } from 'react-toastify';
+import BuyerProductInstance from '../../axios/BuyerProductInstance';
 
 export default function CartItemsCard({item, setBillAmount}) {
     const dispatch = useDispatch()
     const cart = useSelector(state => state.cart.cart);  //here we get the cart items in this variable
+    const [product, setProduct] = useState(null);
+    const [error, setError] = useState(null);
+
+    useEffect(() => {
+        BuyerProductInstance.get('get-single-product/'+item?.productID)
+        .then(resp => {
+            if(resp.data.success === false){
+                setError(resp.data.message);
+                return false;
+            }else{
+                setProduct(resp.data.data.product);
+                return resp.data.data.product.category;
+            }
+        }).catch(err => setError(err.message))
+    },[])
+
+    // product?.stock
 
     //toast message
     const showToastMessage = () => {
@@ -58,7 +76,12 @@ export default function CartItemsCard({item, setBillAmount}) {
                             <div>
                                 <span className="btn btn-warning" onClick={() => item.quantity >1 && handleQuantity(item.productID, -1)}>-</span>
                                 <span>&nbsp; &nbsp; {item.quantity} &nbsp; &nbsp;</span>
-                                <span className="btn btn-success" onClick={() => item.quantity <5 && handleQuantity(item.productID, +1)}>+</span>
+                                {
+                                    (product?.stock !== item.quantity) ?
+                                    <span className="btn btn-success" onClick={() => item.quantity <5 && handleQuantity(item.productID, +1)}>+</span>
+                                    :
+                                    <div className="small text-danger">Only {product?.stock} items are avilable in stock</div>
+                                }
                             </div>
                         </div>
                         <div>
