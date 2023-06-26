@@ -18,38 +18,32 @@ export default function Topbar() {
         <div className="row gy-3">
           
           {/* <!-- Left elements --> */}
-          <Link to={'/'} className="link col-lg-2 col-sm-4 col-4">
-              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSH-196UvngLppQ7fGE1-TQfG75ZKli2l6IdAkNCgK83g&s" height="75" /> 
-              <br/> <h4 className='text-dark'>22Yards</h4>
+          <Link to={'/'} className="link col-lg-2 col-md-1 col-3 mt-4">
+              <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSH-196UvngLppQ7fGE1-TQfG75ZKli2l6IdAkNCgK83g&s" height="55" /> 
+              <br/> <p className=' mt-0 text-dark'>22Yards</p>
           </Link>
           {/* <!-- Left elements --> */}
   
-          {/* <!-- Center elements --> */}
-          <div className="order-lg-last col-lg-4 col-sm-8 col-8 mt-5">
+          {/* <!-- Right elements --> */}
+          <div className=" col-lg-10 col-md-11 col-8 mt-4">
             <div className="d-flex float-end">
               
-              <Link to={'/user/login'} className="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center"> 
-                <i className="fas fa-user-alt m-1 me-md-2"></i> <span>{user?.userName.slice(0,5) || null}</span>
+              <Link to={'/user/login'} className="me-1 border rounded py-2 px-2 nav-link d-flex align-items-center"> 
+                <i className="fas fa-user-alt m-1 me-md-2"></i>
               </Link>
-              
-              {/* <a className="me-1 border rounded py-1 px-3 nav-link d-flex align-items-center"> <i className="fas fa-heart m-1 me-md-2"></i><p className="d-none d-md-block mb-0">Wishlist</p> </a> */}
-              
-              <Link to={'cart'} className="border rounded py-1 px-3 nav-link d-flex align-items-center"> 
-                  <i className="fas fa-shopping-cart"></i> &nbsp; &nbsp; <span className='h2'><b>{cart?.length}</b></span>
+
+              <Link to={'/search'} className="me-1 border rounded py-2 px-2 nav-link d-flex align-items-center"> 
+                <i className="fa-solid fa-lg fa-magnifying-glass m-1 me-md-2"></i>
+              </Link>
+                            
+              <Link to={'cart'} className="border rounded py-2 px-2 nav-link d-flex align-items-center"> 
+                  <i className="fas fa-shopping-cart"></i> &nbsp; &nbsp; <span className='h5'><sup><b>{cart?.length}</b></sup></span>
               </Link>
 
             </div>
           </div>
-          {/* <!-- Center elements --> */}
+          {/* <!-- Right elements --> */}
   
-          {/* <!-- Right elements --> */}
-          <div className="col-lg-6 col-md-12 col-12 mt-5">
-            <MDBInputGroup className='mb-3' noBorder >
-                <input className='form-control border-3 p-3' type='text' placeholder='Search'  />
-                <MDBIcon fas icon='search' style={{backgroundColor:'black', padding:'8px', color:'white', paddingLeft:'20px', paddingRight:"20px", cursor:'pointer'}} />
-            </MDBInputGroup>
-          </div>
-          {/* <!-- Right elements --> */}
         </div>
       </div>
     </div>
