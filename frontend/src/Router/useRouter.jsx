@@ -54,7 +54,7 @@ export default function useRouter() {
     const SELLERtoken = SELLER?.token;
     
     let BUYER = useSelector(state => state?.User?.user)
-
+    const BUYERtoken = BUYER?.token;
 
     //jwt expiration check
     var isMyTokenExpired = isExpired(SELLERtoken);
@@ -63,12 +63,12 @@ export default function useRouter() {
         localStorage.removeItem('22YardsAdmin');
     }
 
-     //jwt expiration check
-    //  var isMyTokenExpired = isExpired(BUYERtoken);
-    //  if(isMyTokenExpired){
-    //      dispatch(UserLogout());
-    //      localStorage.removeItem('22YardsUser');
-    //  }
+    //jwt expiration check
+     var isMyTokenExpired = isExpired(BUYERtoken);
+     if(isMyTokenExpired){
+         dispatch(UserLogout());
+         localStorage.removeItem('22YardsUser');
+     }
      
     
 

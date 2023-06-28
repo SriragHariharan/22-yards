@@ -1,7 +1,7 @@
 const router = require('express').Router()
 
 const { BuyerSignup, getProfile, updateProfile, BuyerLogin } = require('../controllers/Buyer/BuyerAuthController');
-const { getAllProducts, getSingleProduct, sortByDate, sortByPrice, getProductsByCategory, createOrder, generateRzpOrderID, verifyRzpPayment, updatePaymentStatus, getordersBuyer, updateProductStock } = require('../controllers/Buyer/BuyerProductsController');
+const { getAllProducts, getSingleProduct, sortByDate, sortByPrice, getProductsByCategory, createOrder, generateRzpOrderID, verifyRzpPayment, updatePaymentStatus, getordersBuyer, updateProductStock, addProductReview, getReviews, checkReview } = require('../controllers/Buyer/BuyerProductsController');
 const BuyerAuthMiddleware = require('../middlewares/auth.buyer');
 
 //get all products
@@ -46,6 +46,15 @@ router.post('/update-profile', BuyerAuthMiddleware, updateProfile)
 //get all orders buyer
 router.get('/orders', BuyerAuthMiddleware, getordersBuyer)
 
+//update stock of a product on payment success
 router.post('/update-stock', updateProductStock)
+
+//add a review for a purchased product
+router.post('/add-review', BuyerAuthMiddleware, addProductReview)
+
+//get all reviews based on a product
+router.post('/reviews', getReviews)
+
+router.post('/check-review', BuyerAuthMiddleware, checkReview)
 
 module.exports = router;

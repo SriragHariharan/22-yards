@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import SimilarItemsCard from '../components/view-product-details/SimilarItemsCard'
 import { Link, useNavigate, useParams } from 'react-router-dom'
 import BuyerProductInstance from '../axios/BuyerProductInstance';
@@ -7,6 +7,8 @@ import { useSelector, useDispatch } from "react-redux";
 import { NewCartItem } from '../../redux-tk/reducers/CartReducer';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import ReviewsCard from '../components/view-product-details/ReviewsCard';
+import StarComponent from '../components/view-product-details/StarComponent';
 
 
 export default function ViewProductDetails() {
@@ -15,6 +17,7 @@ export default function ViewProductDetails() {
     const [categorizedProducts, setCategorizedProducts] = useState(null)
     const [error, setError] = useState(null);
     const [image, setImage] = useState(1);
+    const [reviews, setReviews] = useState(null);
 
     const dispatch = useDispatch();
     const navigate = useNavigate()
@@ -50,8 +53,14 @@ export default function ViewProductDetails() {
                         setError(resp.data.message);
                     }else{
                         setCategorizedProducts(resp.data.data.products)
+                        return true;
                     }
-                })
+                }).then(resp => {
+                    BuyerProductInstance.post('/reviews/',{productID:id})
+                    .then(resp => setReviews(resp.data.data.reviews))
+                    .catch(err => setError(err.message))
+                } )
+
             })
         .catch(err => setError(err.message))
     }, [id])
@@ -75,7 +84,14 @@ export default function ViewProductDetails() {
 
     //code to find whether product is found in cart
     let productExistsInCart = cart?.filter(item => item.productID === product?._id);
-    console.log("ProductInCart:::",productExistsInCart);
+
+    //find average rating of the current product
+    let avgRating = useMemo(() => {
+        let numberOfReviews = reviews?.map(item => item.productRating).length
+        let reviewsTotal = reviews?.map(item => item.productRating).reduce((accu, curr) => {return accu+curr}, 0);
+        let averageRating = Number(Math.ceil(reviewsTotal / numberOfReviews));
+        return [averageRating, numberOfReviews]
+    }, [reviews])
 
     return (
 
@@ -86,7 +102,7 @@ export default function ViewProductDetails() {
                 <ToastContainer />
                 <section className="py-5">
                     <div className="container">
-                        <div className="row gx-5">
+                        <div className="row">
                             
                             <aside className="col-lg-6">
                                 <div className="border rounded-4 mb-3 d-flex justify-content-center">
@@ -103,28 +119,20 @@ export default function ViewProductDetails() {
 
                             <main className="col-lg-6">
                                 <div className="ps-lg-3">
-                                    <h4 className="title text-dark">
+                                    <h4 className="title h2 text-dark">
                                         {product?.productName}
                                     </h4>
-                                    <div className="d-flex flex-row my-3">
-                                        <div className="text-warning mb-1 me-2">
-                                            <i className="fa fa-star"></i>
-                                            <i className="fa fa-star"></i>
-                                            <i className="fa fa-star"></i>
-                                            <i className="fa fa-star"></i>
-                                            <i className="fas fa-star-half-alt"></i>
-                                            <span className="ms-1">
-                                                4.5
-                                            </span>
+                                    <div className="d-flex flex-column my-3">
+                                        <div class="mb-1 me-2">
+                                            <StarComponent rating={avgRating[0]} count={avgRating[1]} /> 
                                         </div>
-                                        <span className="text-muted"><i className="fas fa-shopping-basket fa-sm mx-1"></i>{ product?.stock > 0 ? product?.stock : 'No Product ' }</span>
-                                        <span className="text-success ms-2">In stock</span>
+                                        <span className="text-success h6 ms-2 mt-3"> { product?.stock > 0 ? product?.stock : 'No Product ' } items In stock</span>
                                     </div>
 
                                     <div className="mb-3">
-                                        <strong className="h5 me-3">₹ {offerPrice1}</strong>
-                                        <span className="h6 me-3 text-danger"><s>₹ {mrp1}</s></span>
-                                        <strong className="h5 text-success">{Math.floor(((product?.mrp-product?.offerPrice)/product?.offerPrice)*100)}% off</strong>
+                                        <strong className="h4 me-3">₹ {offerPrice1}</strong>
+                                        <span className="h5 me-3 text-danger"><s>₹ {mrp1}</s></span>
+                                        <strong className="h4 text-success">{Math.floor(((product?.mrp-product?.offerPrice)/product?.offerPrice)*100)}% off</strong>
                                     </div>
 
                                     <p className='mt-5 mb-5'>
@@ -152,14 +160,14 @@ export default function ViewProductDetails() {
                                     {
                                         product?.stock < 1 &&
                                         <div className="btn btn-danger p-5 h1 w-100"> 
-                                                <i class="fa-solid fa-box-open fa-2xl me-5"></i>
+                                                <i className="fa-solid fa-box-open fa-2xl me-5"></i>
                                                 <b>PRODUCT OUT OF STOCK</b>
                                             </div>
                                     }
                                     {
                                         (product?.stock > 1 && productExistsInCart?.length !== 0) &&
-                                            <Link to={'/cart'}  className="link btn border border-5 p-3 w-100">
-                                                <i class="fa-solid fa-cart-shopping fa-xl me-4"></i>                                                
+                                            <Link to={'/cart'}  className="link btn btn-success border border-5 p-3 w-100">
+                                                <i class="fa-solid fa-cart-shopping fa-bounce fa-xl me-4"></i>
                                                 GO TO CART
                                             </Link> 
                                             
@@ -168,7 +176,7 @@ export default function ViewProductDetails() {
                                         (product?.stock > 1 && productExistsInCart.length ===0) && (
                                             <>
                                             <div onClick={() => handleAddToCart(product?._id, product?.productName, product?.offerPrice, product?.sellerID, product?.size, )} className="btn btn-info border p-3 border-5 w-50 "> 
-                                                <i class="fa-solid fa-cart-shopping fa-xl me-4"></i>                                                    
+                                                <i className="fa-solid fa-cart-shopping fa-xl me-4"></i>                                                    
                                                 Add cart 
                                             </div>
                                             <div onClick={() => handleBuyNow(product?._id, product?.productName, product?.offerPrice, product?.sellerID, product?.size, )} className="btn btn-warning border p-3 border-5 w-50"> 
@@ -271,6 +279,12 @@ export default function ViewProductDetails() {
                         </div>
                     </div>
                 </section>
+                {
+                    reviews?.length === 0 && <div className="h3 text-center p-4">No reviews yet</div>
+                }
+                {
+                    reviews?.length > 0  && (reviews.map((review, index) => <ReviewsCard key={index} review={review} /> ))  
+                }
             </>
         )}
     </>

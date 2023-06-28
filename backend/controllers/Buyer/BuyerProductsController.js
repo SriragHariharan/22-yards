@@ -1,7 +1,9 @@
 const Products = require('../../models/ProductsModel')
 const Orders =  require('../../models/OrdersModal')
+const Reviews = require('../../models/ReviewModel')
+
 const mongoose = require('mongoose');
-const crypto = require('crypto')
+const crypto = require('crypto');
 
 
 //get all products
@@ -191,6 +193,52 @@ const updateProductStock = (req, res) => {
     }
 }
 
+//adding a review for a product
+const addProductReview = async(req, res) => {
+    try {
+        let review = await Reviews.findOne({ email : req.body.email, productID:req.body.productID, orderID:req.body.orderID })
+        if(review){
+            return res.json({ success:false, message:"Review already added", error_code:503, data:{} })
+        }
+        let newReview = new Reviews({...req.body});
+        let reviewAddedToDB = await newReview.save();
+        if(!reviewAddedToDB){
+            return res.json({ success:false, message:"Unable to add review", error_code:503, data:{} })            
+        }
+        return res.json({ success:true, message:'Review added successfully', data:{} })
+    } 
+    catch (error) {
+        return res.json({ success:false, message:error.message, error_code:503, data:{} })            
+    }
+}
+
+//get review of a paritcular product
+const getReviews = async(req, res) => {
+    try {
+        let reviews = await Reviews.find({productID:req.body.productID})
+        if(!reviews){
+            return res.json({ success:false, message:"something went wrong", error_code:503, data:{} })                        
+        }
+        return res.json({ success:true, message:'Review added successfully', data:{reviews} }) 
+    } catch (error) {
+        return res.json({ success:false, message:error.message, error_code:503, data:{} })                                
+    }
+}
+
+//find whether a user has added review for a particular product or not
+const checkReview = async(req, res) => {
+    try {
+        let review = await Reviews.findOne({ email : req.body.email, productID:req.body.productID, orderID:req.body.orderID })
+        if(review){
+            return res.json({ success:false, message:"Review not added", error_code:404, data:{} })
+        }
+        return res.json({ success:true, message:"review found", data:{} })                                
+    } 
+    catch (error) {
+        return res.json({ success:false, message:error.message, error_code:404, data:{} })                                        
+    }
+}
+
 
 
 module.exports={
@@ -205,4 +253,7 @@ module.exports={
     updatePaymentStatus,
     getordersBuyer,
     updateProductStock,
+    addProductReview,
+    getReviews,
+    checkReview,
 }

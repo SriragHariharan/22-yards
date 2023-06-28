@@ -1,7 +1,11 @@
-import React from 'react'
+import React, { useEffect, useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
+import BuyerProductInstance from '../../axios/BuyerProductInstance';
+import StarComponent from '../view-product-details/StarComponent';
 
 export default function ListView({productName, description, mrp, offerPrice, stock, productID}) {
+    const [reviews, setReviews] = useState(null)
+    const [error, setError] = useState(null);
 
     //add commas automatically to prices
     function numberWithCommas(x) {
@@ -9,6 +13,21 @@ export default function ListView({productName, description, mrp, offerPrice, sto
     }
     let offerPrice1 = numberWithCommas(offerPrice);
     let mrp1= numberWithCommas(mrp)
+
+    //fetch reviews on load
+    useEffect(() => {
+        BuyerProductInstance.post('/reviews/',{productID})
+        .then(resp => setReviews(resp.data.data.reviews))
+        .catch(err => setError(err.message))
+    },[])
+
+    //find average rating of the current product
+    let avgRating = useMemo(() => {
+        let numberOfReviews = reviews?.map(item => item.productRating).length
+        let reviewsTotal = reviews?.map(item => item.productRating).reduce((accu, curr) => {return accu+curr}, 0);
+        let averageRating = Number(Math.ceil(reviewsTotal / numberOfReviews));
+        return [averageRating, numberOfReviews]
+    }, [reviews])
 
   return (
         <div className="col-md-10">
@@ -30,15 +49,11 @@ export default function ListView({productName, description, mrp, offerPrice, sto
                         <div className="col-xl-5 col-md-4 col-sm-6   me-5">
                             <h5>{productName}</h5>
                             <div className="d-flex flex-row">
-                                <div className="text-warning mb-1 me-2">
-                                    <i className="fa fa-star"></i>
-                                    <i className="fa fa-star"></i>
-                                    <i className="fa fa-star"></i>
-                                    <i className="fa fa-star"></i>
-                                    <i className="fas fa-star-half-alt"></i>
-                                    <span className="ms-1 me-5">
-                                        4.5
-                                    </span>
+                                <div className="mb-1 me-3">
+                                    {
+                                        avgRating[1] === 0 && <p className='me-2 text-warning'>No reviews</p>
+                                    }
+                                    <StarComponent rating={avgRating[0]}  />
                                 </div>
                                 <div>
                                 {
