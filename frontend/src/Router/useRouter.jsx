@@ -44,6 +44,7 @@
     import { useSelector, useDispatch } from "react-redux";
     import { AdminLogout } from "../redux-tk/reducers/AdminReducer";
 import { UserLogout } from "../redux-tk/reducers/UserReducer";
+import ContactUs from "../Buyer/pages/ContactUs";
 
 export default function useRouter() {
   
@@ -93,6 +94,7 @@ export default function useRouter() {
                 <Route path='orders' element={ BUYER ? <OrdersBuyer/> : <Navigate to={'/user/login'}/> } />
                 <Route path='search' element={ <SearchPage/> } />
                 <Route path='faq' element={ <Faq/> } />
+                <Route path='contact' element={ <ContactUs/> } />
              </Route>
 
             {/* seller routes */}

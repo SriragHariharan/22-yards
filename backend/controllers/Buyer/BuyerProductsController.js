@@ -1,6 +1,7 @@
 const Products = require('../../models/ProductsModel')
 const Orders =  require('../../models/OrdersModal')
 const Reviews = require('../../models/ReviewModel')
+var nodemailer = require('nodemailer');
 
 const mongoose = require('mongoose');
 const crypto = require('crypto');
@@ -239,6 +240,33 @@ const checkReview = async(req, res) => {
     }
 }
 
+//send query to seller via node mailer
+const sendQueryToSeller = (req, res) => {
+    try {
+        var transporter = nodemailer.createTransport({
+            service: 'gmail',
+            auth: {
+              user: process.env.NODEMAILER_EMAIL,
+              pass: process.env.NODEMAILER_PASSWORD,
+            }
+          });
+          
+          var mailOptions = {
+            from: req.body.email,
+            to : process.env.NODEMAILER_EMAIL,
+            subject: '22yards.com || FROM : '+ req.body.fullName+ " EMAIL : "+req.body.email,
+            text: req.body.message
+          };
+
+          transporter.sendMail(mailOptions)
+          .then(resp => res.json({ success:true, message:"email sent successfully", data:{} }))
+          .catch(err => res.json({success:false, message:err.message, error_code:400, data:{} }))
+    } 
+    catch (error) {
+        console.log(error);        
+    }
+}
+
 
 
 module.exports={
@@ -256,4 +284,5 @@ module.exports={
     addProductReview,
     getReviews,
     checkReview,
+    sendQueryToSeller,
 }

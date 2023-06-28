@@ -67,7 +67,8 @@ function Header() {
                         </MDBDropdownMenu>
                     </MDBDropdown>
 
-                     <MDBNavbarLink> <Link to={'/faq'} className='link' >FAQ    </Link> </MDBNavbarLink>
+                    <MDBNavbarLink> <Link to={'/faq'} className='link' >      FAQ    </Link> </MDBNavbarLink>
+                    <MDBNavbarLink> <Link to={'/contact'} className='link' >  Contact us    </Link> </MDBNavbarLink>
                 </MDBNavbarNav>
                 </MDBCollapse>
             </MDBContainer>
