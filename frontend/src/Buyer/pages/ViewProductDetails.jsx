@@ -9,7 +9,7 @@ import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import ReviewsCard from '../components/view-product-details/ReviewsCard';
 import StarComponent from '../components/view-product-details/StarComponent';
-
+import ReactImageMagnify from 'react-image-magnify';
 
 export default function ViewProductDetails() {
     const {id} = useParams()
@@ -93,6 +93,7 @@ export default function ViewProductDetails() {
         return [averageRating, numberOfReviews]
     }, [reviews])
 
+
     return (
 
     <>
@@ -107,7 +108,21 @@ export default function ViewProductDetails() {
                             <aside className="col-lg-6">
                                 <div className="border rounded-4 mb-3 d-flex justify-content-center">
                                 <div className="rounded-4">
-                                    <img style={{maxWidth: "100%", maxHeight: "100vh", margin: "auto"}} className="rounded-4 fit" src={`http://localhost:4000/product-images/${product?._id}-0${image}.jpg`}/>
+                                <ReactImageMagnify {...{
+                                    smallImage: {
+                                        alt: 'Wristwatch by Ted Baker London',
+                                        isFluidWidth: true,
+                                        src: "http://localhost:4000/product-images/"+ product?._id +"-0"+image+".jpg"
+
+                                    },
+                                    largeImage: {
+                                        src: "http://localhost:4000/product-images/"+ product?._id +"-0"+image+".jpg",
+                                        width: 2000,
+                                        height: 1800
+                                    },
+                                    isHintEnabled:true
+                                }} />
+                                    {/* <img style={{maxWidth: "100%", maxHeight: "100vh", margin: "auto"}} className="rounded-4 fit" src={`http://localhost:4000/product-images/${product?._id}-0${image}.jpg`}/> */}
                                 </div>
                                 </div>
                                 <div className="d-flex justify-content-center mb-3">
