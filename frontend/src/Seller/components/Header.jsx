@@ -29,7 +29,7 @@ export default function Header() {
     const seller = useSelector(state => state?.Admin.seller?.seller)
 
   return (
-    <>
+    <div style={{backgroundColor:'lavenderblush'}}>
         <div className="header">
             <div className="brand-name">
                 <img width='60px' src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSH-196UvngLppQ7fGE1-TQfG75ZKli2l6IdAkNCgK83g&s" alt="" />
@@ -60,14 +60,14 @@ export default function Header() {
                         <MDBNavbarNav className='mr-auto mb-2 mb-lg-0 d-flex justify-content-center'>
                             <NavLink to={'/seller/home'} className='NavLink'>                         Home             </NavLink>
                             <NavLink to={'/seller/home/view-all-products'} className='NavLink'>       All Products     </NavLink>
-                            <NavLink to={'/seller/home'} className='NavLink'>                         Orders           </NavLink>
+                            <NavLink to={'/seller/home/orders'} className='NavLink'>                  Orders           </NavLink>
                             <NavLink to={'/seller/home/add-new-product'} className='NavLink'>         Add new Product  </NavLink>
                             <NavLink to={'/seller/home/faq'} className='NavLink'>                     FAQ              </NavLink>
                         </MDBNavbarNav>
                     </MDBCollapse>
             </MDBContainer>
         </MDBNavbar>
-    </>
+    </div>
 
   )
 }

@@ -22,11 +22,8 @@ function Footer() {
   return (
     <div>
         {/* footer starts here */}
-        <MDBFooter bgColor='light' className='text-center text-lg-start text-muted'>
-            <section className='d-flex justify-content-center justify-content-lg-between p-4 border-bottom'>
-            </section>
-
-            <section className=''>
+        <MDBFooter style={{backgroundColor:'lavenderblush'}} className='text-center text-lg-start text-muted pt-2 mt-5'>
+            <section>
                 <MDBContainer className='text-center text-md-start mt-5'>
                 <MDBRow className='mt-3'>
                     <MDBCol md='3' lg='4' xl='5' className='mx-auto mb-4'>

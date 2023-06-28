@@ -4,10 +4,12 @@ import { Container, Row, Col } from 'react-bootstrap';
 
 import ProductShort from '../components/Homepage/ProductsShort.jsx';
 import NewOrders from '../components/Homepage/NewOrders';
-import TopSellingCard from '../components/Homepage/TopSellingCard';
 import { Link } from 'react-router-dom';
 import useSellerProductInstance from '../axios/useSellerProductInstance';
 import Error from '../components/general/Error';
+import RevenueGenerated from '../components/Homepage/RevenueGenerated';
+import SoldProducts from '../components/Homepage/SoldProducts';
+import ProductsOnSale from '../components/Homepage/ProductsOnSale';
 
 
 export default function HomepageSeller() {
@@ -28,9 +30,6 @@ export default function HomepageSeller() {
         }).catch(err => setError(err.message))
     }, [])
 
-    //top selling
-    let topSelling = products.filter(product => (((product.mrp - product.offerPrice)/product.offerPrice)*100)> 50)
-
     return (
     <>
         {error && <Error error={error} />}
@@ -38,18 +37,17 @@ export default function HomepageSeller() {
         <>
         <Container>
             <Row className='mt-5'>
-                <h3>TOP VIEWED</h3>
-                {
-                    topSelling.slice(0,3).map(product => (
-                    <Col xs={6} sm={6} md={4} lg={3} key={product._id}>
-                        <TopSellingCard productID={product._id} productName={product.productName}/>
-                    </Col>
-
-                    ))
-                }
-
-                <Col xs={6} sm={6} md={6} lg={3}>
+                <Col xs={12} sm={12} md={6} lg={3}>
                     <NewOrders/>
+                </Col>
+                <Col xs={12} sm={12} md={6} lg={3}>
+                    <RevenueGenerated/>
+                </Col>
+                <Col xs={12} sm={12} md={6} lg={3}>
+                    <SoldProducts/>
+                </Col>
+                <Col xs={12} sm={12} md={6} lg={3}>
+                    <ProductsOnSale/>
                 </Col>
 
             </Row>
