@@ -92,6 +92,7 @@ export default function useRouter() {
                 <Route path='profile' element={ BUYER ? <Profile/> : <Navigate to={'/user/login'}/> } />
                 <Route path='orders' element={ BUYER ? <OrdersBuyer/> : <Navigate to={'/user/login'}/> } />
                 <Route path='search' element={ <SearchPage/> } />
+                <Route path='faq' element={ <Faq/> } />
              </Route>
 
             {/* seller routes */}

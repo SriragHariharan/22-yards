@@ -20,7 +20,7 @@ export default function ProductsbyCategory() {
             }
         })
         .catch(err => setError(err.message))
-    },[])
+    },[id])
   
 
     return (

@@ -21,6 +21,7 @@ import { MDBBadge } from 'mdb-react-ui-kit';
 
 import { library } from "@fortawesome/fontawesome-svg-core";
 import { faCartShopping, faUser } from "@fortawesome/free-solid-svg-icons";
+import { Link } from 'react-router-dom';
 
 library.add(faCartShopping, faUser);
 
@@ -44,59 +45,30 @@ function Header() {
                 </MDBNavbarToggler>
                 <MDBCollapse navbar show={showBasic}>
                 <MDBNavbarNav className='mr-auto mb-2 mb-lg-0 d-flex justify-content-center'>
-                    <MDBNavbarLink> Home             </MDBNavbarLink>
-                    <MDBNavbarLink> All Products     </MDBNavbarLink>
-                    <MDBNavbarLink> Best selling     </MDBNavbarLink>
-
+                    <MDBNavbarLink> <Link to={'/'} className='link' > Home            </Link> </MDBNavbarLink>
+                    <MDBNavbarLink> <Link to={'/all-products'} className='link' >All Products     </Link> </MDBNavbarLink>
                     <MDBDropdown>
                         <MDBDropdownToggle tag='a' className='nav-link' role='button'>
                         Products
                         </MDBDropdownToggle>
                         <MDBDropdownMenu style={{ margin: 0 }}>
-                        <MDBDropdownItem link>English willow bats                   </MDBDropdownItem>
-                        <MDBDropdownItem link>Kashmir willow bats                   </MDBDropdownItem>
-                        <MDBDropdownItem link>Batting Pads                          </MDBDropdownItem>
-                        <MDBDropdownItem link>Helmets                               </MDBDropdownItem>
-                        <MDBDropdownItem link>Leather balls                         </MDBDropdownItem>
-                        <MDBDropdownItem link>Elbow guards                          </MDBDropdownItem>
-                        <MDBDropdownItem link>Batting gloves                        </MDBDropdownItem>
-                        <MDBDropdownItem link>Chest Guards                          </MDBDropdownItem>
-                        <MDBDropdownItem link>Abdomen Guards                        </MDBDropdownItem>
-                        <MDBDropdownItem link>Thigh Guards                          </MDBDropdownItem>
-                        <MDBDropdownItem link>Cricket shoes                         </MDBDropdownItem>
-                        <MDBDropdownItem link>Wicket keeping pads                   </MDBDropdownItem>
-                        <MDBDropdownItem link>Wicket keeping gloves                 </MDBDropdownItem>
-                        <MDBDropdownItem link>Fielding Pads                         </MDBDropdownItem>
-                        <MDBDropdownItem link>Tennis Balls                          </MDBDropdownItem>
-                        {/* <MDBDropdownItem link>                  </MDBDropdownItem>
-                        <MDBDropdownItem link>                  </MDBDropdownItem>
-                        <MDBDropdownItem link>                  </MDBDropdownItem>
-                        <MDBDropdownItem link>                  </MDBDropdownItem> */}
+
+                        <MDBDropdownItem link>   <Link className='link' to={'/category/cricket-bat'}>     Cricket bats      </Link></MDBDropdownItem>
+                        <MDBDropdownItem link>   <Link className='link' to={'/category/leg-guard'}>       Leg guards        </Link></MDBDropdownItem>
+                        <MDBDropdownItem link>   <Link className='link' to={'/category/gloves'}>          Gloves            </Link></MDBDropdownItem>
+                        <MDBDropdownItem link>   <Link className='link' to={'/category/cricket-ball'}>    Cricket balls     </Link></MDBDropdownItem>
+                        <MDBDropdownItem link>   <Link className='link' to={'/category/kit-bag'}>         Kit bags          </Link></MDBDropdownItem>
+                        <MDBDropdownItem link>   <Link className='link' to={'/category/shoes'}>           Shoes             </Link></MDBDropdownItem>
+                        <MDBDropdownItem link>   <Link className='link' to={'/category/helmet'}>          Helmets           </Link></MDBDropdownItem>
+                        <MDBDropdownItem link>   <Link className='link' to={'/category/protection'}>      Protection        </Link></MDBDropdownItem>
+                        <MDBDropdownItem link>   <Link className='link' to={'/category/wearables'}>       Wearables         </Link></MDBDropdownItem>
+                        <MDBDropdownItem link>   <Link className='link' to={'/category/accessories'}>     Accessories       </Link></MDBDropdownItem>
+                        
                         </MDBDropdownMenu>
                     </MDBDropdown>
 
-                    <MDBDropdown>
-                        <MDBDropdownToggle tag='a' className='nav-link' role='button'>
-                        Categories
-                        </MDBDropdownToggle>
-                        <MDBDropdownMenu style={{ margin: 0 }}>
-                        <MDBDropdownItem link>Batting               </MDBDropdownItem>
-                        <MDBDropdownItem link>Bowling               </MDBDropdownItem>
-                        <MDBDropdownItem link>Wicket Keeping        </MDBDropdownItem>
-                        <MDBDropdownItem link>Fielding              </MDBDropdownItem>
-                        <MDBDropdownItem link>Umpire Acessories     </MDBDropdownItem>
-                        <MDBDropdownItem link>Coach Acessories      </MDBDropdownItem>
-                        <MDBDropdownItem link>Others                </MDBDropdownItem>
-                        </MDBDropdownMenu>
-                    </MDBDropdown>
-
-                     <MDBNavbarLink> FAQ     </MDBNavbarLink>
+                     <MDBNavbarLink> <Link to={'/faq'} className='link' >FAQ    </Link> </MDBNavbarLink>
                 </MDBNavbarNav>
-
-                {/* <form className='d-flex input-group w-auto'>
-                    <input type='search' className='form-control' placeholder='Type query' aria-label='Search' />
-                    <MDBBtn color='primary'>Search</MDBBtn>
-                </form> */}
                 </MDBCollapse>
             </MDBContainer>
             </MDBNavbar>
