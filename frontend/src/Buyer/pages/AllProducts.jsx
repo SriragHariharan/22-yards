@@ -6,14 +6,6 @@ import CardView from '../components/all-products/CardView'
 import BuyerProductInstance from '../axios/BuyerProductInstance'
 
 
-// { value: 'random', label: 'Random' },
-//     { value: 'latest', label: 'Latest' },
-//     { value: 'oldest', label: 'Oldest' },
-//     { value: 'priceLowest', label: 'price: low to high' },
-//     { value: 'priceHighest', label: 'price: high to low' },
-//     { value: 'discount', label: 'Discount' },
-
-
 export default function AllProducts() {
 const [products, setProducts] = useState(null);
 const [error, setError] = useState(null)

@@ -8,12 +8,12 @@ function ProductsOnSale() {
   const [error, setError] = useState(null)
 
   useEffect(() => {
-    sellerProductInstance.get('orders')
-    .then(resp => setOrders(resp.data.data.orders))
+    sellerProductInstance.get('/')
+    .then(resp => setOrders(resp.data.data.products))
     .catch(err => setError(err.message))
   },[])
 
-  let newOrdersNumber = orders?.filter(item => item.paymentSuccess === true).length
+  let newOrdersNumber = orders?.length
   console.log(newOrdersNumber);
 
   return (

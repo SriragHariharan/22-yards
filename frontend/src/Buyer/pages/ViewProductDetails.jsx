@@ -112,23 +112,23 @@ export default function ViewProductDetails() {
                                     smallImage: {
                                         alt: 'Wristwatch by Ted Baker London',
                                         isFluidWidth: true,
-                                        src: "http://localhost:4000/product-images/"+ product?._id +"-0"+image+".jpg"
+                                        src: import.meta.env.VITE_SERVER_IMG+"/product-images/"+ product?._id +"-0"+image+".jpg"
 
                                     },
                                     largeImage: {
-                                        src: "http://localhost:4000/product-images/"+ product?._id +"-0"+image+".jpg",
+                                        src: import.meta.env.VITE_SERVER_IMG+"/product-images/"+ product?._id +"-0"+image+".jpg",
                                         width: 2000,
                                         height: 1800
                                     },
                                     isHintEnabled:true
                                 }} />
-                                    {/* <img style={{maxWidth: "100%", maxHeight: "100vh", margin: "auto"}} className="rounded-4 fit" src={`http://localhost:4000/product-images/${product?._id}-0${image}.jpg`}/> */}
+                                    {/* <img style={{maxWidth: "100%", maxHeight: "100vh", margin: "auto"}} className="import.meta.env.VITE_SERVER_IMG+r/product-images/${product?._id}-0${image}.jpg`}/> */}
                                 </div>
                                 </div>
                                 <div className="d-flex justify-content-center mb-3">
-                                    <img onClick={() => setImage(1)} width="60" height="60" className="rounded-2" src={`http://localhost:4000/product-images/${product?._id}-01.jpg`} />
-                                    <img onClick={() => setImage(2)} width="60" height="60" className="rounded-2" src={`http://localhost:4000/product-images/${product?._id}-02.jpg`} />
-                                    <img onClick={() => setImage(3)} width="60" height="60" className="rounded-2" src={`http://localhost:4000/product-images/${product?._id}-03.jpg`} />
+                                    <img onClick={() => setImage(1)} width="60" height="60" className="rounded-2" src={`${import.meta.env.VITE_SERVER_IMG}/product-images/${product?._id}-01.jpg`} />
+                                    <img onClick={() => setImage(2)} width="60" height="60" className="rounded-2" src={`${import.meta.env.VITE_SERVER_IMG}/product-images/${product?._id}-02.jpg`} />
+                                    <img onClick={() => setImage(3)} width="60" height="60" className="rounded-2" src={`${import.meta.env.VITE_SERVER_IMG}/product-images/${product?._id}-03.jpg`} />
                                 </div>
                             </aside>
 

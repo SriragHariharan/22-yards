@@ -9,7 +9,7 @@ function ProductsShort({ productName, mrp, offerPrice, productID }) {
               
               <div className="col-md-12 col-lg-3 mb-lg-0">
                 <div className="bg-image hover-zoom ripple rounded ripple-surface">
-                  <img src={`http://localhost:4000/product-images/${productID}-01.jpg`} className="w-50" />
+                  <img src={`${import.meta.env.VITE_SERVER_IMG}/product-images/${productID}-01.jpg`} className="w-50" />
                 </div>
               </div>
               

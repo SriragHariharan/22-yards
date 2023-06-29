@@ -8,7 +8,7 @@ export default function useBuyerAuthInstance() {
     let token = user?.token;
     const BuyerAuthInstance = axios.create({
         // Configuration
-        baseURL: 'http://localhost:4000/api/buyer/',
+        baseURL: import.meta.env.VITE_SERVER+'buyer/',
         headers: {
             Accept: 'application/json',
             Authorization : `Bearer ${token}`

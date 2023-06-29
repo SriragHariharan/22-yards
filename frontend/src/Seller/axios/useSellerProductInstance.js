@@ -6,7 +6,7 @@ export default function useSellerProductInstance() {
     const Token = useSelector(state => state?.Admin.seller.token)
 
     const sellerProductInstance = axios.create({
-        baseURL: 'http://localhost:4000/api/seller/', 
+        baseURL: import.meta.env.VITE_SERVER+'seller/', 
         headers: {
             'Content-Type': 'multipart/form-data', 
             'Authorization': `Bearer ${Token}`        }

@@ -138,7 +138,7 @@ export default function Checkout() {
                                                         <div className="col-12 mb-3">
                                                             <p className="mb-0">Full name</p>
                                                             <div className="form-outline">
-                                                                <input value='sriragHari' {...register("fullName", { required: true })} type="text" className="form-control border border-3" />
+                                                                <input {...register("fullName", { required: true })} type="text" className="form-control border border-3" />
                                                             </div>
                                                         {errors.fullName?.type === 'required' && <p className='error'>Fullname required</p>}
                                                         </div>
@@ -146,7 +146,7 @@ export default function Checkout() {
                                                         <div className="col-6 mb-3">
                                                             <p className="mb-0">Phone</p>
                                                             <div className="form-outline">
-                                                            <input value='9876543210' {...register("mobile", { required: true, minLength:10, maxLength:10 })} type="tel" className="form-control border border-3" />
+                                                            <input {...register("mobile", { required: true, minLength:10, maxLength:10 })} type="tel" className="form-control border border-3" />
                                                             </div>
                                                         {errors.mobile?.type === 'required' && <p className='error'>Mobile required</p>}
                                                         {errors.mobile?.type === ('minLength' || 'maxLength') && <p className='error'>Invalid mobile number</p>}
@@ -155,7 +155,7 @@ export default function Checkout() {
                                                         <div className="col-6 mb-3">
                                                             <p className="mb-0">Email</p>
                                                             <div className="form-outline">
-                                                                <input value='sri@tez.co' {...register("email", { required: true, pattern:/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i })} type="email" className="form-control border border-3" />
+                                                                <input {...register("email", { required: true, pattern:/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i })} type="email" className="form-control border border-3" />
                                                             </div>
                                                         {errors.email?.type === 'required' && <p className='error'>email required</p>}
                                                         {errors.email?.type === 'pattern' && <p className='error'>invalid email</p>}
@@ -170,7 +170,7 @@ export default function Checkout() {
                                                         <div className="col-sm-8 mb-3">
                                                             <p className="mb-0">Address</p>
                                                             <div className="form-outline">
-                                                                <input value='srira Vila' {...register("address", { required: true })} type="text" className="form-control border border-3" />
+                                                                <input {...register("address", { required: true })} type="text" className="form-control border border-3" />
                                                             </div>
                                                             {errors.address?.type === 'required' && <p className='error'>address required</p>}
                                                         </div>
@@ -178,7 +178,7 @@ export default function Checkout() {
                                                         <div className="col-sm-4 mb-3">
                                                             <p className="mb-0">Landmark</p>
                                                             <div className="form-outline">
-                                                                <input value='Puliyal BT' {...register("landmark", { required: true })} type="text" id="typeText" className="form-control border border-3" />
+                                                                <input {...register("landmark", { required: true })} type="text" id="typeText" className="form-control border border-3" />
                                                             </div>
                                                             {errors.landmark?.type === 'required' && <p className='error'>landmark required</p>}
                                                         </div>
@@ -186,7 +186,7 @@ export default function Checkout() {
                                                         <div className="col-sm-4 mb-3">
                                                             <p className="mb-0">City</p>
                                                             <div className="form-outline">
-                                                                <input value='palakkad12' {...register("city", { required: true })} type="text" id="typeText" className="form-control border border-3" />
+                                                                <input {...register("city", { required: true })} type="text" id="typeText" className="form-control border border-3" />
                                                             </div>
                                                             {errors.city    ?.type === 'required' && <p className='error'>city   required</p>}
                                                         </div>
@@ -194,7 +194,7 @@ export default function Checkout() {
                                                         <div className="col-sm-4 col-6 mb-3">
                                                             <p className="mb-0">Postal code</p>
                                                             <div className="form-outline">
-                                                                <input value='678551abcd' {...register("pincode", { required: true, maxLength:10 })} type="text" id="typeText" className="form-control border border-3" />
+                                                                <input {...register("pincode", { required: true, maxLength:10 })} type="text" id="typeText" className="form-control border border-3" />
                                                             </div>
                                                             {errors.pincode?.type === 'required' && <p className='error'>pincode required</p>}
                                                             {errors.pincode?.type === 'maxLength' && <p className='error'>pincode invalid</p>}
@@ -203,7 +203,7 @@ export default function Checkout() {
                                                         <div className="col-sm-4 col-6 mb-3">
                                                             <p className="mb-0">State</p>
                                                             <div className="form-outline">
-                                                                <input value='keralam123' {...register("state", { required: true })} type="text" id="typeText" className="form-control border border-3" />
+                                                                <input {...register("state", { required: true })} type="text" id="typeText" className="form-control border border-3" />
                                                             </div>
                                                             {errors.state?.type === 'required' && <p className='error'>state required</p>}
                                                         </div>

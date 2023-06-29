@@ -18,14 +18,14 @@ export default function Topbar() {
         <div className="row gy-3">
           
           {/* <!-- Left elements --> */}
-          <Link to={'/'} className="link col-lg-2 col-md-1 col-3 mt-4">
+          <Link to={'/'} className="link col-lg-2 col-md-1 col-3 mt-2">
               <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSH-196UvngLppQ7fGE1-TQfG75ZKli2l6IdAkNCgK83g&s" height="55" /> 
               <br/> <p className=' mt-0 text-dark'>22Yards</p>
           </Link>
           {/* <!-- Left elements --> */}
   
           {/* <!-- Right elements --> */}
-          <div className=" col-lg-10 col-md-11 col-8 mt-4">
+          <div className=" col-lg-10 col-md-11 col-8 mt-3">
             <div className="d-flex float-end">
               
               <Link to={'/user/login'} className="me-1 border rounded py-2 px-2 nav-link d-flex align-items-center"> 

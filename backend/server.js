@@ -18,7 +18,7 @@ app.use(express.static('uploads'))
 
 //mongodb connection code
 const mongoose = require('mongoose')
-mongoose.connect(process.env.DATABASE_URL || 'mongodb://localhost:27017/22Yards')
+mongoose.connect(process.env.DATABASE_URL)
 const db = mongoose.connection
 db.on('error', (error) => console.error("db error ::: ",error))
 db.once('open', () => console.log("database connected..."))

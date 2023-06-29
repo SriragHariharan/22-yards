@@ -7,15 +7,8 @@ import {
     MDBContainer,
     MDBRow,
     MDBCol,
-    MDBBtn,
-    MDBModal,
-    MDBModalDialog,
-    MDBModalContent,
-    MDBModalHeader,
-    MDBModalTitle,
-    MDBModalBody,
-    MDBModalFooter,
 } from 'mdb-react-ui-kit';
+import { Link } from 'react-router-dom';
 
 
 function Footer() {
@@ -62,9 +55,9 @@ function Footer() {
 
             <div className='text-center p-4' style={{ backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
                 © 2023 Copyright : 
-                <a className='text-reset fw-bold' href='https://mdbootstrap.com/'>
+                <Link className='text-reset fw-bold' to={'/'}>
                 22Yards.com
-                </a>
+                </Link>
             </div>
         </MDBFooter>
     </div>

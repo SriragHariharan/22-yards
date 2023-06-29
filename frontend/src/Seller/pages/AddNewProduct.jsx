@@ -68,7 +68,7 @@ export default function AddNewProduct() {
         formData.append("image3", data.image3[0] );
         formData.append('data', JSON.stringify(data))
 
-        fetch('http://localhost:4000/api/seller/add-new-product',{
+        fetch(import.meta.env.VITE_SERVER + 'seller/add-new-product',{
             method:"POST",
             body:formData,
             headers: {
@@ -83,7 +83,7 @@ export default function AddNewProduct() {
                 showToastMessage()
             }
         })
-        .catch(err => setError(err.message))
+        .catch(err => setError(err))
 
     } 
 
@@ -220,7 +220,7 @@ export default function AddNewProduct() {
                     {errors.offerPrice?.type === 'required' && <p style={{color:'red', marginTop:'-24px'}}>This field required</p>}
 
                     <div className="mb-4">
-                        <MDBInput label='Size' type='text' size='lg' value='Mens'
+                        <MDBInput label='Size' type='text' size='lg'
                         {...register("size", { required: true })}              
                         />
                     </div>

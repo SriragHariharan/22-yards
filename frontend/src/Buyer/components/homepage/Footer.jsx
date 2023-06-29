@@ -1,5 +1,6 @@
 import React from 'react';
 import { MDBFooter, MDBContainer, MDBRow, MDBCol, MDBIcon } from 'mdb-react-ui-kit';
+import { Link } from 'react-router-dom';
 
 function Footer() {
   return (
@@ -90,9 +91,9 @@ function Footer() {
 
       <div className='text-center p-4' style={{ backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
         © {new Date().getFullYear()} Copyright : &nbsp;
-        <a className='text-reset fw-bold' href='https://mdbootstrap.com/'>
+        <Link className='text-reset fw-bold' to={'/'}>
           22yards.com
-        </a>
+        </Link>
       </div>
     </MDBFooter>
   );

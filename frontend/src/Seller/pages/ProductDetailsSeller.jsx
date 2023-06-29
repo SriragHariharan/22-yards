@@ -101,18 +101,18 @@ export default function ProductDetailsSeller() {
                 <aside className="col-lg-6">
                     <div className="border rounded-4 mb-3 d-flex justify-content-center">
                     <a onClick={() => setImage('01')} data-fslightbox="mygalley" className="rounded-4">
-                        <img style={{maxWidth:'100%', maxHeight:'100vh', margin:"auto"}} className="rounded-4 fit" src={`http://localhost:4000/product-images/${product._id}-${image}.jpg`} />
+                        <img style={{maxWidth:'100%', maxHeight:'100vh', margin:"auto"}} className="rounded-4 fit" src={`${import.meta.env.VITE_SERVER_IMG}/product-images/${product._id}-${image}.jpg`} />
                     </a>
                     </div>
                     <div className="d-flex justify-content-center mb-3">
                     <a onClick={() => setImage('01')} data-fslightbox="mygalley" className="border mx-1 rounded-2 item-thumb">
-                        <img width="90" height="90" className="rounded-2" src={`http://localhost:4000/product-images/${product._id}-01.jpg`} />
+                        <img width="90" height="90" className="rounded-2" src={`${import.meta.env.VITE_SERVER_IMG}/product-images/${product._id}-01.jpg`} />
                     </a>
                     <a onClick={() => setImage('02')} data-fslightbox="mygalley" className="border mx-1 rounded-2 item-thumb">
-                        <img width="90" height="90" className="rounded-2" src={`http://localhost:4000/product-images/${product._id}-02.jpg`}  />
+                        <img width="90" height="90" className="rounded-2" src={`${import.meta.env.VITE_SERVER_IMG}/product-images/${product._id}-02.jpg`}  />
                     </a>
                     <a onClick={() => setImage('03')} data-fslightbox="mygalley" className="border mx-1 rounded-2 item-thumb" >
-                        <img width="90" height="90" className="rounded-2" src={`http://localhost:4000/product-images/${product._id}-03.jpg`}  />
+                        <img width="90" height="90" className="rounded-2" src={`${import.meta.env.VITE_SERVER_IMG}/product-images/${product._id}-03.jpg`}  />
                     </a>
                     </div>
                 </aside>

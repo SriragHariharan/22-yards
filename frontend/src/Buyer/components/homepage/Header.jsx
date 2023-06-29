@@ -33,7 +33,7 @@ function Header() {
     <div>
         {/* nav2 start */}
         <div className="header-2">
-            <MDBNavbar expand='md' light className='header-2 p-4'>
+            <MDBNavbar expand='md' light className='header-2 pb-3'>
             <MDBContainer fluid>
                 <MDBNavbarToggler
                 aria-controls='navbarSupportedContent'

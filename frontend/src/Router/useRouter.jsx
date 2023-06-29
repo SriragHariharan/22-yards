@@ -40,11 +40,11 @@
     import Profile from "../Buyer/pages/Profile";
     import OrdersBuyer from "../Buyer/pages/OrdersBuyer";
     import SearchPage from "../Buyer/pages/SearchPage";
+    import ContactUs from "../Buyer/pages/ContactUs";
     
     import { useSelector, useDispatch } from "react-redux";
     import { AdminLogout } from "../redux-tk/reducers/AdminReducer";
-import { UserLogout } from "../redux-tk/reducers/UserReducer";
-import ContactUs from "../Buyer/pages/ContactUs";
+    import { UserLogout } from "../redux-tk/reducers/UserReducer";
 
 export default function useRouter() {
   

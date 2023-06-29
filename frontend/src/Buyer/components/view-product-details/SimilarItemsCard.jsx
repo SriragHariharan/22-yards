@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React from 'react'
 import { Link, } from 'react-router-dom'
 
 export default function SimilarItemsCard({product}) {
@@ -7,7 +7,7 @@ export default function SimilarItemsCard({product}) {
             <Link className='link' to={'../view-product/'+product?._id}>
                 <div className="d-flex mb-3">
                         <div className="me-3">
-                            <img src={`http://localhost:4000/product-images/${product?._id}-01.jpg`} style={{minWidth: "96px", height: "96px"}} className="img-md img-thumbnail" />
+                            <img src={`${import.meta.env.VITE_SERVER_IMG}/product-images/${product?._id}-01.jpg`} style={{minWidth: "96px", height: "96px"}} className="img-md img-thumbnail" />
                         </div>
                         <div className="info">
                             <div className="nav-link mb-1">

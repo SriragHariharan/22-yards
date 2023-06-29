@@ -8,7 +8,7 @@ export default function CheckoutProductCard({item}) {
                 <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill badge-dark">
                     {item?.quantity}
                 </span>
-                <img src={`http://localhost:4000/product-images/${item?.productID}-01.jpg`} style={{height: "96px", width: "96x"}} className="img-sm rounded border" />
+                <img src={`${import.meta.env.VITE_SERVER_IMG}/product-images/${item?.productID}-01.jpg`} style={{height: "96px", width: "96x"}} className="img-sm rounded border" />
             </div>
             <div>
                 <div>

@@ -45,7 +45,7 @@ function Payment({order}) {
         const { amount, id } = result.data.data.order;
 
         const options = {
-            key: "rzp_test_Ay6XZuAGWShoue", 
+            key: import.meta.env.VITE_RZP_SECRET_KEY, 
             amount: amount,
             currency: "INR",
             name: '22yards Ltd.',

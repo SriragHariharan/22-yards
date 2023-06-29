@@ -63,7 +63,7 @@ export default function CartItemsCard({item, setBillAmount}) {
                 <div className="col-lg-5">
                         <div className="me-lg-5">
                             <div className="d-flex">
-                                <img src={`http://localhost:4000/product-images/${item?.productID}-01.jpg`} className=" rounded me-3" style={{width: "96px", height: "96px"}} />
+                                <img src={`${import.meta.env.VITE_SERVER_IMG}/product-images/${item?.productID}-01.jpg`} className=" rounded me-3" style={{width: "96px", height: "96px"}} />
                             <div>
                             <a className="nav-link">{item.productName}</a>
                             <p className="text-muted">Size : {item.size}</p>

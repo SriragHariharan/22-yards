@@ -42,7 +42,7 @@ export default function OrdersCard({product}) {
                 <div className="col-lg-5">
                     <div className="">
                     <div className="d-flex">
-                        <img src={`http://localhost:4000/product-images/${product?.cart?.productID}-01.jpg`} className="border rounded me-3" style={{width: "150px", height: "150px" }} />
+                        <img src={`${import.meta.env.VITE_SERVER_IMG}/product-images/${product?.cart?.productID}-01.jpg`} className="border rounded me-3" style={{width: "150px", height: "150px" }} />
                         <div>
                             <div className="nav-link">{product?.cart.productName}</div>
                             <small className="text-muted">Size : {product?.cart?.size}</small>                      <br />

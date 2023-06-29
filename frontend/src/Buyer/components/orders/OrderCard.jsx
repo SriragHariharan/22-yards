@@ -73,7 +73,6 @@ export default function OrderCard({order}) {
         filledIcon: <i className="fa fa-star" />,
         onChange: newValue => {
             setRating(newValue);
-        //   console.log(`Example 2: new value is ${newValue}`);
         }
       };
 
@@ -88,7 +87,7 @@ export default function OrderCard({order}) {
                     <div class="row">
                     <div class="col-md-6 col-lg-3 col-xl-3 mb-4 mb-lg-0">
                         <div class="bg-image hover-zoom ripple rounded ripple-surface">
-                        <img src={`http://localhost:4000/product-images/${order?.cart?.productID}-01.jpg`}
+                        <img src={`${import.meta.env.VITE_SERVER_IMG}/product-images/${order?.cart?.productID}-01.jpg`}
                             class="w-100" />
                         <div>
                             <div class="hover-overlay">

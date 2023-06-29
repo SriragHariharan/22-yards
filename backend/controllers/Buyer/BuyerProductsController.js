@@ -81,13 +81,11 @@ const getProductsByCategory = async(req, res) => {
 //create an order for a single product selected using buy now
 const createOrder = async(req, res) => {
     try {
-        //console.log("req.body :::",req.body)
         if(req.body === {} || req.body === null || req.body === undefined){
             return res.json({   success:false, message:"Cannot proceed furthur", error_code:404, data:{} })
         }
         let newOrder =  new Orders({...req.body});
         let savedNewOrder = await newOrder.save()
-        //console.log("SNO:::", savedNewOrder._id);
         return res.json({success:true, message:"Order placed successfully", data:{savedNewOrder}})
     } catch (error) {
         return res.json({   success:false, message:error.message, error_code:404, data:{} })

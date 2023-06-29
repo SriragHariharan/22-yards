@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import useBuyerAuthInstance from '../axios/useBuyerAuthInstance'
 
-import { Link } from 'react-router-dom';
-import Alert from 'react-bootstrap/Alert';
+
 import OrderCard from '../components/orders/OrderCard';
 
 export default function OrdersBuyer() {

@@ -2,7 +2,7 @@ import axios from 'axios';
 
 const BuyerProductInstance = axios.create({
 	// Configuration
-	baseURL: 'http://localhost:4000/api/buyer/',
+	baseURL: import.meta.env.VITE_SERVER+'buyer/',
 	headers: {
 		Accept: 'application/json',
 	},

@@ -7,7 +7,7 @@ export default function ProductsCard({productName, stock, mrp, offerPrice, produ
             <div className="row justify-content-center">
                 <aside className="col-md-3">
                     <div className="bg-image hover-zoom ripple rounded ripple-surface">
-                        <img className='w-50 mt-2 ms-5' src={`http://localhost:4000/product-images/${productID}-01.jpg`} alt="premium watch" />
+                        <img className='w-50 mt-2 ms-5' src={`${import.meta.env.VITE_SERVER_IMG}/product-images/${productID}-01.jpg`} alt="premium watch" />
                     </div>
                 </aside> 
                 <div className="col-md-6">

@@ -33,7 +33,7 @@ export default function JustArrived() {
                         <div className="cat-item d-flex flex-column border mb-4" style={{padding: "30px"}}>
                             <p style={{textAlign:'right', color:'#A5A5A9', fontSize:'10px'}}>10 <sup>+</sup> &nbsp;  Products</p>
                             <a href="" className="cat-img position-relative overflow-hidden mb-3">
-                                <img className="img-fluid" src={`http://localhost:4000/product-images/${product._id}-01.jpg`} alt="" />
+                                <img className="img-fluid" src={`${import.meta.env.VITE_SERVER_IMG}/product-images/${product._id}-01.jpg`} alt="" />
                             </a>
                             <h5 className="text-center font-weight-semi-bold mb-3">{product.productName.slice(0,20)}.....</h5>
                             

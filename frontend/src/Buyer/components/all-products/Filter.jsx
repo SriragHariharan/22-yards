@@ -27,7 +27,6 @@ export default function Filter({listView, setListView, productsNo, setFilter}) {
             <a onClick={() => setListView(false)} className={`btn btn-${!listView ? "success" : "light" }`} title="Grid view">
                 <i className="fa fa-th fa-lg"></i>
             </a>
-            {/* <div className={`s-${this.props.showBulkActions ? 'is-shown' : 'is-hidden'}`}> */}
             </div>
         </div>
     </header>

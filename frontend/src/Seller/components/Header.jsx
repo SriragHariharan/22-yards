@@ -3,11 +3,9 @@ import '../styles/Welcomepage.css'
 import {
     MDBContainer,
     MDBNavbar,
-    MDBNavbarBrand,
     MDBNavbarToggler,
     MDBIcon,
     MDBNavbarNav,
-    MDBNavbarLink,
     MDBBtn,
 
     MDBCollapse,
@@ -44,7 +42,6 @@ export default function Header() {
                 </MDBBtn>
             </div> 
         </div>
-
         {/* nav2 */}
         <MDBNavbar expand='md' light className='header-2 p-4'>
             <MDBContainer fluid>
