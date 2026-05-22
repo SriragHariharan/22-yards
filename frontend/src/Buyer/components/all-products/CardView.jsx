@@ -1,27 +1,43 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
 
+function numberWithCommas(x) {
+    return x?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') ?? ''
+}
 
-export default function CardView({productName, mrp, offerPrice, stock, productID, description}) {
-  return (
-    <>
-        <div className="col-lg-3 col-md-6 col-6 d-flex p-1">
-            <div className="card w-100">
-            <Link to={'../view-product/'+productID} className='link'>
-                <img src={`${import.meta.env.VITE_SERVER_IMG}/product-images/${productID}-01.jpg`} className="card-img-top" style={{aspectRatio: "1 / 1"}} />
-            </Link>
-            <div className="card-body d-flex flex-column">
-                <p className="card-title">{productName}</p>
-                <div class="card-footer d-flex align-items-end pt-3 px-0 pb-0 mt-auto">
-                    <div className="d-flex flex-row mt-3">
-                        <p className="mb-1 me-3">₹ {offerPrice}</p>
-                        <p className="text-danger me-3"><s>₹ {mrp}</s></p>
-                        <p className=" text-success mb-3 me-2"> {Math.floor(((mrp-offerPrice)/offerPrice)*100)}% off</p>
+export default function CardView({ productName, mrp, offerPrice, stock, productID }) {
+    const discount = Math.floor(((mrp - offerPrice) / mrp) * 100)
+
+    return (
+        <Link to={`/view-product/${productID}`} className="buyer-product-grid__link">
+            <article className="buyer-product-card">
+                <div className="buyer-product-card__image-wrap">
+                    <img
+                        className="buyer-product-card__image"
+                        src={`${import.meta.env.VITE_SERVER_IMG}/product-images/${productID}-01.jpg`}
+                        alt={productName}
+                        loading="lazy"
+                    />
+                    {discount > 0 && (
+                        <span className="buyer-product-card__badge">{discount}% OFF</span>
+                    )}
+                    {stock < 1 && (
+                        <span className="buyer-product-card__badge" style={{ background: 'var(--buyer-danger)', color: '#fff' }}>
+                            Out of stock
+                        </span>
+                    )}
+                </div>
+                <div className="buyer-product-card__body">
+                    <h3 className="buyer-product-card__name">{productName}</h3>
+                    <div className="buyer-product-card__price-row">
+                        <span className="buyer-product-card__price">₹ {numberWithCommas(offerPrice)}</span>
+                        <span className="buyer-product-card__mrp">₹ {numberWithCommas(mrp)}</span>
+                        {discount > 0 && (
+                            <span className="buyer-product-card__off">{discount}% off</span>
+                        )}
                     </div>
                 </div>
-            </div>
-            </div>
-      </div>
-    </> 
-)
+            </article>
+        </Link>
+    )
 }

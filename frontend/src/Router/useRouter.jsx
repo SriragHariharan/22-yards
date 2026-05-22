@@ -43,7 +43,6 @@
     import Profile from "../Buyer/pages/Profile";
     import OrdersBuyer from "../Buyer/pages/OrdersBuyer";
     import SearchPage from "../Buyer/pages/SearchPage";
-    import ContactUs from "../Buyer/pages/ContactUs";
     
     import { useSelector, useDispatch } from "react-redux";
     import { AdminLogout } from "../redux-tk/reducers/AdminReducer";
@@ -97,7 +96,7 @@ export default function useRouter() {
                 <Route path='orders' element={ BUYER ? <OrdersBuyer/> : <Navigate to={'/user/login'}/> } />
                 <Route path='search' element={ <SearchPage/> } />
                 <Route path='faq' element={ <Faq/> } />
-                <Route path='contact' element={ <ContactUs/> } />
+                <Route path="*" element={<Page404 />} />
              </Route>
 
             {/* seller routes */}
@@ -116,7 +115,6 @@ export default function useRouter() {
                      <Route path="orders" element={ SELLER ? <Orders/> : <Navigate to={'/seller'}/> } />
                  </Route>
              </Route>
-             <Route path="*" element={<Page404/>} />
        </Route>
      )
     );

@@ -1,0 +1,93 @@
+[data-portal="buyer"] .buyer-product-card {
+    background: var(--buyer-bg-surface);
+    border: 1px solid var(--buyer-border);
+    border-radius: var(--buyer-radius-lg);
+    overflow: hidden;
+    transition: transform var(--buyer-transition), box-shadow var(--buyer-transition);
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+[data-portal="buyer"] .buyer-product-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--buyer-shadow-md);
+}
+
+[data-portal="buyer"] .buyer-product-card__image-wrap {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 1 / 1;
+    background: var(--buyer-bg-muted);
+}
+
+[data-portal="buyer"] .buyer-product-card__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 0.35s ease;
+}
+
+[data-portal="buyer"] .buyer-product-card:hover .buyer-product-card__image {
+    transform: scale(1.05);
+}
+
+[data-portal="buyer"] .buyer-product-card__badge {
+    position: absolute;
+    top: 0.65rem;
+    left: 0.65rem;
+    background: var(--buyer-gold);
+    color: var(--buyer-bg-dark);
+    font-size: var(--buyer-text-xs);
+    font-weight: 700;
+    padding: 0.2rem 0.5rem;
+    border-radius: var(--buyer-radius-sm);
+}
+
+[data-portal="buyer"] .buyer-product-card__body {
+    padding: 1rem;
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+[data-portal="buyer"] .buyer-product-card__name {
+    font-size: var(--buyer-text-sm);
+    font-weight: 600;
+    color: var(--buyer-text-heading);
+    margin-bottom: 0.5rem;
+    line-height: 1.4;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+
+[data-portal="buyer"] .buyer-product-card__price-row {
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.35rem 0.5rem;
+    margin-top: auto;
+}
+
+[data-portal="buyer"] .buyer-product-card__price {
+    font-size: var(--buyer-text-lg);
+    font-weight: 700;
+    color: var(--buyer-accent);
+}
+
+[data-portal="buyer"] .buyer-product-card__mrp {
+    font-size: var(--buyer-text-sm);
+    color: var(--buyer-text-muted);
+    text-decoration: line-through;
+}
+
+[data-portal="buyer"] .buyer-product-card__off {
+    font-size: var(--buyer-text-xs);
+    font-weight: 600;
+    color: var(--buyer-accent);
+    background: var(--buyer-success-bg);
+    padding: 0.1rem 0.4rem;
+    border-radius: var(--buyer-radius-sm);
+}

@@ -1,83 +1,20 @@
 import React from 'react'
 
-export default function StarComponent({rating, count}) {
-  return (
-        <>
-        {
-            rating === 1 && (
-                <div class="mb-2 me-2">
-                    <i class="fa fa-star text-warning "></i>
-                    <i class="fa fa-star" style={{color:'#868686'}}></i>
-                    <i class="fa fa-star" style={{color:'#868686'}}></i>
-                    <i class="fa fa-star" style={{color:'#868686'}}></i>
-                    <i class="fa fa-star" style={{color:'#868686'}}></i>
-                    <span className="ms-2 me-2 text-dark"><sub>
-                            { count ? "("+ count +" user reviews)" : null}
-                        </sub>
-                    </span>
-                </div>
-            )
-        }
-        {
-            rating === 2 && (
-                <div class="mb-2 me-2">
-                    <i class="fa fa-star text-warning "></i>
-                    <i class="fa fa-star text-warning"></i>
-                    <i class="fa fa-star" style={{color:'#868686'}}></i>
-                    <i class="fa fa-star" style={{color:'#868686'}}></i>
-                    <i class="fa fa-star" style={{color:'#868686'}}></i>
-                    <span className="ms-2 me-2 text-dark"><sub>
-                            { count ? "("+ count +" user reviews)" : null}
-                        </sub>
-                    </span>
-                </div>
-            )
-        }
-        {
-            rating === 3 && (
-                <div class="mb-2 me-2">
-                    <i class="fa fa-star text-warning"></i>
-                    <i class="fa fa-star text-warning"></i>
-                    <i class="fa fa-star text-warning"></i>
-                    <i class="fa fa-star" style={{color:'#868686'}}></i>
-                    <i class="fa fa-star" style={{color:'#868686'}}></i>
-                    <span className="ms-2 me-2 text-dark"><sub>
-                            { count ? "("+ count +" user reviews)" : null}
-                        </sub>
-                    </span>
-                </div>
-            )
-        }
-        {
-            rating === 4 && (
-                <div class="mb-2 me-2">
-                    <i class="fa fa-star text-warning"></i>
-                    <i class="fa fa-star text-warning"></i>
-                    <i class="fa fa-star text-warning"></i>
-                    <i class="fa fa-star text-warning"></i>
-                    <i class="fa fa-star" style={{color:'#868686'}}></i>
-                    <span className="ms-2 me-2 text-dark"><sub>
-                            { count ? "("+ count +" user reviews)" : null}
-                        </sub>
-                    </span>
-                </div>
-            )
-        }
-        {
-            rating === 5 && (
-                <div class="mb-2 me-2">
-                    <i class="fa fa-star text-warning"></i>
-                    <i class="fa fa-star text-warning"></i>
-                    <i class="fa fa-star text-warning"></i>
-                    <i class="fa fa-star text-warning"></i>
-                    <i class="fa fa-star text-warning"></i>
-                    <span className="ms-2 me-2 text-dark"><sub>
-                            { count ? "("+ count +" user reviews)" : null}
-                        </sub>
-                    </span>
-                </div>
-            )
-        }
-        </>      
-  )
+export default function StarComponent({ rating, count }) {
+    const safeRating = Number.isFinite(rating) && rating > 0 ? Math.min(5, Math.max(1, Math.round(rating))) : 0
+
+    return (
+        <span className="buyer-stars" aria-label={safeRating ? `${safeRating} out of 5 stars` : 'No rating'}>
+            {[1, 2, 3, 4, 5].map(star => (
+                <i
+                    key={star}
+                    className={`fa fa-star buyer-stars__icon--${star <= safeRating ? 'filled' : 'empty'}`}
+                    aria-hidden="true"
+                />
+            ))}
+            {count > 0 && (
+                <span className="buyer-stars__count">({count} reviews)</span>
+            )}
+        </span>
+    )
 }

@@ -1,28 +1,200 @@
-@import url('https://fonts.googleapis.com/css2?family=Poppins&display=swap');
-
-*{
-    font-family: 'Poppins', sans-serif;
+/* Buyer auth — split hero + form card */
+[data-portal="buyer"] .buyer-auth {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: calc(100vh - 180px);
+    margin: 0 auto;
+    max-width: 1100px;
 }
 
-.login-form{
-    margin-top: 10vh;
-    margin-bottom: 10vh;
+[data-portal="buyer"] .buyer-auth__hero {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 3rem 2.5rem;
+    background: var(--buyer-hero-gradient);
+    color: var(--buyer-text-inverse);
+    position: relative;
+    overflow: hidden;
 }
 
-.signup-form{
-    margin-top: -2vh;
-    margin-bottom: -1vh;
+[data-portal="buyer"] .buyer-auth__hero::before {
+    content: '';
+    position: absolute;
+    top: -40%;
+    right: -20%;
+    width: 60%;
+    height: 80%;
+    background: radial-gradient(circle, rgba(201, 162, 39, 0.15) 0%, transparent 70%);
+    pointer-events: none;
 }
 
-.login-title{
-    font-size: 24px;
-}
-.form-error{
-    color:red;
-    margin-top:'-27px';
-    font-size: 16px;
+[data-portal="buyer"] .buyer-auth__hero-content {
+    position: relative;
+    z-index: 1;
 }
 
-placeholder{
-    color: #dedede;
+[data-portal="buyer"] .buyer-auth__logo {
+    width: 72px;
+    height: 72px;
+    object-fit: contain;
+    border-radius: var(--buyer-radius-md);
+    background: rgba(255, 255, 255, 0.1);
+    padding: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+[data-portal="buyer"] .buyer-auth__brand {
+    font-size: var(--buyer-text-2xl);
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+    letter-spacing: -0.02em;
+}
+
+[data-portal="buyer"] .buyer-auth__brand span {
+    color: var(--buyer-gold);
+}
+
+[data-portal="buyer"] .buyer-auth__tagline {
+    font-size: var(--buyer-text-sm);
+    color: rgba(248, 250, 252, 0.85);
+    line-height: 1.6;
+    max-width: 280px;
+}
+
+[data-portal="buyer"] .buyer-auth__accent-line {
+    width: 48px;
+    height: 3px;
+    background: var(--buyer-gold);
+    border-radius: var(--buyer-radius-full);
+    margin-top: 1.5rem;
+}
+
+[data-portal="buyer"] .buyer-auth__panel {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 2.5rem 2rem;
+    background: var(--buyer-bg-page);
+}
+
+[data-portal="buyer"] .buyer-auth__card {
+    width: 100%;
+    max-width: 400px;
+    background: var(--buyer-bg-surface);
+    border-radius: var(--buyer-radius-lg);
+    box-shadow: var(--buyer-shadow-lg);
+    padding: 2.25rem 2rem;
+    border: 1px solid var(--buyer-border);
+}
+
+[data-portal="buyer"] .buyer-auth__title {
+    font-size: var(--buyer-text-2xl);
+    font-weight: 700;
+    color: var(--buyer-text-heading);
+    margin-bottom: 0.35rem;
+}
+
+[data-portal="buyer"] .buyer-auth__subtitle {
+    font-size: var(--buyer-text-sm);
+    color: var(--buyer-text-muted);
+    margin-bottom: 1.75rem;
+}
+
+[data-portal="buyer"] .buyer-auth__field {
+    margin-bottom: 1.25rem;
+}
+
+[data-portal="buyer"] .buyer-auth__field .form-label {
+    font-size: var(--buyer-text-sm);
+    font-weight: 600;
+    color: var(--buyer-text-heading);
+    margin-bottom: 0.4rem;
+}
+
+[data-portal="buyer"] .buyer-auth__field .form-control {
+    padding: 0.65rem 0.9rem;
+    border: 1px solid var(--buyer-border-default);
+    border-radius: var(--buyer-radius-md);
+    font-size: var(--buyer-text-base);
+    transition: border-color var(--buyer-transition), box-shadow var(--buyer-transition);
+}
+
+[data-portal="buyer"] .buyer-auth__field .form-control:focus {
+    border-color: var(--buyer-primary);
+    box-shadow: 0 0 0 3px var(--buyer-accent-ring);
+    outline: none;
+}
+
+[data-portal="buyer"] .buyer-auth__error {
+    font-size: var(--buyer-text-xs);
+    color: var(--buyer-danger);
+    margin-top: -0.75rem;
+    margin-bottom: 0.5rem;
+}
+
+[data-portal="buyer"] .buyer-auth__alert {
+    font-size: var(--buyer-text-sm);
+    border-radius: var(--buyer-radius-md);
+    margin-bottom: 1.25rem;
+    background: var(--buyer-danger-bg);
+    border-color: rgba(185, 28, 28, 0.2);
+    color: var(--buyer-danger);
+}
+
+[data-portal="buyer"] .buyer-auth__submit {
+    width: 100%;
+    margin-top: 0.5rem;
+    padding: 0.75rem 1.25rem;
+}
+
+[data-portal="buyer"] .buyer-auth__footer {
+    margin-top: 1.75rem;
+    text-align: center;
+    font-size: var(--buyer-text-sm);
+    color: var(--buyer-text-muted);
+}
+
+[data-portal="buyer"] .buyer-auth__footer a {
+    color: var(--buyer-link);
+    font-weight: 600;
+    text-decoration: none;
+    transition: color var(--buyer-transition);
+}
+
+[data-portal="buyer"] .buyer-auth__footer a:hover {
+    color: var(--buyer-link-hover);
+    text-decoration: underline;
+}
+
+@media (max-width: 991px) {
+    [data-portal="buyer"] .buyer-auth {
+        grid-template-columns: 1fr;
+        min-height: auto;
+    }
+
+    [data-portal="buyer"] .buyer-auth__hero {
+        padding: 2rem 1.5rem;
+        text-align: center;
+        align-items: center;
+    }
+
+    [data-portal="buyer"] .buyer-auth__hero-content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+    }
+
+    [data-portal="buyer"] .buyer-auth__tagline {
+        max-width: none;
+    }
+
+    [data-portal="buyer"] .buyer-auth__accent-line {
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    [data-portal="buyer"] .buyer-auth__panel {
+        padding: 2rem 1.25rem 3rem;
+    }
 }

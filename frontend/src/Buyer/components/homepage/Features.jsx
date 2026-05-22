@@ -1,39 +1,30 @@
 import React from 'react'
 
+const TRUST_ITEMS = [
+  { icon: 'fa-certificate', title: '100% Authentic', desc: 'Official gear from top brands' },
+  { icon: 'fa-truck-fast', title: 'Free Delivery', desc: 'On orders above ₹999' },
+  { icon: 'fa-rotate-left', title: 'Easy Returns', desc: '14-day hassle-free returns' },
+  { icon: 'fa-headset', title: 'Expert Support', desc: 'Cricket specialists on call' },
+]
+
 export default function Features() {
   return (
-    <div className="container-fluid pt-5">
-        <div className="row px-xl-5 pb-3">
-            
-            <div className="col-lg-3 col-md-6 col-12 pb-1">
-                <div className="d-flex align-items-center border mb-4" style={{padding: "30px"}}>
-                    <h2 className="fa fa-check m-0 mr-3 me-4"></h2>
-                    <h5 className="font-weight-semi-bold m-0">Original Products</h5>
-                </div>
-            </div>
-            
-            <div className="col-lg-3 col-md-6 col-12 pb-1">
-                <div className="d-flex align-items-center border mb-4" style={{padding: "30px"}}>
-                    <h2 className="fa fa-shipping-fast m-0 mr-2  me-4"></h2>
-                    <h5 className="font-weight-semi-bold m-0">Free Shipping</h5>
-                </div>
-            </div>
-            
-            <div className="col-lg-3 col-md-6 col-12 pb-1">
-                <div className="d-flex align-items-center border mb-4" style={{padding: "30px"}}>
-                    <h2 className="fas fa-exchange-alt m-0 mr-3 me-4"></h2>
-                    <h5 className="font-weight-semi-bold m-0">14-Day Return</h5>
-                </div>
-            </div>
-            
-            <div className="col-lg-3 col-md-6 col-12 pb-1">
-                <div className="d-flex align-items-center border mb-4" style={{padding: "30px"}}>
-                    <h2 className="fa fa-phone-volume m-0 mr-3 me-4"></h2>
-                    <h5 className="font-weight-semi-bold m-0">24/7 Support</h5>
-                </div>
-            </div>
-            
+    <section className="buyer-section buyer-section--muted" aria-label="Why shop with us">
+      <div className="buyer-container">
+        <div className="buyer-trust-grid">
+          {TRUST_ITEMS.map((item) => (
+            <article key={item.title} className="buyer-trust-item">
+              <div className="buyer-trust-item__icon" aria-hidden="true">
+                <i className={`fa ${item.icon}`} />
+              </div>
+              <div>
+                <h3 className="buyer-trust-item__title">{item.title}</h3>
+                <p className="buyer-trust-item__desc">{item.desc}</p>
+              </div>
+            </article>
+          ))}
         </div>
-    </div>
+      </div>
+    </section>
   )
 }

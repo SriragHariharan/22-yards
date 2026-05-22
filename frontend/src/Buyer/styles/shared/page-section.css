@@ -1,0 +1,49 @@
+[data-portal="buyer"] .buyer-section {
+    padding: var(--buyer-section-y) 0;
+}
+
+[data-portal="buyer"] .buyer-section--muted {
+    background: var(--buyer-bg-muted);
+}
+
+[data-portal="buyer"] .buyer-section__header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+
+[data-portal="buyer"] .buyer-section-title {
+    font-size: var(--buyer-text-2xl);
+    font-weight: 700;
+    color: var(--buyer-text-heading);
+    position: relative;
+    display: inline-block;
+    padding-bottom: 0.75rem;
+}
+
+[data-portal="buyer"] .buyer-section-title::after {
+    content: '';
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 60px;
+    height: 3px;
+    background: var(--buyer-gold);
+    border-radius: var(--buyer-radius-full);
+}
+
+[data-portal="buyer"] .buyer-section-subtitle {
+    font-size: var(--buyer-text-sm);
+    color: var(--buyer-text-muted);
+    margin-top: 0.5rem;
+}
+
+[data-portal="buyer"] .buyer-empty-state {
+    text-align: center;
+    padding: 4rem 1.5rem;
+}
+
+[data-portal="buyer"] .buyer-empty-state__text {
+    color: var(--buyer-text-muted);
+    margin-bottom: 1.5rem;
+}

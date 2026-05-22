@@ -1,152 +1,129 @@
 import React, { useEffect, useState } from 'react'
-import { ToastContainer, toast } from 'react-toastify';
-import OrderPlaced from './order-status/OrderPlaced'
-import OrderConfirmed from './order-status/OrderConfirmed'
-import OrderPacked from './order-status/OrderPacked'
-import OrderShipped from './order-status/OrderShipped'
-import OrderDelivered from './order-status/OrderDelivered'
-
+import OrderTimeline from './OrderTimeline'
 import useBuyerAuthInstance from '../../axios/useBuyerAuthInstance'
-
-//react star rating code
 import ReactStars from "react-rating-stars-component";
 
+function formatPrice(x) {
+    return x?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') ?? '0'
+}
 
-export default function OrderCard({order}) {
-
+export default function OrderCard({ order, onToast }) {
     const [BuyerAuthInstance] = useBuyerAuthInstance()
     const [rating, setRating] = useState(1);
-    const [productReview, setProductReview] = useState(null)
+    const [productReview, setProductReview] = useState('')
     const [reviewPresent, setReviewPresent] = useState(false)
 
     const addReview = (e) => {
-        e.preventDefault();
         setProductReview(e.target.value)
     }
 
-    //to show toast message
-    function showToastMessage (message){
-        toast(message, {
-            position: toast.POSITION.TOP_CENTER
-        });
-    };
+    const handleSubmit = () => {
+        const data = {
+            productID: order?.cart?.productID,
+            email: order?.email,
+            userName: order?.fullName,
+            productRating: rating,
+            productReview: productReview,
+            purchaseDate: order?.createdAt,
+            orderID: order?._id,
+        }
 
-    //to submit review
-    const handleSubmit = (productID, email,userName, purchaseDate, orderID ) => {
-        let data = {}
-        data.productID = productID
-        data.email=email
-        data.userName = userName
-        data.productRating = rating
-        data.productReview = productReview
-        data.purchaseDate = purchaseDate
-        data.orderID = orderID
-
-        //sending data to backend api
-        BuyerAuthInstance.post('/add-review', {...data})
-        .then(resp => showToastMessage(resp.data.message) )
-        .catch(err => showToastMessage(err.message))
-
+        BuyerAuthInstance.post('/add-review', { ...data })
+            .then(resp => {
+                onToast?.(resp.data.message)
+                setReviewPresent(true)
+            })
+            .catch(err => onToast?.(err.message))
     }
 
-    //to check whether a review is present or not
     useEffect(() => {
-        BuyerAuthInstance.post('/check-review', {email:order?.email ,orderID:order?._id, productID:order?.cart?.productID, })
-        .then(resp => {
-            if(resp.data.success === false){
-                setReviewPresent(false);
-            }else{
-                setReviewPresent(true);
-            }
-        }).catch(err => showToastMessage(err.message) )
-    },[])
-
+        BuyerAuthInstance.post('/check-review', {
+            email: order?.email,
+            orderID: order?._id,
+            productID: order?.cart?.productID,
+        })
+            .then(resp => {
+                setReviewPresent(resp.data.success === false)
+            })
+            .catch(err => onToast?.(err.message))
+    }, [order?._id, order?.email, order?.cart?.productID])
 
     const starRating = {
-        size: 25,
+        size: 22,
         count: 5,
-        value: 1,
-        color: "grey",
-        activeColor: "#FFC55C",
-        emptyIcon: <i className="far fa-star" />,
-        halfIcon: <i className="fa fa-star-half-alt" />,
-        filledIcon: <i className="fa fa-star" />,
-        onChange: newValue => {
-            setRating(newValue);
-        }
-      };
+        value: rating,
+        color: "var(--buyer-border-strong)",
+        activeColor: "var(--buyer-gold)",
+        onChange: newValue => setRating(newValue),
+    };
 
-  return (
-    <div>
-        {/* for showing toast message */}
-        <ToastContainer />
-        <div class="row justify-content-center mb-3">
-            <div class="col-md-10 col-xl-9">
-                <div class="card shadow-0 border rounded-3">
-                <div class="card-body">
-                    <div class="row">
-                    <div class="col-md-6 col-lg-3 col-xl-3 mb-4 mb-lg-0">
-                        <div class="bg-image hover-zoom ripple rounded ripple-surface">
-                        <img src={`${import.meta.env.VITE_SERVER_IMG}/product-images/${order?.cart?.productID}-01.jpg`}
-                            class="w-100" />
-                        <div>
-                            <div class="hover-overlay">
-                            <div class="mask" style={{backgroundColor: "rgba(253, 253, 253, 0.15)"}}></div>
+    const isDelivered = order?.paymentSuccess && order?.cart?.orderStatus === 'order delivered'
+
+    return (
+        <article className="buyer-order-card">
+            <div className="buyer-order-card__inner">
+                <img
+                    src={`${import.meta.env.VITE_SERVER_IMG}/product-images/${order?.cart?.productID}-01.jpg`}
+                    alt={order?.cart?.productName}
+                    className="buyer-order-card__image"
+                />
+                <div>
+                    <h3 className="buyer-order-card__name">{order?.cart?.productName}</h3>
+                    <p className="buyer-order-card__meta">
+                        Size: {order?.cart?.size} · Qty: {order?.cart?.quantity}
+                    </p>
+                    <p className="buyer-order-card__detail">
+                        Amount: <strong>₹ {formatPrice(order?.cart?.totalPrice)}</strong>
+                    </p>
+                    <p className="buyer-order-card__detail">
+                        Payment:{' '}
+                        {order?.paymentSuccess ? (
+                            <span className="buyer-order-card__badge buyer-order-card__badge--success">Completed</span>
+                        ) : (
+                            <span className="buyer-order-card__badge buyer-order-card__badge--danger">Incomplete / failed</span>
+                        )}
+                    </p>
+                    {order?.paymentSuccess && (
+                        <p className="buyer-order-card__detail">
+                            <span className="buyer-order-card__status-label">Status: </span>
+                            <span className="buyer-order-card__badge buyer-order-card__badge--success">
+                                {order?.cart?.orderStatus}
+                            </span>
+                        </p>
+                    )}
+
+                    {order?.paymentSuccess && (
+                        <OrderTimeline activeStatus={order?.cart?.orderStatus} />
+                    )}
+
+                    {isDelivered && (
+                        reviewPresent ? (
+                            <p className="buyer-order-card__review-done">
+                                <i className="fas fa-check-circle" aria-hidden="true" /> Thank you — your review has been submitted.
+                            </p>
+                        ) : (
+                            <div className="buyer-order-card__review">
+                                <p className="buyer-order-card__review-title">Rate this product</p>
+                                <ReactStars {...starRating} />
+                                <textarea
+                                    cols={30}
+                                    rows={3}
+                                    className="buyer-order-card__textarea"
+                                    placeholder="Share your experience…"
+                                    onChange={addReview}
+                                />
+                                <button
+                                    type="button"
+                                    className="buyer-btn buyer-btn--accent"
+                                    onClick={handleSubmit}
+                                >
+                                    Submit review
+                                </button>
                             </div>
-                        </div>
-                        </div>
-                    </div>
-                    <div class="col-md-6 col-lg-9 col-xl-9">
-                        <h5>{order?.cart?.productName}</h5>
-                        <div class="d-flex flex-row">
-                            <span>Size : {order?.cart?.size}</span>
-                            &nbsp; &nbsp; &nbsp;
-                            <span>Quantity : {order?.cart?.quantity}</span>
-                        </div>
-                            <p class="mb-1 mt-3">Amount payable : &nbsp; &nbsp; $ {order?.cart?.totalPrice}</p>
-                            <p class="mb-1 mt-3">Payment status : &nbsp; &nbsp; {order?.paymentSuccess ? <span className="text-success  h6">Payment completed</span> : <span className="text-danger h6">Payment incomplete / failed</span> }</p>
-                            {
-                             order?.paymentSuccess && <p class="mb-1 mt-3">Delivery status : <span className="text-success h5">{order?.cart?.orderStatus}</span> </p>
-                            }
-                        </div>
-                        
-                            {
-                                order?.paymentSuccess && order?.cart?.orderStatus === 'order placed' && <OrderPlaced/>
-                            }
-                            {
-                                order?.paymentSuccess && order?.cart?.orderStatus === 'order confirmed' && <OrderConfirmed/>
-                            }
-                            {
-                                order?.paymentSuccess && order?.cart?.orderStatus === 'order packed' && <OrderPacked/>
-                            }
-                            {
-                                order?.paymentSuccess && order?.cart?.orderStatus === 'order shipped' && <OrderShipped/>
-                            }
-                            {
-                                order?.paymentSuccess && order?.cart?.orderStatus === 'order delivered' && <OrderDelivered/>
-                            }
-                            {/* if order is delivered show section to addd rating */}
-                            {
-                                order?.paymentSuccess && order?.cart?.orderStatus === 'order delivered' && 
-                                ( !reviewPresent ? <div className='text-primary mt-2'>user review added for this product</div> :
-                                <div className='card p-3'>
-                                    <p>Add review for this product</p>
-                                    <ReactStars {...starRating} />
-                                    <textarea cols="30" rows="3" onChange={addReview}></textarea>
-                                    <div className="btn btn-info m-2 w-25 flex-end" 
-                                    onClick={() => handleSubmit(order?.cart?.productID, order?.email, order?.fullName, order?.createdAt, order?._id )}
-                                    >
-                                        add review
-                                    </div>
-                                </div>
-
-                                )
-                            }
-                    </div>
-                </div>
+                        )
+                    )}
                 </div>
             </div>
-    </div>
-    </div>
-  )
+        </article>
+    )
 }

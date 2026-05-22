@@ -1,104 +1,104 @@
 import React, { useMemo, useState, useEffect } from 'react'
-import {  useDispatch, useSelector } from 'react-redux';
-import {ChangeProductQuantity, RemoveCartItem, SetCartTotal } from '../../../redux-tk/reducers/CartReducer';
-import { ToastContainer, toast } from 'react-toastify';
+import { Link } from 'react-router-dom'
+import { useDispatch, useSelector } from 'react-redux';
+import { ChangeProductQuantity, RemoveCartItem, SetCartTotal } from '../../../redux-tk/reducers/CartReducer';
 import BuyerProductInstance from '../../axios/BuyerProductInstance';
 
-export default function CartItemsCard({item, setBillAmount}) {
+function formatPrice(x) {
+    return x?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') ?? '0'
+}
+
+export default function CartItemsCard({ item, setBillAmount, onRemove }) {
     const dispatch = useDispatch()
-    const cart = useSelector(state => state.cart.cart);  //here we get the cart items in this variable
+    const cart = useSelector(state => state.cart.cart);
     const [product, setProduct] = useState(null);
-    const [error, setError] = useState(null);
 
     useEffect(() => {
-        BuyerProductInstance.get('get-single-product/'+item?.productID)
-        .then(resp => {
-            if(resp.data.success === false){
-                setError(resp.data.message);
-                return false;
-            }else{
-                setProduct(resp.data.data.product);
-                return resp.data.data.product.category;
-            }
-        }).catch(err => setError(err.message))
-    },[])
+        BuyerProductInstance.get('get-single-product/' + item?.productID)
+            .then(resp => {
+                if (resp.data.success !== false) {
+                    setProduct(resp.data.data.product);
+                }
+            })
+            .catch(() => {})
+    }, [item?.productID])
 
-    // product?.stock
-
-    //toast message
-    const showToastMessage = () => {
-        toast('Product removed from cart', {
-            position: toast.POSITION.TOP_CENTER
-        });
-    };
-
-    //change quantity
-    const handleQuantity = (productID, quantity) => {
-        dispatch(ChangeProductQuantity({productID, quantity}))
+    const handleQuantity = (productID, delta) => {
+        dispatch(ChangeProductQuantity({ productID, quantity: delta }))
     }
 
-    //delete product from cart
     const handleRemoveCartItem = (productID) => {
-        var response = confirm("Are you sure you want to delete this item ?");  
-    if (response == true) {  
-        dispatch(RemoveCartItem(productID))
-        showToastMessage()
-        } else {  
-            return  
-        }  
+        if (window.confirm('Remove this item from your cart?')) {
+            dispatch(RemoveCartItem(productID))
+            onRemove?.()
+        }
     }
 
-    //calculate bill amount
-    useMemo(() =>{
-        let cartTotal = cart.map(product =>product.totalPrice).reduce((accu, curr) => accu+curr, 0)
+    useMemo(() => {
+        const cartTotal = cart.map(p => p.totalPrice).reduce((accu, curr) => accu + curr, 0)
         setBillAmount(cartTotal);
         dispatch(SetCartTotal(cartTotal))
-    },[cart])
+    }, [cart, dispatch, setBillAmount])
 
+    const canIncrease = product?.stock != null && item.quantity < product.stock && item.quantity < 5
 
-  return (
-    <div>
-        <ToastContainer />
-            <div className="row gy-3 mb-4">
-                <div className="col-lg-5">
-                        <div className="me-lg-5">
-                            <div className="d-flex">
-                                <img src={`${import.meta.env.VITE_SERVER_IMG}/product-images/${item?.productID}-01.jpg`} className=" rounded me-3" style={{width: "96px", height: "96px"}} />
-                            <div>
-                            <a className="nav-link">{item.productName}</a>
-                            <p className="text-muted">Size : {item.size}</p>
-                            </div>
-                        </div>
-                        </div>
-                    </div>
-                    <div className="col-lg-2 col-sm-6 col-6 d-flex flex-row flex-lg-column flex-xl-row text-nowrap">
-                        <div className='me-5'>
-                            <div>
-                                <span className="btn btn-warning" onClick={() => item.quantity >1 && handleQuantity(item.productID, -1)}>-</span>
-                                <span>&nbsp; &nbsp; {item.quantity} &nbsp; &nbsp;</span>
-                                {
-                                    (product?.stock !== item.quantity) ?
-                                    <span className="btn btn-success" onClick={() => item.quantity <5 && handleQuantity(item.productID, +1)}>+</span>
-                                    :
-                                    <div className="small text-danger">Only {product?.stock} items are avilable in stock</div>
-                                }
-                            </div>
-                        </div>
-                        <div>
-                            <div className="text">₹ {item.totalPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</div> <br />
-                            <div className="text-muted text-nowrap"> ₹ {item.offerPrice.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",")} / per item </div>
-                        </div>
-                    </div>
-                    <div className="col-lg col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
-                        <div onClick={() => handleRemoveCartItem(item?.productID)} className="float-md-end">
-                            <div className="btn btn-light border text-danger icon-hover-danger">
-                                <i className="fa fa-trash" aria-hidden="true"></i> &nbsp; &nbsp;
-                                Remove
-                            </div>
-                        </div>
+    return (
+        <article className="buyer-cart-item">
+            <img
+                src={`${import.meta.env.VITE_SERVER_IMG}/product-images/${item.productID}-01.jpg`}
+                alt={item.productName}
+                className="buyer-cart-item__image"
+            />
+
+            <div>
+                <Link to={`/view-product/${item.productID}`} className="buyer-cart-item__name">
+                    {item.productName}
+                </Link>
+                <p className="buyer-cart-item__meta">Size: {item.size}</p>
+            </div>
+
+            <div className="buyer-cart-item__qty">
+                <button
+                    type="button"
+                    className="buyer-cart-item__qty-btn"
+                    disabled={item.quantity <= 1}
+                    onClick={() => item.quantity > 1 && handleQuantity(item.productID, -1)}
+                    aria-label="Decrease quantity"
+                >
+                    −
+                </button>
+                <span className="buyer-cart-item__qty-value">{item.quantity}</span>
+                {canIncrease ? (
+                    <button
+                        type="button"
+                        className="buyer-cart-item__qty-btn"
+                        onClick={() => handleQuantity(item.productID, +1)}
+                        aria-label="Increase quantity"
+                    >
+                        +
+                    </button>
+                ) : (
+                    <span className="buyer-cart-item__stock-warn">
+                        {product?.stock != null
+                            ? `Only ${product.stock} available`
+                            : 'Max quantity reached'}
+                    </span>
+                )}
+            </div>
+
+            <div className="buyer-cart-item__price-col">
+                <p className="buyer-cart-item__line-total">₹ {formatPrice(item.totalPrice)}</p>
+                <p className="buyer-cart-item__unit-price">₹ {formatPrice(item.offerPrice)} each</p>
+                <div className="buyer-cart-item__remove-wrap" style={{ marginTop: '0.75rem' }}>
+                    <button
+                        type="button"
+                        className="buyer-cart-item__remove"
+                        onClick={() => handleRemoveCartItem(item.productID)}
+                    >
+                        <i className="fa fa-trash" aria-hidden="true" /> Remove
+                    </button>
                 </div>
             </div>
-            <hr />
-    </div>
-  )
+        </article>
+    )
 }

@@ -1,102 +1,91 @@
-import React from 'react';
-import { MDBFooter, MDBContainer, MDBRow, MDBCol, MDBIcon } from 'mdb-react-ui-kit';
-import { Link } from 'react-router-dom';
+import React from 'react'
+import { Link } from 'react-router-dom'
+
+const PRODUCT_LINKS = [
+  { label: 'Cricket Bats', to: '/category/cricket-bat' },
+  { label: 'Leg Guards', to: '/category/leg-guard' },
+  { label: 'Gloves', to: '/category/gloves' },
+  { label: 'Wearables', to: '/category/wearables' },
+]
+
+const USEFUL_LINKS = [
+  { label: 'All Products', to: '/all-products' },
+  { label: 'FAQ', to: '/faq' },
+  { label: 'My Orders', to: '/orders' },
+]
 
 function Footer() {
   return (
-    <MDBFooter style={{ backgroundColor: 'rgba(0, 0, 0, 0.05)', padding:'10px' }} className='text-center text-lg-start text-muted'>
-      
+    <footer className="buyer-footer">
+      <div className="buyer-footer__main">
+        <div className="buyer-footer__grid">
+          <div>
+            <p className="buyer-footer__brand-name">
+              22 <span>Yards</span>
+            </p>
+            <p className="buyer-footer__desc">
+              India&apos;s trusted destination for premium cricket equipment — bats, pads,
+              gloves, and pro-grade kit from the brands you know.
+            </p>
+          </div>
 
-      <section className=''>
-        <MDBContainer className='text-center text-md-start mt-5'>
-          <MDBRow className='mt-3'>
-            <MDBCol md='3' lg='4' xl='3' className='mx-auto mb-4'>
-              <h6 className='text-uppercase fw-bold mb-4'>
-                <MDBIcon color='secondary' icon='gem' className='me-3' />
-                22 yards Pvt. Ltd
-              </h6>
-              <p>
-                22 yards is a sporting company mainly focused on selling cricketing goods.
-              </p>
-            </MDBCol>
+          <div>
+            <h3 className="buyer-footer__heading">Products</h3>
+            {PRODUCT_LINKS.map((link) => (
+              <Link key={link.to} to={link.to} className="buyer-footer__link">
+                {link.label}
+              </Link>
+            ))}
+          </div>
 
-            <MDBCol md='2' lg='2' xl='2' className='mx-auto mb-4'>
-              <h6 className='text-uppercase fw-bold mb-4'>Products</h6>
-              <p>
-                <a href='#!' className='text-reset'>
-                  cricket Bats
-                </a>
-              </p>
-              <p>
-                <a href='#!' className='text-reset'>
-                  Cricket Pads
-                </a>
-              </p>
-              <p>
-                <a href='#!' className='text-reset'>
-                  Cricket Gloves
-                </a>
-              </p>
-              <p>
-                <a href='#!' className='text-reset'>
-                  Wearables
-                </a>
-              </p>
-            </MDBCol>
+          <div>
+            <h3 className="buyer-footer__heading">Quick Links</h3>
+            {USEFUL_LINKS.map((link) => (
+              <Link key={link.to} to={link.to} className="buyer-footer__link">
+                {link.label}
+              </Link>
+            ))}
+          </div>
 
-            <MDBCol md='3' lg='2' xl='2' className='mx-auto mb-4'>
-              <h6 className='text-uppercase fw-bold mb-4'>Useful links</h6>
-              <p>
-                <a href='#!' className='text-reset'>
-                  Shipping & Returns
-                </a>
-              </p>
-              <p>
-                <a href='#!' className='text-reset'>
-                  Refund policy
-                </a>
-              </p>
-              <p>
-                <a href='#!' className='text-reset'>
-                  FAQ
-                </a>
-              </p>
-              <p>
-                <a href='#!' className='text-reset'>
-                  Help
-                </a>
-              </p>
-            </MDBCol>
+          <div>
+            <h3 className="buyer-footer__heading">Contact</h3>
+            <p className="buyer-footer__contact-item">
+              <i className="fa fa-location-dot" aria-hidden="true" />
+              2/717, Palakkad, KL, India
+            </p>
+            <p className="buyer-footer__contact-item">
+              <i className="fa fa-envelope" aria-hidden="true" />
+              <a href="mailto:info@22yards.com">info@22yards.com</a>
+            </p>
+            <p className="buyer-footer__contact-item">
+              <i className="fa fa-phone" aria-hidden="true" />
+              <a href="tel:+919876543210">+91 987 654 3210</a>
+            </p>
+          </div>
+        </div>
 
-            <MDBCol md='4' lg='3' xl='3' className='mx-auto mb-md-0 mb-4'>
-              <h6 className='text-uppercase fw-bold mb-4'>Contact</h6>
-              <p>
-                <MDBIcon color='secondary' icon='home' className='me-2' />
-                2/717, Palakkad, KL, IND
-              </p>
-              <p>
-                <MDBIcon color='secondary' icon='envelope' className='me-3' />
-                info@22yards.com
-              </p>
-              <p>
-                <MDBIcon color='secondary' icon='phone' className='me-3' /> + 91 987 6543 210
-              </p>
-              <p>
-                <MDBIcon color='secondary' fab icon='whatsapp' className='me-3' /> + 91 9876 543 210
-              </p>
-            </MDBCol>
-          </MDBRow>
-        </MDBContainer>
-      </section>
-
-      <div className='text-center p-4' style={{ backgroundColor: 'rgba(0, 0, 0, 0.05)' }}>
-        © {new Date().getFullYear()} Copyright : &nbsp;
-        <Link className='text-reset fw-bold' to={'/'}>
-          22yards.com
-        </Link>
+        <div className="buyer-footer__trust">
+          <span className="buyer-footer__trust-item">
+            <i className="fa fa-certificate" aria-hidden="true" />
+            100% Authentic Gear
+          </span>
+          <span className="buyer-footer__trust-item">
+            <i className="fa fa-truck-fast" aria-hidden="true" />
+            Free Shipping over ₹999
+          </span>
+          <span className="buyer-footer__trust-item">
+            <i className="fa fa-rotate-left" aria-hidden="true" />
+            14-Day Returns
+          </span>
+        </div>
       </div>
-    </MDBFooter>
-  );
+
+      <div className="buyer-footer__bottom">
+        © {new Date().getFullYear()}{' '}
+        <Link to="/">22yards.com</Link> — All rights reserved.
+      </div>
+    </footer>
+  )
 }
 
 export default Footer

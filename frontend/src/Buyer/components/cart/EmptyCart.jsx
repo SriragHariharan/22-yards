@@ -1,12 +1,19 @@
 import React from 'react'
+import { Link } from 'react-router-dom'
 
 export default function EmptyCart() {
   return (
-    <div className="text-center m-5 p-5">
-        <img width='200px' src="https://www.frooition.com/blog/wp-content/uploads/2017/05/45d64f50cefa2963667dfb094c1cb1e5.png" alt="" />
-        <h1 className="text-warning mt-5">
-            YOUR CART IS EMPTY !
-        </h1>
-    </div>
-    )
+    <section className="buyer-cart-empty buyer-section">
+      <div className="buyer-cart-empty__icon" aria-hidden="true">
+        <i className="fa-solid fa-cart-shopping" />
+      </div>
+      <h1 className="buyer-cart-empty__title">Your cart is empty</h1>
+      <p className="buyer-cart-empty__text">
+        Looks like you have not added any gear yet. Browse our collection and build your kit.
+      </p>
+      <Link to="/all-products" className="buyer-btn buyer-btn--primary">
+        Browse products
+      </Link>
+    </section>
+  )
 }

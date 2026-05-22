@@ -1,0 +1,262 @@
+/* Buyer checkout */
+[data-portal="buyer"] .buyer-checkout {
+    background: var(--buyer-bg-page);
+}
+
+[data-portal="buyer"] .buyer-checkout__layout {
+    display: grid;
+    grid-template-columns: 1fr 320px;
+    gap: 2rem;
+    align-items: start;
+}
+
+[data-portal="buyer"] .buyer-checkout__main {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+}
+
+[data-portal="buyer"] .buyer-checkout__card {
+    background: var(--buyer-bg-surface);
+    border: 1px solid var(--buyer-border);
+    border-radius: var(--buyer-radius-lg);
+    padding: 1.5rem;
+    box-shadow: var(--buyer-shadow-sm);
+}
+
+[data-portal="buyer"] .buyer-checkout__card-title {
+    font-size: var(--buyer-text-lg);
+    font-weight: 700;
+    color: var(--buyer-text-heading);
+    margin-bottom: 1rem;
+}
+
+[data-portal="buyer"] .buyer-checkout__prompt-text {
+    font-size: var(--buyer-text-sm);
+    color: var(--buyer-text-muted);
+    margin-bottom: 1rem;
+    line-height: 1.5;
+}
+
+[data-portal="buyer"] .buyer-checkout__prompt-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+}
+
+[data-portal="buyer"] .buyer-checkout__address-header {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 1.25rem;
+}
+
+[data-portal="buyer"] .buyer-checkout__avatar {
+    width: 64px;
+    height: 64px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+    color: var(--buyer-primary);
+    background: var(--buyer-gold-bg);
+    border: 2px solid var(--buyer-gold);
+    flex-shrink: 0;
+}
+
+[data-portal="buyer"] .buyer-checkout__address-name {
+    font-size: var(--buyer-text-lg);
+    font-weight: 700;
+    color: var(--buyer-text-heading);
+    margin: 0 0 0.25rem;
+}
+
+[data-portal="buyer"] .buyer-checkout__address-lines {
+    font-size: var(--buyer-text-sm);
+    color: var(--buyer-text-body);
+    margin: 0;
+    line-height: 1.5;
+}
+
+[data-portal="buyer"] .buyer-checkout__actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.75rem;
+    margin-top: 1.25rem;
+    padding-top: 1.25rem;
+    border-top: 1px solid var(--buyer-border);
+}
+
+[data-portal="buyer"] .buyer-checkout__form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1rem;
+}
+
+[data-portal="buyer"] .buyer-checkout__field {
+    margin-bottom: 0.25rem;
+}
+
+[data-portal="buyer"] .buyer-checkout__field--full {
+    grid-column: 1 / -1;
+}
+
+[data-portal="buyer"] .buyer-checkout__label {
+    display: block;
+    font-size: var(--buyer-text-sm);
+    font-weight: 600;
+    color: var(--buyer-text-heading);
+    margin-bottom: 0.35rem;
+}
+
+[data-portal="buyer"] .buyer-checkout__input {
+    width: 100%;
+    padding: 0.65rem 0.9rem;
+    border: 1px solid var(--buyer-border-default);
+    border-radius: var(--buyer-radius-md);
+    font-size: var(--buyer-text-base);
+    transition: border-color var(--buyer-transition), box-shadow var(--buyer-transition);
+}
+
+[data-portal="buyer"] .buyer-checkout__input:focus {
+    outline: none;
+    border-color: var(--buyer-primary);
+    box-shadow: 0 0 0 3px var(--buyer-accent-ring);
+}
+
+[data-portal="buyer"] .buyer-checkout__error {
+    font-size: var(--buyer-text-xs);
+    color: var(--buyer-danger);
+    margin-top: 0.25rem;
+}
+
+[data-portal="buyer"] .buyer-checkout__summary {
+    position: sticky;
+    top: 1rem;
+    background: var(--buyer-bg-surface);
+    border: 1px solid var(--buyer-border);
+    border-radius: var(--buyer-radius-lg);
+    padding: 1.25rem;
+    box-shadow: var(--buyer-shadow-sm);
+}
+
+[data-portal="buyer"] .buyer-checkout__summary-title {
+    font-size: var(--buyer-text-base);
+    font-weight: 700;
+    color: var(--buyer-text-heading);
+    margin-bottom: 1rem;
+}
+
+[data-portal="buyer"] .buyer-checkout-item {
+    display: flex;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid var(--buyer-border);
+}
+
+[data-portal="buyer"] .buyer-checkout-item:last-of-type {
+    border-bottom: none;
+    margin-bottom: 0;
+    padding-bottom: 0;
+}
+
+[data-portal="buyer"] .buyer-checkout-item__image-wrap {
+    position: relative;
+    flex-shrink: 0;
+}
+
+[data-portal="buyer"] .buyer-checkout-item__image {
+    width: 72px;
+    height: 72px;
+    object-fit: cover;
+    border-radius: var(--buyer-radius-md);
+    background: var(--buyer-bg-muted);
+}
+
+[data-portal="buyer"] .buyer-checkout-item__qty {
+    position: absolute;
+    top: -6px;
+    right: -6px;
+    min-width: 20px;
+    height: 20px;
+    padding: 0 4px;
+    font-size: var(--buyer-text-xs);
+    font-weight: 700;
+    background: var(--buyer-primary);
+    color: var(--buyer-text-inverse);
+    border-radius: var(--buyer-radius-full);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+[data-portal="buyer"] .buyer-checkout-item__name {
+    font-size: var(--buyer-text-sm);
+    font-weight: 600;
+    color: var(--buyer-text-heading);
+    margin-bottom: 0.25rem;
+}
+
+[data-portal="buyer"] .buyer-checkout-item__price {
+    font-size: var(--buyer-text-xs);
+    color: var(--buyer-text-muted);
+}
+
+[data-portal="buyer"] .buyer-checkout__total-row {
+    display: flex;
+    justify-content: space-between;
+    font-size: var(--buyer-text-sm);
+    color: var(--buyer-text-body);
+    margin-bottom: 0.5rem;
+}
+
+[data-portal="buyer"] .buyer-checkout__total-row--final {
+    font-size: var(--buyer-text-base);
+    font-weight: 700;
+    color: var(--buyer-text-heading);
+    margin-top: 0.75rem;
+    padding-top: 0.75rem;
+    border-top: 1px solid var(--buyer-border);
+}
+
+[data-portal="buyer"] .buyer-checkout__total-value {
+    color: var(--buyer-accent);
+}
+
+[data-portal="buyer"] .buyer-checkout__empty {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 4rem 1.5rem;
+    min-height: 50vh;
+}
+
+[data-portal="buyer"] .buyer-checkout__empty-icon {
+    width: 72px;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    background: var(--buyer-gold-bg);
+    color: var(--buyer-primary);
+    font-size: 1.75rem;
+    margin-bottom: 1.25rem;
+}
+
+@media (max-width: 991px) {
+    [data-portal="buyer"] .buyer-checkout__layout {
+        grid-template-columns: 1fr;
+    }
+
+    [data-portal="buyer"] .buyer-checkout__summary {
+        position: static;
+    }
+
+    [data-portal="buyer"] .buyer-checkout__form-grid {
+        grid-template-columns: 1fr;
+    }
+}

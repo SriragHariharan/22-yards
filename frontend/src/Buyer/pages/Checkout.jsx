@@ -6,270 +6,256 @@ import CheckoutProductCard from '../components/checkout/CheckoutProductCard';
 import { useSelector } from 'react-redux';
 import useBuyerAuthInstance from '../axios/useBuyerAuthInstance';
 import { Link } from 'react-router-dom';
+
+function getInitials(name) {
+    if (!name) return '?'
+    const parts = name.trim().split(/\s+/)
+    if (parts.length >= 2) return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase()
+    return name.slice(0, 2).toUpperCase()
+}
+
+function formatBill(amount) {
+    return amount?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') ?? '0'
+}
+
+const addressPayload = (user) => ({
+    fullName: user?.fullName,
+    mobile: user?.address?.mobile,
+    email: user?.email,
+    address: user?.address?.house,
+    landmark: user?.address?.landmark,
+    city: user?.address?.city,
+    pincode: user?.address?.pincode,
+    state: user?.address?.state,
+})
+
 export default function Checkout() {
-    const cart = useSelector(state => state.cart.cart);  //here we get the cart items in this variable
+    const cart = useSelector(state => state.cart.cart);
     const billAmount = useSelector(state => state.cart.billAmount)
-    const USER = useSelector(state => state.User?.user);
 
     const [BuyerAuthInstance] = useBuyerAuthInstance()
     const [profile, setProfile] = useState(null);
     const [order, setOrder] = useState(null);
     const [error, setError] = useState(null);
-    
 
-
-    //hook form
     const { register, formState: { errors }, handleSubmit } = useForm();
 
     useEffect(() => {
         BuyerAuthInstance?.get('/profile')
-        .then(resp => setProfile(resp.data.data))
-        .catch(err => setError(err.message))
-    },[])
+            .then(resp => setProfile(resp.data.data))
+            .catch(err => setError(err.message))
+    }, [])
 
-    const handleProceedToPay = (data) => {
+    const submitOrder = (data) => {
         data.totalBillAmount = billAmount
-        data.paymentSuccess=false;
-        data.cart = cart;
-        
-        BuyerProductInstance.post('create-order', {...data})
-        .then(resp => {
-            if(resp.data.success === false){
-                setError(resp.data.message)
-            }else{
-                setOrder(resp.data.data.savedNewOrder);
-            }
-        })        
-        .catch(err => setError(err.message))
+        data.paymentSuccess = false
+        data.cart = cart
+
+        BuyerProductInstance.post('create-order', { ...data })
+            .then(resp => {
+                if (resp.data.success === false) {
+                    setError(resp.data.message)
+                } else {
+                    setOrder(resp.data.data.savedNewOrder);
+                }
+            })
+            .catch(err => setError(err.message))
     }
 
-    const onSubmit = (data) => {
-        data.totalBillAmount = billAmount
-        data.paymentSuccess=false;
-        data.cart = cart;        
-        
-        BuyerProductInstance.post('create-order', {...data})
-        .then(resp => {
-            if(resp.data.success === false){
-                setError(resp.data.message)
-            }else{
-                setOrder(resp.data.data.savedNewOrder);
-            }
-        })        
-        .catch(err => setError(err.message))
+    const handleProceedToPay = () => {
+        submitOrder(addressPayload(profile?.user))
     }
-    
 
+    const onSubmit = (data) => submitOrder(data)
 
-  return (
-    <>
-    {
-        cart.length === 0 && <div className='h1 text-center m-5 p-5 text-danger'>Nothing to checkout</div>
-    }
-    {
-        cart.length !== 0 && (
-            <section className="bg-light py-5">
-            <div className="container">
-                <div className="row">
-                    {
-                        profile?.user?.address?.house && (
-                            <section className="col-xl-8 col-lg-8 mb-4">
-                                <div className="text-center card text-black">
-                                    <div className="card-body text-center">
-                                        <img src="https://mdbcdn.b-cdn.net/img/Photos/new-templates/bootstrap-chat/ava3.webp" alt="avatar"
-                                        className="rounded-circle img-fluid" style={{width: "150px"}} />
-                                        <h5 className="my-3">{profile?.user?.fullName}</h5>
-                                        <p>{profile?.user?.address?.house},</p>
-                                        <p className="">{profile?.user?.address?.city}, {profile?.user?.address?.state},</p>
-                                        <p className="">Landmark : {profile?.user?.address?.landmark}.</p>
-                                        <p className="">Pincode : {profile?.user?.address?.pincode}.</p>
-                                        <p className=""> email : {profile?.user?.email}.</p>
-                                        <p className="">mobile : {profile?.user?.address?.mobile}.</p>
-                                    </div>  
-                                    <div className="float-end mb-5">
-                                        <button className="btn btn-danger   border me-3">Cancel</button>
-                                        <button onClick={() => handleProceedToPay({fullName:profile?.user?.fullName, mobile:profile?.user?.address?.mobile, email: profile?.user?.email, address:profile?.user?.address?.house, landmark:profile?.user?.address?.landmark, city:profile?.user?.address?.city, pincode:profile?.user?.address?.pincode, state:profile?.user?.address?.state })} 
-                                            className="btn btn-success  border me-3">PROCEED TO PAY</button>
-                                    </div>                          
-                                </div>
-                            </section>
-                        ) 
-                    }
-                    {
-                        !profile?.user?.address?.house && (
-                            <div className="col-xl-8 col-lg-8 mb-4">
-                                {
-                                    profile?.user?.fullName && 
-                                    <div className="card mb-4 border shadow-0">
-                                        <div className="p-4 d-flex justify-content-between">
-                                            <div className="">
-                                                <h5>Hi {profile?.user?.fullName}</h5>
-                                                <p className="mb-0 text-wrap ">Add address for a smooth and hassle free delivery</p>
-                                            </div>
-                                            <div className="d-flex align-items-center justify-content-center flex-column flex-md-row">
-                                                <Link to={'/profile'} className="btn btn-outline-primary me-3  w-100">UPDATE PROFILE</Link>
-                                            </div>
-                                        </div>
-                                    </div>
-                                }
-                                {
-                                !profile?.user?.fullName && 
-                                <>
-                                    <div className="card mb-4 border shadow-0">
-                                        <div className="p-4 d-flex justify-content-between">
-                                            <div className="">
-                                                <h5>Have an account?</h5>
-                                                <p className="mb-0 text-wrap ">Lorem ipsum dolor sit amet, consectetur adipisicing elit</p>
-                                            </div>
-                                            <div className="d-flex align-items-center justify-content-center flex-md-row">
-                                                <Link to={'/user/login' } className="btn btn-outline-primary me-4  w-100">LOGIN</Link>
-                                                <Link to={'/user/signup'} className="btn btn-primary shadow-0 w-100">REGISTER </Link>
-                                            </div>
-                                        </div>
-                                    </div>
+    const user = profile?.user
+    const hasSavedAddress = Boolean(user?.address?.house)
 
-                                    <div className="card shadow-0 border">
-                                        <div className="p-4">
-                                            <h5 className="card-title mb-3">Guest checkout</h5>
-                                            <p className="mb-4">Just enter basic details and get your order placed. <br /> Signup/Login again with the given email ID and track your orders.</p>
-                                                <form onSubmit={handleSubmit(onSubmit)}>
-                                                    <div className="row">
-                                                    
-                                                        <div className="col-12 mb-3">
-                                                            <p className="mb-0">Full name</p>
-                                                            <div className="form-outline">
-                                                                <input {...register("fullName", { required: true })} type="text" className="form-control border border-3" />
-                                                            </div>
-                                                        {errors.fullName?.type === 'required' && <p className='error'>Fullname required</p>}
-                                                        </div>
-
-                                                        <div className="col-6 mb-3">
-                                                            <p className="mb-0">Phone</p>
-                                                            <div className="form-outline">
-                                                            <input {...register("mobile", { required: true, minLength:10, maxLength:10 })} type="tel" className="form-control border border-3" />
-                                                            </div>
-                                                        {errors.mobile?.type === 'required' && <p className='error'>Mobile required</p>}
-                                                        {errors.mobile?.type === ('minLength' || 'maxLength') && <p className='error'>Invalid mobile number</p>}
-                                                        </div>
-
-                                                        <div className="col-6 mb-3">
-                                                            <p className="mb-0">Email</p>
-                                                            <div className="form-outline">
-                                                                <input {...register("email", { required: true, pattern:/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i })} type="email" className="form-control border border-3" />
-                                                            </div>
-                                                        {errors.email?.type === 'required' && <p className='error'>email required</p>}
-                                                        {errors.email?.type === 'pattern' && <p className='error'>invalid email</p>}
-                                                        </div>
-
-                                                    </div>
-
-                                                    <hr className="my-4 mb-5" />
-
-                                                    <div className="row">
-
-                                                        <div className="col-sm-8 mb-3">
-                                                            <p className="mb-0">Address</p>
-                                                            <div className="form-outline">
-                                                                <input {...register("address", { required: true })} type="text" className="form-control border border-3" />
-                                                            </div>
-                                                            {errors.address?.type === 'required' && <p className='error'>address required</p>}
-                                                        </div>
-
-                                                        <div className="col-sm-4 mb-3">
-                                                            <p className="mb-0">Landmark</p>
-                                                            <div className="form-outline">
-                                                                <input {...register("landmark", { required: true })} type="text" id="typeText" className="form-control border border-3" />
-                                                            </div>
-                                                            {errors.landmark?.type === 'required' && <p className='error'>landmark required</p>}
-                                                        </div>
-
-                                                        <div className="col-sm-4 mb-3">
-                                                            <p className="mb-0">City</p>
-                                                            <div className="form-outline">
-                                                                <input {...register("city", { required: true })} type="text" id="typeText" className="form-control border border-3" />
-                                                            </div>
-                                                            {errors.city    ?.type === 'required' && <p className='error'>city   required</p>}
-                                                        </div>
-
-                                                        <div className="col-sm-4 col-6 mb-3">
-                                                            <p className="mb-0">Postal code</p>
-                                                            <div className="form-outline">
-                                                                <input {...register("pincode", { required: true, maxLength:10 })} type="text" id="typeText" className="form-control border border-3" />
-                                                            </div>
-                                                            {errors.pincode?.type === 'required' && <p className='error'>pincode required</p>}
-                                                            {errors.pincode?.type === 'maxLength' && <p className='error'>pincode invalid</p>}
-                                                        </div>
-
-                                                        <div className="col-sm-4 col-6 mb-3">
-                                                            <p className="mb-0">State</p>
-                                                            <div className="form-outline">
-                                                                <input {...register("state", { required: true })} type="text" id="typeText" className="form-control border border-3" />
-                                                            </div>
-                                                            {errors.state?.type === 'required' && <p className='error'>state required</p>}
-                                                        </div>
-
-                                                    </div>
-
-                                                    <div className="float-end">
-                                                        <button className="btn btn-danger border me-3">Cancel</button>
-                                                        <input className="btn btn-success border me-3" type="submit" value="Proceed"/>
-                                                    </div>
-                                                
-                                                </form>
-                                        </div>
-                                    </div>
-                                </>
-                                }
+    if (cart.length === 0) {
+        return (
+            <section className="buyer-checkout buyer-section">
+                <div className="buyer-container buyer-checkout__empty">
+                    <div className="buyer-checkout__empty-icon" aria-hidden="true">
+                        <i className="fa-solid fa-bag-shopping" />
                     </div>
-                        )
-                    }
-                    
-
-
-                    <div className="col-xl-4 col-lg-4 d-flex justify-content-center justify-content-lg-end">
-                        <div className="ms-lg-4 mt-4 mt-lg-0" style={{maxWidth: "320px"}}>
-                        
-                        <h6 className="text-dark my-4">Items in cart</h6>
-                        <hr />
-
-                        {
-                            cart.map(item => <CheckoutProductCard key={item.productID} item ={item} /> )
-                        }
-                        
-                        <h6 className="mb-3">Summary</h6>
-                        <div className="d-flex justify-content-between">
-                            <p className="mb-2">Total price:</p>
-                            <p className="mb-2">₹ {billAmount}.00</p>
-                        </div>
-                        
-                        <div className="d-flex justify-content-between">
-                            <p className="mb-2">Shipping cost:</p>
-                            <p className="mb-2 text-success">Free</p>
-                        </div>
-                        <hr />
-                        <div className="d-flex justify-content-between">
-                            <p className="mb-2">Total price:</p>
-                            <p className="mb-2 fw-bold">₹ {billAmount}.00</p>
-                        </div>
-
-                        {/* <div className="input-group mt-3 mb-4">
-                            <input type="text" className="form-control border border" name="" placeholder="Promo code" />
-                            <button className="btn btn-light text-primary border">Apply</button>
-                        </div> */}
-
-                        </div>
-                    </div>
+                    <h1 className="buyer-section-title">Nothing to checkout</h1>
+                    <p className="buyer-section-subtitle">Your cart is empty. Add items before checkout.</p>
+                    <Link to="/cart" className="buyer-btn buyer-btn--primary">View cart</Link>
                 </div>
-            </div>
-        </section>
+            </section>
         )
     }
-        
 
-        {
-            order && (<Payment order={order} autoFocus={true} />)
-        }
+    return (
+        <>
+            <section className="buyer-checkout buyer-section">
+                <div className="buyer-container">
+                    <header className="buyer-section__header">
+                        <h1 className="buyer-section-title">Checkout</h1>
+                        <p className="buyer-section-subtitle">Review your order and delivery details</p>
+                    </header>
 
-    </>
-  )
+                    {error && (
+                        <div className="buyer-empty-state mb-4">
+                            <p className="buyer-empty-state__text text-danger">{error}</p>
+                        </div>
+                    )}
+
+                    <div className="buyer-checkout__layout">
+                        <div className="buyer-checkout__main">
+                            {hasSavedAddress && (
+                                <div className="buyer-checkout__card">
+                                    <h2 className="buyer-checkout__card-title">Delivery address</h2>
+                                    <div className="buyer-checkout__address-header">
+                                        <div className="buyer-checkout__avatar" aria-hidden="true">
+                                            {getInitials(user?.fullName)}
+                                        </div>
+                                        <div>
+                                            <p className="buyer-checkout__address-name">{user?.fullName}</p>
+                                            <p className="buyer-checkout__address-lines">
+                                                {user?.address?.house}, {user?.address?.city}, {user?.address?.state}
+                                                <br />
+                                                Landmark: {user?.address?.landmark} · Pincode: {user?.address?.pincode}
+                                                <br />
+                                                {user?.email} · {user?.address?.mobile}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <div className="buyer-checkout__actions">
+                                        <Link to="/cart" className="buyer-btn buyer-btn--outline">Back to cart</Link>
+                                        <button
+                                            type="button"
+                                            onClick={handleProceedToPay}
+                                            className="buyer-btn buyer-btn--accent"
+                                        >
+                                            Proceed to pay
+                                        </button>
+                                    </div>
+                                </div>
+                            )}
+
+                            {!hasSavedAddress && (
+                                <>
+                                    {user?.fullName && (
+                                        <div className="buyer-checkout__card">
+                                            <h2 className="buyer-checkout__card-title">Hi, {user.fullName}</h2>
+                                            <p className="buyer-checkout__prompt-text">
+                                                Add a delivery address in your profile for a smooth checkout experience.
+                                            </p>
+                                            <div className="buyer-checkout__prompt-actions">
+                                                <Link to="/profile" className="buyer-btn buyer-btn--primary">
+                                                    Update profile
+                                                </Link>
+                                                <Link to="/cart" className="buyer-btn buyer-btn--outline">Back to cart</Link>
+                                            </div>
+                                        </div>
+                                    )}
+
+                                    {!user?.fullName && (
+                                        <>
+                                            <div className="buyer-checkout__card">
+                                                <h2 className="buyer-checkout__card-title">Have an account?</h2>
+                                                <p className="buyer-checkout__prompt-text">
+                                                    Sign in to use saved details, or continue as a guest below.
+                                                </p>
+                                                <div className="buyer-checkout__prompt-actions">
+                                                    <Link to="/user/login" className="buyer-btn buyer-btn--outline">Sign in</Link>
+                                                    <Link to="/user/signup" className="buyer-btn buyer-btn--primary">Register</Link>
+                                                </div>
+                                            </div>
+
+                                            <div className="buyer-checkout__card">
+                                                <h2 className="buyer-checkout__card-title">Guest checkout</h2>
+                                                <p className="buyer-checkout__prompt-text">
+                                                    Enter your details to place the order. You can sign up later with the same email to track orders.
+                                                </p>
+                                                <form onSubmit={handleSubmit(onSubmit)}>
+                                                    <div className="buyer-checkout__form-grid">
+                                                        <div className="buyer-checkout__field buyer-checkout__field--full">
+                                                            <label className="buyer-checkout__label">Full name</label>
+                                                            <input {...register("fullName", { required: true })} type="text" className="buyer-checkout__input" />
+                                                            {errors.fullName?.type === 'required' && <p className="buyer-checkout__error">Full name is required</p>}
+                                                        </div>
+
+                                                        <div className="buyer-checkout__field">
+                                                            <label className="buyer-checkout__label">Phone</label>
+                                                            <input {...register("mobile", { required: true, minLength: 10, maxLength: 10 })} type="tel" className="buyer-checkout__input" />
+                                                            {errors.mobile && <p className="buyer-checkout__error">Valid 10-digit mobile required</p>}
+                                                        </div>
+
+                                                        <div className="buyer-checkout__field">
+                                                            <label className="buyer-checkout__label">Email</label>
+                                                            <input {...register("email", { required: true, pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i })} type="email" className="buyer-checkout__input" />
+                                                            {errors.email?.type === 'required' && <p className="buyer-checkout__error">Email is required</p>}
+                                                            {errors.email?.type === 'pattern' && <p className="buyer-checkout__error">Invalid email</p>}
+                                                        </div>
+
+                                                        <div className="buyer-checkout__field buyer-checkout__field--full">
+                                                            <label className="buyer-checkout__label">Address</label>
+                                                            <input {...register("address", { required: true })} type="text" className="buyer-checkout__input" />
+                                                            {errors.address && <p className="buyer-checkout__error">Address is required</p>}
+                                                        </div>
+
+                                                        <div className="buyer-checkout__field">
+                                                            <label className="buyer-checkout__label">Landmark</label>
+                                                            <input {...register("landmark", { required: true })} type="text" className="buyer-checkout__input" />
+                                                            {errors.landmark && <p className="buyer-checkout__error">Landmark is required</p>}
+                                                        </div>
+
+                                                        <div className="buyer-checkout__field">
+                                                            <label className="buyer-checkout__label">City</label>
+                                                            <input {...register("city", { required: true })} type="text" className="buyer-checkout__input" />
+                                                            {errors.city && <p className="buyer-checkout__error">City is required</p>}
+                                                        </div>
+
+                                                        <div className="buyer-checkout__field">
+                                                            <label className="buyer-checkout__label">Postal code</label>
+                                                            <input {...register("pincode", { required: true, maxLength: 10 })} type="text" className="buyer-checkout__input" />
+                                                            {errors.pincode && <p className="buyer-checkout__error">Pincode is required</p>}
+                                                        </div>
+
+                                                        <div className="buyer-checkout__field">
+                                                            <label className="buyer-checkout__label">State</label>
+                                                            <input {...register("state", { required: true })} type="text" className="buyer-checkout__input" />
+                                                            {errors.state && <p className="buyer-checkout__error">State is required</p>}
+                                                        </div>
+                                                    </div>
+
+                                                    <div className="buyer-checkout__actions">
+                                                        <Link to="/cart" className="buyer-btn buyer-btn--outline">Back to cart</Link>
+                                                        <button type="submit" className="buyer-btn buyer-btn--accent">Proceed to pay</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </>
+                                    )}
+                                </>
+                            )}
+                        </div>
+
+                        <aside className="buyer-checkout__summary">
+                            <h3 className="buyer-checkout__summary-title">Order summary</h3>
+                            {cart.map(item => (
+                                <CheckoutProductCard key={item.productID} item={item} />
+                            ))}
+                            <div className="buyer-checkout__total-row">
+                                <span>Subtotal</span>
+                                <span>₹ {formatBill(billAmount)}</span>
+                            </div>
+                            <div className="buyer-checkout__total-row">
+                                <span>Shipping</span>
+                                <span className="text-success">Free</span>
+                            </div>
+                            <div className="buyer-checkout__total-row buyer-checkout__total-row--final">
+                                <span>Total</span>
+                                <span className="buyer-checkout__total-value">₹ {formatBill(billAmount)}</span>
+                            </div>
+                        </aside>
+                    </div>
+                </div>
+            </section>
+
+            {order && <Payment order={order} autoFocus={true} />}
+        </>
+    )
 }

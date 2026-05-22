@@ -1,34 +1,52 @@
 import React from 'react'
-import '../../styles/homepage/offers.css'
+import { Link } from 'react-router-dom'
 import image1 from '../../../assets/offers/offer-img1.png'
 import image2 from '../../../assets/offers/offer-img2.png'
 
+const PROMOS = [
+  {
+    eyebrow: 'Min 20% off on all products',
+    title: 'ICC CWC Collection',
+    image: image1,
+    to: '/all-products',
+    align: 'left',
+  },
+  {
+    eyebrow: '10% off all wearables',
+    title: 'IPL Collection',
+    image: image2,
+    to: '/category/wearables',
+    align: 'right',
+  },
+]
 
 export default function Offers() {
   return (
-    <div className="container-fluid offer pt-5">
-    <div className="row px-xl-5">
-        <div className="col-md-6 pb-4">
-            <div className="position-relative bg-dark text-center text-md-right text-white mb-2 py-5 px-5">
-                <img src={image1} />
-                <div className="position-relative">
-                    <h5 className="text-uppercase text-primary mb-3"> Min 20% off on all products </h5>
-                    <h1 className="mb-4 font-weight-semi-bold">ICC CWC Collection</h1>
-                    <a className="btn btn-outline-primary py-md-2 px-md-3">Shop Now</a>
-                </div>
-            </div>
+    <section className="buyer-section buyer-section--muted" aria-label="Special offers">
+      <div className="buyer-container">
+        <div className="buyer-promo-grid">
+          {PROMOS.map((promo) => (
+            <Link
+              key={promo.title}
+              to={promo.to}
+              className={`buyer-promo buyer-promo--${promo.align}`}
+            >
+              <img
+                className="buyer-promo__bg"
+                src={promo.image}
+                alt=""
+                aria-hidden="true"
+              />
+              <div className="buyer-promo__overlay" aria-hidden="true" />
+              <div className="buyer-promo__content">
+                <p className="buyer-promo__eyebrow">{promo.eyebrow}</p>
+                <h2 className="buyer-promo__title">{promo.title}</h2>
+                <span className="buyer-btn buyer-btn--outline-light">Shop Now</span>
+              </div>
+            </Link>
+          ))}
         </div>
-        <div className="col-md-6 pb-4">
-            <div className="position-relative bg-dark text-center text-md-left text-white mb-2 py-5 px-5">
-                <img src={image2} alt="" />
-                <div className="position-relative">
-                    <h5 className="text-uppercase text-primary mb-3">10% off the all wearables</h5>
-                    <h1 className="mb-4 font-weight-semi-bold">IPL Collection</h1>
-                    <a className="btn btn-outline-primary py-md-2 px-md-3">Shop Now</a>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
-    )
+      </div>
+    </section>
+  )
 }

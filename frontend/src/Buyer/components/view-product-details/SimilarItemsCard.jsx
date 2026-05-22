@@ -1,23 +1,33 @@
 import React from 'react'
-import { Link, } from 'react-router-dom'
+import { Link } from 'react-router-dom'
 
-export default function SimilarItemsCard({product}) {
+function numberWithCommas(x) {
+    return x?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') ?? ''
+}
 
-  return (
-            <Link className='link' to={'../view-product/'+product?._id}>
-                <div className="d-flex mb-3">
-                        <div className="me-3">
-                            <img src={`${import.meta.env.VITE_SERVER_IMG}/product-images/${product?._id}-01.jpg`} style={{minWidth: "96px", height: "96px"}} className="img-md img-thumbnail" />
-                        </div>
-                        <div className="info">
-                            <div className="nav-link mb-1">
-                                {product?.productName.slice(0,30)}... 
-                            </div>
-                            <strong className="text-success mt-5 me-2"> ₹ {product?.offerPrice}</strong> <span className="text-danger"><s>₹{product?.mrp}</s> </span>
-                            <br />
-                            <small>Size : {product?.size} </small> 
-                        </div>
+export default function SimilarItemsCard({ product }) {
+    if (!product || product._id === undefined) return null
+
+    return (
+        <Link className="buyer-pdp__similar-item" to={`/view-product/${product._id}`}>
+            <img
+                src={`${import.meta.env.VITE_SERVER_IMG}/product-images/${product._id}-01.jpg`}
+                alt={product.productName}
+                className="buyer-pdp__similar-thumb"
+                loading="lazy"
+            />
+            <div>
+                <div className="buyer-pdp__similar-name">
+                    {product.productName?.length > 40
+                        ? `${product.productName.slice(0, 40)}…`
+                        : product.productName}
                 </div>
-            </Link>
+                <span className="buyer-pdp__similar-price">₹ {numberWithCommas(product.offerPrice)}</span>
+                <span className="buyer-pdp__similar-mrp">₹ {numberWithCommas(product.mrp)}</span>
+                {product.size && (
+                    <div className="buyer-pdp__similar-size">Size: {product.size}</div>
+                )}
+            </div>
+        </Link>
     )
 }

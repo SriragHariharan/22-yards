@@ -1,0 +1,100 @@
+/* MDB / Bootstrap mapped to buyer tokens */
+[data-portal="buyer"] .btn-primary {
+    background-color: var(--buyer-primary) !important;
+    border-color: var(--buyer-primary) !important;
+    border-radius: var(--buyer-radius-md) !important;
+    font-weight: 600;
+    transition: var(--buyer-transition);
+}
+
+[data-portal="buyer"] .btn-primary:hover,
+[data-portal="buyer"] .btn-primary:active,
+[data-portal="buyer"] .btn-primary:focus {
+    background-color: var(--buyer-primary-hover) !important;
+    border-color: var(--buyer-primary-hover) !important;
+    box-shadow: var(--buyer-shadow-sm) !important;
+}
+
+[data-portal="buyer"] .btn-success {
+    background-color: var(--buyer-accent) !important;
+    border-color: var(--buyer-accent) !important;
+    border-radius: var(--buyer-radius-md) !important;
+    font-weight: 600;
+}
+
+[data-portal="buyer"] .btn-success:hover,
+[data-portal="buyer"] .btn-success:active {
+    background-color: var(--buyer-accent-hover) !important;
+    border-color: var(--buyer-accent-hover) !important;
+}
+
+[data-portal="buyer"] .btn-outline-primary {
+    color: var(--buyer-primary) !important;
+    border-color: var(--buyer-primary) !important;
+    border-radius: var(--buyer-radius-md) !important;
+}
+
+[data-portal="buyer"] .btn-outline-primary:hover {
+    background-color: var(--buyer-primary) !important;
+    color: var(--buyer-text-inverse) !important;
+}
+
+[data-portal="buyer"] .form-control,
+[data-portal="buyer"] .form-select {
+    border-color: var(--buyer-border) !important;
+    border-radius: var(--buyer-radius-md) !important;
+    color: var(--buyer-text-heading);
+}
+
+[data-portal="buyer"] .form-control:focus,
+[data-portal="buyer"] .form-select:focus {
+    border-color: var(--buyer-primary) !important;
+    box-shadow: 0 0 0 3px var(--buyer-accent-ring) !important;
+}
+
+[data-portal="buyer"] .form-label {
+    color: var(--buyer-text-heading);
+    font-weight: 500;
+    font-size: var(--buyer-text-sm);
+}
+
+[data-portal="buyer"] .card {
+    border-color: var(--buyer-border);
+    border-radius: var(--buyer-radius-lg);
+    box-shadow: var(--buyer-shadow-sm);
+}
+
+[data-portal="buyer"] .navbar {
+    box-shadow: none;
+}
+
+[data-portal="buyer"] .dropdown-menu {
+    border-radius: var(--buyer-radius-md);
+    border-color: var(--buyer-border);
+    box-shadow: var(--buyer-shadow-md);
+}
+
+[data-portal="buyer"] .dropdown-item:hover {
+    background-color: var(--buyer-bg-muted);
+    color: var(--buyer-primary);
+}
+
+[data-portal="buyer"] .text-primary {
+    color: var(--buyer-primary) !important;
+}
+
+[data-portal="buyer"] .text-success {
+    color: var(--buyer-accent) !important;
+}
+
+[data-portal="buyer"] .text-danger {
+    color: var(--buyer-danger) !important;
+}
+
+[data-portal="buyer"] .text-muted {
+    color: var(--buyer-text-muted) !important;
+}
+
+[data-portal="buyer"] .bg-light {
+    background-color: var(--buyer-bg-muted) !important;
+}

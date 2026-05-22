@@ -1,0 +1,48 @@
+[data-portal="buyer"] .buyer-btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    padding: 0.65rem 1.25rem;
+    font-size: var(--buyer-text-sm);
+    font-weight: 600;
+    border-radius: var(--buyer-radius-md);
+    border: 2px solid transparent;
+    cursor: pointer;
+    text-decoration: none;
+    transition: all var(--buyer-transition);
+    line-height: 1.4;
+}
+
+[data-portal="buyer"] .buyer-btn--primary {
+    background: var(--buyer-primary);
+    color: var(--buyer-text-inverse);
+}
+
+[data-portal="buyer"] .buyer-btn--primary:hover {
+    background: var(--buyer-primary-hover);
+    color: var(--buyer-text-inverse);
+    box-shadow: var(--buyer-shadow-md);
+}
+
+[data-portal="buyer"] .buyer-btn--accent {
+    background: var(--buyer-accent);
+    color: white;
+}
+
+[data-portal="buyer"] .buyer-btn--accent:hover {
+    background: var(--buyer-accent-hover);
+    color: white;
+    box-shadow: var(--buyer-shadow-accent);
+}
+
+[data-portal="buyer"] .buyer-btn--outline {
+    background: transparent;
+    color: var(--buyer-primary);
+    border-color: var(--buyer-primary);
+}
+
+[data-portal="buyer"] .buyer-btn--outline:hover {
+    background: var(--buyer-primary);
+    color: var(--buyer-text-inverse);
+}

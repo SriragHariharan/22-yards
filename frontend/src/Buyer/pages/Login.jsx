@@ -1,7 +1,6 @@
 import React, { useState } from 'react'
-import { Col, Button, Row, Container, Card, Form } from "react-bootstrap";
+import { Button, Form } from "react-bootstrap";
 import { useForm } from "react-hook-form";
-//css
 import '../styles/pages/auth.css'
 import { Link, useNavigate } from 'react-router-dom';
 import BuyerProductInstance from '../axios/BuyerProductInstance';
@@ -9,14 +8,15 @@ import { useDispatch } from 'react-redux';
 import { UserLogin } from '../../redux-tk/reducers/UserReducer';
 import Alert from 'react-bootstrap/Alert';
 
+const LOGO_URL =
+  'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSH-196UvngLppQ7fGE1-TQfG75ZKli2l6IdAkNCgK83g&s'
 
 export default function Login() {
-    const { register, formState: { errors }, handleSubmit } = useForm(); //a part of react-hook-form
+    const { register, formState: { errors }, handleSubmit } = useForm();
     const [error, setError] = useState(null);
     const dispatch = useDispatch()
     const navigate = useNavigate()
 
-    //submit data to backend api
     const onSubmit = (data) => {
       BuyerProductInstance.post('/buyer-login', {...data})
       .then(resp => {
@@ -27,53 +27,61 @@ export default function Login() {
           navigate('../../profile/')
         }
       })
-    } 
+    }
+
   return (
-    <div>
-      <Container fluid={true} className='login-form'>
-        <Row className=" d-flex justify-content-center align-items-center">
-          <Col  xl={4} lg={5} md={6} sm={12} xs={13} >
-            <div className="border border-5 border-dark p-5">
-                  <div className="login-title text-center mb-3">LOGIN</div>
-                  {/* for error */}
-                  {error && <Alert variant={'danger'} className='text-center'>{error}</Alert>}
-                  <div className="mb-0 mt-md-5">
-                    <div className="mb-3">
-                      <Form onSubmit={handleSubmit(onSubmit)}>
+    <section className="buyer-auth">
+      <div className="buyer-auth__hero">
+        <div className="buyer-auth__hero-content">
+          <img className="buyer-auth__logo" src={LOGO_URL} alt="22Yards" />
+          <h2 className="buyer-auth__brand"><span>22</span>Yards</h2>
+          <p className="buyer-auth__tagline">
+            Premium cricket gear. Sign in to track orders and manage your delivery details.
+          </p>
+          <div className="buyer-auth__accent-line" />
+        </div>
+      </div>
 
-                        <Form.Group className="mb-3" controlId="formBasicEmail">
-                          <Form.Label className="text-center">
-                            Email address
-                          </Form.Label>
-                          <Form.Control {...register("email", {required:true, pattern:/^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i})} type="email" placeholder="Enter email"/>
-                        </Form.Group>
-                        {errors.email?.type === 'required' && <p style={{color:'red', marginTop:'-17px'}}>email required</p>}
-                        {errors.email?.type === 'pattern' && <p style={{color:'red', marginTop:'-17px'}}>Please check your email</p>}
+      <div className="buyer-auth__panel">
+        <div className="buyer-auth__card">
+          <h1 className="buyer-auth__title">Welcome back</h1>
+          <p className="buyer-auth__subtitle">Sign in to your account</p>
 
-                        <Form.Group className="mb-3" controlId="formBasicPassword" >
-                          <Form.Label>Password</Form.Label>
-                          <Form.Control {...register("password", { required: true, minLength:6 })} type="password" placeholder="Password" />
-                        </Form.Group>
-                        {errors.password?.type === 'required' && <p style={{color:'red', marginTop:'-17px'}}>Password required</p>}
-                        {errors.password?.type === 'minLength' && <p style={{color:'red', marginTop:'-17px'}}>Password should me 6 or more characters</p>}
+          {error && <Alert variant="danger" className="buyer-auth__alert text-center">{error}</Alert>}
 
-                        <div className="d-grid mt-4">
-                          <Button variant="dark" type="submit">
-                            L O G I N
-                          </Button>
-                        </div>
+          <Form onSubmit={handleSubmit(onSubmit)}>
+            <Form.Group className="buyer-auth__field" controlId="formBasicEmail">
+              <Form.Label>Email address</Form.Label>
+              <Form.Control
+                {...register("email", { required: true, pattern: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i })}
+                type="email"
+                placeholder="you@example.com"
+              />
+            </Form.Group>
+            {errors.email?.type === 'required' && <p className="buyer-auth__error">Email is required</p>}
+            {errors.email?.type === 'pattern' && <p className="buyer-auth__error">Please enter a valid email</p>}
 
-                        <div className='mt-5 text-center'>
-                          New User ? Create an <Link to={'../signup'}>account</Link> 
-                        </div>
+            <Form.Group className="buyer-auth__field" controlId="formBasicPassword">
+              <Form.Label>Password</Form.Label>
+              <Form.Control
+                {...register("password", { required: true, minLength: 6 })}
+                type="password"
+                placeholder="Enter your password"
+              />
+            </Form.Group>
+            {errors.password?.type === 'required' && <p className="buyer-auth__error">Password is required</p>}
+            {errors.password?.type === 'minLength' && <p className="buyer-auth__error">Password must be at least 6 characters</p>}
 
-                      </Form>
-                    </div>
-                  </div>
-            </div>
-          </Col>
-        </Row>
-      </Container>
-    </div>
+            <Button type="submit" className="buyer-btn buyer-btn--accent buyer-auth__submit">
+              Sign in
+            </Button>
+
+            <p className="buyer-auth__footer">
+              New here? <Link to="../signup">Create an account</Link>
+            </p>
+          </Form>
+        </div>
+      </div>
+    </section>
   )
 }
