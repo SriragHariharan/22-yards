@@ -1,80 +1,129 @@
-import React, { useEffect, useState } from 'react'
-import '../styles/Homepage.css'
-import { Container, Row, Col } from 'react-bootstrap';
-
-import ProductShort from '../components/Homepage/ProductsShort.jsx';
-import NewOrders from '../components/Homepage/NewOrders';
+import { useEffect, useMemo, useState } from 'react';
 import { Link } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+
+import '../styles/Homepage.css';
+import ProductShort from '../components/Homepage/ProductsShort.jsx';
+import StatCard from '../components/Homepage/StatCard';
 import useSellerProductInstance from '../axios/useSellerProductInstance';
 import Error from '../components/general/Error';
-import RevenueGenerated from '../components/Homepage/RevenueGenerated';
-import SoldProducts from '../components/Homepage/SoldProducts';
-import ProductsOnSale from '../components/Homepage/ProductsOnSale';
 
+function computeStats(products, orders) {
+    const paidOrders = orders?.filter(item => item.paymentSuccess === true) ?? [];
+
+    return {
+        newOrders: paidOrders.filter(item => item.cart.orderStatus === 'order placed').length,
+        revenue: paidOrders.map(item => item.cart.totalPrice).reduce((acc, curr) => acc + curr, 0),
+        itemsSold: paidOrders.map(item => item.cart.quantity).reduce((acc, curr) => acc + curr, 0),
+        liveProducts: products?.length ?? 0,
+    };
+}
 
 export default function HomepageSeller() {
+    const sellerName = useSelector(state => state?.Admin?.seller?.seller?.sellerName);
+    const [products, setProducts] = useState([]);
+    const [orders, setOrders] = useState([]);
+    const [error, setError] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [sellerProductInstance] = useSellerProductInstance();
 
-    const [products, setProducts] = useState([])
-    const [error, setError] = useState(null)
-    const [sellerProductInstance] = useSellerProductInstance()
-
-    //fetch all products based on seller
     useEffect(() => {
-        sellerProductInstance.get('/')
-        .then(resp => {
-            if(resp.data.success === false){
-                setError(resp.data.message)
-            }else{
-                setProducts(resp.data.data.products)
-            }
-        }).catch(err => setError(err.message))
-    }, [])
+        Promise.all([
+            sellerProductInstance.get('/'),
+            sellerProductInstance.get('orders'),
+        ])
+            .then(([productsResp, ordersResp]) => {
+                if (productsResp.data.success === false) {
+                    setError(productsResp.data.message);
+                    return;
+                }
+                if (ordersResp.data.success === false) {
+                    setError(ordersResp.data.message);
+                    return;
+                }
+                setProducts(productsResp.data.data.products ?? []);
+                setOrders(ordersResp.data.data.orders ?? []);
+            })
+            .catch(err => setError(err.message))
+            .finally(() => setLoading(false));
+    }, [sellerProductInstance]);
+
+    const stats = useMemo(() => computeStats(products, orders), [products, orders]);
+    const recentProducts = products.slice(0, 4);
+
+    if (error) {
+        return <Error error={error} />;
+    }
 
     return (
-    <>
-        {error && <Error error={error} />}
-        {!error && 
-        <>
-        <Container>
-            <Row className='mt-5'>
-                <Col xs={12} sm={12} md={6} lg={3}>
-                    <NewOrders/>
-                </Col>
-                <Col xs={12} sm={12} md={6} lg={3}>
-                    <RevenueGenerated/>
-                </Col>
-                <Col xs={12} sm={12} md={6} lg={3}>
-                    <SoldProducts/>
-                </Col>
-                <Col xs={12} sm={12} md={6} lg={3}>
-                    <ProductsOnSale/>
-                </Col>
+        <div className="seller-dashboard">
+            <div className="seller-dashboard__inner">
+                <header className="seller-dashboard__header">
+                    <div>
+                        <h1 className="seller-dashboard__greeting">
+                            Welcome back{sellerName ? `, ${sellerName}` : ''}
+                        </h1>
+                        <p className="seller-dashboard__subtitle">Here&apos;s what&apos;s happening with your shop today.</p>
+                    </div>
+                    <div className="seller-dashboard__actions">
+                        <Link to="/seller/home/add-new-product" className="seller-dashboard__btn seller-dashboard__btn--primary">
+                            <i className="fas fa-plus" /> Add product
+                        </Link>
+                        <Link to="/seller/home/orders" className="seller-dashboard__btn seller-dashboard__btn--secondary">
+                            <i className="fas fa-box" /> View orders
+                        </Link>
+                    </div>
+                </header>
 
-            </Row>
-        </Container>
-        <Container>
-            <Row className='mt-5'>
-                <h3 className='mb-4'>PRODUCTS</h3>
-                
-                    {
-                        products.slice(0,4).map(product => (
-                            <Col xs={6} sm={6} md={6} className='mb-4'  key={product._id}>
-                                    <ProductShort productName={product.productName} mrp={product.mrp} offerPrice={product.offerPrice} productID={product._id} />
-                            </Col>
-                        ))
-                    }                    
-            </Row>
+                <section className="seller-dashboard__stats">
+                    <StatCard label="New orders" value={loading ? null : stats.newOrders} icon="bell" />
+                    <StatCard label="Total revenue" value={loading ? null : stats.revenue} prefix="₹ " icon="indian-rupee-sign" />
+                    <StatCard label="Items sold" value={loading ? null : stats.itemsSold} icon="shopping-bag" />
+                    <StatCard label="Live products" value={loading ? null : stats.liveProducts} icon="store" />
+                </section>
 
-            <Row>
-                <Col className='text-center mt-5' xs={12} >
-                    <Link to={'view-all-products'} className="btn btn-info p-3">
-                        View All Products
-                    </Link>
-                </Col>
-            </Row>
-        </Container>
-    </>
-    }
-    </>
-  )
+                <section className="seller-dashboard__products">
+                    <div className="seller-dashboard__products-header">
+                        <h2 className="seller-dashboard__section-title">Recent products</h2>
+                        {products.length > 0 && (
+                            <Link to="view-all-products" className="seller-dashboard__link">
+                                View all &rarr;
+                            </Link>
+                        )}
+                    </div>
+
+                    {loading ? (
+                        <p className="seller-dashboard__loading">Loading products...</p>
+                    ) : recentProducts.length === 0 ? (
+                        <div className="seller-dashboard__empty">
+                            <i className="fas fa-box-open seller-dashboard__empty-icon" />
+                            <p>No products listed yet.</p>
+                            <Link to="/seller/home/add-new-product" className="seller-dashboard__btn seller-dashboard__btn--primary">
+                                Add your first product
+                            </Link>
+                        </div>
+                    ) : (
+                        <>
+                            <div className="seller-dashboard__product-grid">
+                                {recentProducts.map(product => (
+                                    <ProductShort
+                                        key={product._id}
+                                        productName={product.productName}
+                                        mrp={product.mrp}
+                                        offerPrice={product.offerPrice}
+                                        productID={product._id}
+                                    />
+                                ))}
+                            </div>
+                            <div className="seller-dashboard__view-all">
+                                <Link to="view-all-products" className="seller-dashboard__btn seller-dashboard__btn--secondary">
+                                    View all products
+                                </Link>
+                            </div>
+                        </>
+                    )}
+                </section>
+            </div>
+        </div>
+    );
 }

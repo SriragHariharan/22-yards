@@ -1,0 +1,26 @@
+.seller-faq__accordion .accordion-button {
+    font-weight: 600;
+    color: var(--seller-text-primary);
+}
+
+.seller-faq__accordion .accordion-button:not(.collapsed) {
+    background: var(--seller-accent-subtle);
+    color: var(--seller-accent);
+    box-shadow: none;
+}
+
+.seller-faq__accordion .accordion-button:focus {
+    box-shadow: 0 0 0 3px var(--seller-accent-subtle);
+}
+
+.seller-faq__accordion .accordion-item {
+    border: 1px solid var(--seller-border);
+    border-radius: 8px !important;
+    margin-bottom: 0.75rem;
+    overflow: hidden;
+}
+
+.seller-faq__icon {
+    color: var(--seller-accent);
+    margin-right: 0.5rem;
+}

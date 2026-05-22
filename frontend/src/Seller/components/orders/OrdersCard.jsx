@@ -1,118 +1,89 @@
-import React from 'react'
 import useSellerProductInstance from '../../axios/useSellerProductInstance';
-import { ToastContainer, toast } from 'react-toastify';
 
-export default function OrdersCard({product}) {
-    const [sellerProductInstance] = useSellerProductInstance()
-    let time = new Date(product?.createdAt);
-    time = time.toTimeString().split(' ')[0];
+const STATUS_CLASS = {
+    'order placed': 'order-card__status-badge--placed',
+    'order confirmed': 'order-card__status-badge--confirmed',
+    'order packed': 'order-card__status-badge--packed',
+    'order shipped': 'order-card__status-badge--shipped',
+    'order delivered': 'order-card__status-badge--delivered',
+};
 
-    let orderID = product._id;
+const NEXT_ACTION = {
+    'order placed': { label: 'Confirm order', next: 'order confirmed', icon: 'fa-check' },
+    'order confirmed': { label: 'Mark as packed', next: 'order packed', icon: 'fa-box' },
+    'order packed': { label: 'Mark as shipped', next: 'order shipped', icon: 'fa-truck' },
+    'order shipped': { label: 'Mark as delivered', next: 'order delivered', icon: 'fa-circle-check' },
+};
 
-    //toast message
-    const showToastMessage = () => {
-        toast("Order status changed successfully...! refresh page to see updates", {
-            position: toast.POSITION.TOP_CENTER
-        });
+export default function OrdersCard({ product, onStatusChange }) {
+    const [sellerProductInstance] = useSellerProductInstance();
+
+    const time = new Date(product?.createdAt).toTimeString().split(' ')[0];
+    const date = new Date(product?.createdAt).toLocaleString('en-GB', {
+        day: 'numeric',
+        month: 'long',
+        year: 'numeric',
+    });
+
+    const orderID = product._id;
+    const status = product?.cart?.orderStatus ?? '';
+    const statusClass = STATUS_CLASS[status] ?? 'order-card__status-badge--placed';
+    const action = NEXT_ACTION[status];
+
+    const confirmOrder = (productID, nextStatus) => {
+        sellerProductInstance.post('/update-order-status', { orderID, productID, status: nextStatus })
+            .then(() => onStatusChange?.())
+            .catch(err => onStatusChange?.(err.message, true));
     };
 
-    const errorToastMessage = (message) => {
-        toast.error(message, {
-            position: toast.POSITION.TOP_CENTER
-        });
-    };
-
-
-    //mongodb date to real date
-    let date = new Date(product?.createdAt);
-    date = date.toLocaleString('en-GB', {day:'numeric', month:'long', year:'numeric'});
-
-    // update product order status
-    let confirmOrder = ( productID, status ) => {
-        sellerProductInstance.post('/update-order-status', {orderID, productID, status})
-        .then(resp => showToastMessage())
-        .catch(err => errorToastMessage(err.message))
-    }
-
-  return (
-    <div className="card border shadow-0">
-        <div className="m-4">
-            <div className="row gy-3 mb-0">
-            <ToastContainer />
-                <div className="col-lg-5">
-                    <div className="">
-                    <div className="d-flex">
-                        <img src={`${import.meta.env.VITE_SERVER_IMG}/product-images/${product?.cart?.productID}-01.jpg`} className="border rounded me-3" style={{width: "150px", height: "150px" }} />
-                        <div>
-                            <div className="nav-link">{product?.cart.productName}</div>
-                            <small className="text-muted">Size : {product?.cart?.size}</small>                      <br />
-                            <small className="text-muted">Quantity : {product?.cart?.quantity}</small>              <br />
-                            <small className="text-muted">Bill amount : ₹ {product?.cart.totalPrice}</small>        <br />
-                            <small className="text-muted">₹ {product?.cart.offerPrice} / <sub>item on offer</sub> </small>
-                        </div>
-                    </div>
-                    </div>
-                </div>
-                
-                <div className="col-lg-4 col-sm-6 col-6 d-flex flex-row flex-lg-column flex-xl-row text-nowrap">
+    return (
+        <article className="order-card">
+            <div className="order-card__grid">
+                <div className="order-card__product">
+                    <img
+                        src={`${import.meta.env.VITE_SERVER_IMG}/product-images/${product?.cart?.productID}-01.jpg`}
+                        className="order-card__image"
+                        alt=""
+                    />
                     <div>
-                        <div className="p">Shipping address <br /></div>
-                        <small className="text-muted text-nowrap">
-                            {product?.fullName}, <br /> {product?.address}, {product?.city}, <br/>
-                             {product?.state}. &nbsp; Pin : {product?.pincode} <br />
-                             Landmark : {product?.landmark} <br />
-                             Mobile : {product?.mobile} &nbsp; &nbsp;
-                             email : {product?.email}
-                        </small>
+                        <p className="order-card__product-name">{product?.cart?.productName}</p>
+                        <p className="order-card__detail">Size: {product?.cart?.size}</p>
+                        <p className="order-card__detail">Quantity: {product?.cart?.quantity}</p>
+                        <p className="order-card__detail">Bill: ₹ {product?.cart?.totalPrice}</p>
+                        <p className="order-card__detail">₹ {product?.cart?.offerPrice} / item</p>
                     </div>
                 </div>
 
-                <div className="col-lg-3 col-sm-6 d-flex justify-content-sm-center justify-content-md-start justify-content-lg-center justify-content-xl-end mb-2">
-                    <div className="float-md-end">
-                        <small>Order placed on : {date},&nbsp; &nbsp; {time}</small> <br />
-                        <small>Payment status : {product?.paymentSuccess ? (<span className='text-success h6'>Payment Success</span>) : (<span className='text-danger h6'>Payment Failed</span>)}</small> <br />
-                        <small className=' mt-5'>Order status : <span className='text-danger h5'><u>{product?.cart?.orderStatus}</u></span> </small>
-                        
-                        {/* click to confirm the order placed */}
-                        {
-                            product?.cart?.orderStatus === 'order placed' && 
-                            <div onClick={() => confirmOrder( product?.cart?.productID, 'order confirmed')} className="w-100 mt-4 btn btn-info border border-5 text-dark"> 
-                                Confirm order &nbsp; &nbsp;
-                                .....<i class="fa-solid fa-truck-fast">...</i>
-                            </div>
-                        }
-
-                        {/* if order is confirmed need to pack product for shipment */}
-                        {
-                            product?.cart?.orderStatus === 'order confirmed' && 
-                            <div onClick={() => confirmOrder( product?.cart?.productID, 'order packed')} className="w-100 mt-4 btn btn-info border border-5 text-dark"> 
-                                Order packed &nbsp; &nbsp;
-                                .....<i class="fa-solid fa-truck-fast">...</i>
-                            </div>
-                        }
-
-                        {/* if order is shipped click here */}
-                        {
-                            product?.cart?.orderStatus === 'order packed' && 
-                            <div onClick={() => confirmOrder( product?.cart?.productID, 'order shipped')} className="w-100 mt-4 btn btn-info border border-5 text-dark"> 
-                                Order shipped &nbsp; &nbsp;
-                                .....<i class="fa-solid fa-truck-fast">...</i>
-                            </div>
-                        }
-
-                        {/* if order is delivered change to delivered */}
-                        {
-                            product?.cart?.orderStatus === 'order shipped' && 
-                            <div onClick={() => confirmOrder( product?.cart?.productID, 'order delivered')} className="w-100 mt-4 btn btn-info border border-5 text-dark"> 
-                                Order delivered &nbsp; &nbsp;
-                                .....<i class="fa-solid fa-truck-fast">...</i>
-                            </div>
-                        }
-                    </div>
+                <div>
+                    <p className="order-card__address-title">Shipping address</p>
+                    <address className="order-card__address">
+                        {product?.fullName}<br />
+                        {product?.address}, {product?.city}<br />
+                        {product?.state} — Pin {product?.pincode}<br />
+                        Landmark: {product?.landmark}<br />
+                        {product?.mobile} · {product?.email}
+                    </address>
                 </div>
 
+                <div className="order-card__status-block">
+                    <p className="order-card__date">Placed {date}, {time}</p>
+                    <p className="order-card__payment order-card__payment--success">
+                        Payment successful
+                    </p>
+                    <span className={`order-card__status-badge ${statusClass}`}>
+                        {status}
+                    </span>
+                    {action && (
+                        <button
+                            type="button"
+                            className="seller-btn seller-btn--primary order-card__action-btn"
+                            onClick={() => confirmOrder(product?.cart?.productID, action.next)}
+                        >
+                            <i className={`fas ${action.icon}`} /> {action.label}
+                        </button>
+                    )}
+                </div>
             </div>
-        </div>
-    </div> 
-    )
+        </article>
+    );
 }

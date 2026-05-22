@@ -1,49 +1,224 @@
-/* Header components */
-.header{
-    padding: 20px;
+/* ── Seller welcome page (scoped) ── */
+
+.seller-welcome {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    min-height: 100vh;
+    position: relative;
+}
+
+.seller-welcome__hero {
+    background: linear-gradient(135deg, var(--seller-hero-from) 0%, var(--seller-hero-mid) 50%, var(--seller-hero-to) 100%);
     display: flex;
-    flex-direction: row;
-    flex-wrap: wrap;
-    justify-content: space-between;
+    align-items: center;
+    justify-content: center;
+    padding: 3rem 2.5rem;
+    position: relative;
+    overflow: hidden;
 }
 
-.brand-name{
+.seller-welcome__hero::before {
+    content: '';
+    position: absolute;
+    width: 400px;
+    height: 400px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.06);
+    top: -120px;
+    right: -80px;
+}
+
+.seller-welcome__hero::after {
+    content: '';
+    position: absolute;
+    width: 250px;
+    height: 250px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.04);
+    bottom: -60px;
+    left: -40px;
+}
+
+.seller-welcome__hero-content {
+    position: relative;
+    z-index: 1;
+    color: var(--seller-text-inverse);
+    max-width: 420px;
+}
+
+.seller-welcome__logo {
+    width: 64px;
+    height: 64px;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+}
+
+.seller-welcome__title {
+    font-size: 2.4rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin-bottom: 0.75rem;
+}
+
+.seller-welcome__title span {
+    display: block;
+    font-size: 2.8rem;
+}
+
+.seller-welcome__tagline {
+    font-size: 1.15rem;
+    opacity: 0.88;
+    line-height: 1.6;
+    margin-bottom: 2rem;
+}
+
+.seller-welcome__store-link {
+    color: rgba(255, 255, 255, 0.85);
+    text-decoration: none;
+    font-size: 0.95rem;
+    transition: color 0.2s;
+}
+
+.seller-welcome__store-link:hover {
+    color: var(--seller-text-inverse);
+}
+
+.seller-welcome__auth {
     display: flex;
-    flex-direction: row;
-    justify-content: space-between;
+    align-items: center;
+    justify-content: center;
+    padding: 2rem;
+    background: var(--seller-bg-page);
 }
 
-.brand-name img{
-    width: 50px;
-    height:50px
+.seller-welcome__auth-card {
+    width: 100%;
+    max-width: 420px;
+    background: var(--seller-bg-surface);
+    border-radius: 16px;
+    padding: 2rem 2rem 2.5rem;
+    box-shadow: 0 8px 40px var(--seller-accent-subtle);
 }
 
-.brand-name p{
-    margin-left: 20px;
-    font-size: 4vmin;
-    /* margin-top: -12px; */
+.auth-tabs {
+    display: flex;
+    gap: 0;
+    margin-bottom: 1.75rem;
+    border-bottom: 2px solid var(--seller-border);
 }
 
-.brand-name p b{
-    font-size: 5vmin;
-    color:#4D84FA;
+.auth-tabs__btn {
+    flex: 1;
+    padding: 0.75rem 0;
+    border: none;
+    background: none;
+    font-size: 1rem;
+    font-weight: 600;
+    color: var(--seller-text-muted);
+    cursor: pointer;
+    position: relative;
+    transition: color 0.25s;
 }
 
-.auth{
-    margin-top: 20px;
+.auth-tabs__btn--active {
+    color: var(--seller-accent);
 }
 
-.auth div{
-    color: black;
-    font-size: 2vmin;
-    letter-spacing: 5px;
+.auth-tabs__btn--active::after {
+    content: '';
+    position: absolute;
+    bottom: -2px;
+    left: 0;
+    right: 0;
+    height: 2px;
+    background: var(--seller-accent);
+    border-radius: 2px 2px 0 0;
 }
 
-.quote-text{
-    color: #7A7777;
-    font-size: 4vmin;;
+.auth-form__heading {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--seller-text-primary);
+    margin-bottom: 0.25rem;
 }
 
-.advantages{
-    font-size:20px
+.auth-form__sub {
+    color: var(--seller-text-secondary);
+    font-size: 0.9rem;
+    margin-bottom: 1.5rem;
+}
+
+.auth-form__submit {
+    width: 100%;
+    padding: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    background-color: var(--seller-accent) !important;
+    border-radius: 8px;
+}
+
+.auth-form--fade {
+    animation: fadeIn 0.3s ease;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(6px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+.field-error {
+    color: var(--seller-danger);
+    font-size: 0.82rem;
+    margin-top: -12px;
+    margin-bottom: 8px;
+}
+
+.seller-welcome__footer {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    text-align: center;
+    padding: 0.75rem;
+    font-size: 0.8rem;
+    color: var(--seller-text-muted);
+    background: transparent;
+    pointer-events: none;
+}
+
+@media (max-width: 767px) {
+    .seller-welcome {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+        min-height: auto;
+    }
+
+    .seller-welcome__hero {
+        padding: 2rem 1.5rem;
+        min-height: auto;
+    }
+
+    .seller-welcome__title {
+        font-size: 1.8rem;
+    }
+
+    .seller-welcome__title span {
+        font-size: 2.1rem;
+    }
+
+    .seller-welcome__tagline {
+        font-size: 1rem;
+        margin-bottom: 1rem;
+    }
+
+    .seller-welcome__auth {
+        padding: 1.5rem 1rem 3rem;
+    }
+
+    .seller-welcome__footer {
+        position: static;
+        padding: 1rem;
+        background: var(--seller-bg-page);
+    }
 }

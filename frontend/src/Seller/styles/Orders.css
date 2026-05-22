@@ -1,0 +1,155 @@
+.orders-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    margin-bottom: 1.5rem;
+}
+
+.orders-filter-chip {
+    padding: 0.4rem 0.9rem;
+    border-radius: 999px;
+    border: 1.5px solid var(--seller-border-strong);
+    background: var(--seller-bg-surface);
+    color: var(--seller-text-secondary);
+    font-size: 0.85rem;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.orders-filter-chip:hover {
+    border-color: var(--seller-accent);
+    color: var(--seller-accent);
+}
+
+.orders-filter-chip--active {
+    background: var(--seller-accent);
+    border-color: var(--seller-accent);
+    color: var(--seller-text-inverse);
+}
+
+.order-card {
+    background: var(--seller-bg-surface);
+    border-radius: 12px;
+    border: 1px solid var(--seller-border);
+    padding: 1.5rem;
+    margin-bottom: 1.25rem;
+    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.04);
+}
+
+.order-card__grid {
+    display: grid;
+    grid-template-columns: 1.2fr 1fr auto;
+    gap: 1.5rem;
+    align-items: start;
+}
+
+.order-card__product {
+    display: flex;
+    gap: 1rem;
+}
+
+.order-card__image {
+    width: 100px;
+    height: 100px;
+    object-fit: cover;
+    border-radius: 8px;
+    border: 1px solid var(--seller-border);
+    flex-shrink: 0;
+}
+
+.order-card__product-name {
+    font-weight: 700;
+    color: var(--seller-text-primary);
+    margin: 0 0 0.35rem;
+}
+
+.order-card__detail {
+    font-size: 0.85rem;
+    color: var(--seller-text-secondary);
+    margin: 0.15rem 0;
+}
+
+.order-card__address-title {
+    font-weight: 600;
+    color: var(--seller-text-secondary);
+    margin: 0 0 0.35rem;
+    font-size: 0.9rem;
+}
+
+.order-card__address {
+    font-size: 0.85rem;
+    color: var(--seller-text-secondary);
+    line-height: 1.5;
+}
+
+.order-card__status-block {
+    text-align: right;
+    min-width: 200px;
+}
+
+.order-card__date {
+    font-size: 0.8rem;
+    color: var(--seller-text-muted);
+    margin: 0 0 0.5rem;
+}
+
+.order-card__payment {
+    font-size: 0.85rem;
+    margin: 0 0 0.5rem;
+}
+
+.order-card__payment--success {
+    color: var(--seller-success-bright);
+    font-weight: 600;
+}
+
+.order-card__status-badge {
+    display: inline-block;
+    padding: 0.3rem 0.75rem;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: capitalize;
+    margin-bottom: 0.75rem;
+}
+
+.order-card__status-badge--placed {
+    background: var(--seller-accent-subtle);
+    color: var(--seller-accent);
+}
+
+.order-card__status-badge--confirmed {
+    background: var(--seller-warning-bg);
+    color: var(--seller-warning);
+}
+
+.order-card__status-badge--packed {
+    background: var(--seller-purple-bg);
+    color: var(--seller-purple);
+}
+
+.order-card__status-badge--shipped {
+    background: var(--seller-info-bg);
+    color: var(--seller-info);
+}
+
+.order-card__status-badge--delivered {
+    background: var(--seller-success-bg);
+    color: var(--seller-success-bright);
+}
+
+.order-card__action-btn {
+    width: 100%;
+    margin-top: 0.5rem;
+}
+
+@media (max-width: 900px) {
+    .order-card__grid {
+        grid-template-columns: 1fr;
+    }
+
+    .order-card__status-block {
+        text-align: left;
+    }
+}

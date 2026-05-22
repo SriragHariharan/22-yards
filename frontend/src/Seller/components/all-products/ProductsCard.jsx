@@ -1,38 +1,38 @@
-import React from 'react'
-import { Link } from 'react-router-dom'
+import { Link } from 'react-router-dom';
 
-export default function ProductsCard({productName, stock, mrp, offerPrice, productID, description}) {
-  return (
-    <div className='border'>
-            <div className="row justify-content-center">
-                <aside className="col-md-3">
-                    <div className="bg-image hover-zoom ripple rounded ripple-surface">
-                        <img className='w-50 mt-2 ms-5' src={`${import.meta.env.VITE_SERVER_IMG}/product-images/${productID}-01.jpg`} alt="premium watch" />
-                    </div>
-                </aside> 
-                <div className="col-md-6">
-                    <div className="info-main mt-4">
-                        <div className="h4 title"> {productName} </div>
-                        <div className="mt-3">
-                        </div>
-                        <p>{description.slice(0,100)}.....</p>
-                    </div>
-                </div> 
-                <div className="col-12 col-md-3 mt-4">
-                    <div className="d-flex align-items-center">
-                        <span className="h4 text-secondary text-through me-2">
-                            ₹ {offerPrice}
-                        </span>
-                        <span className="h6 text-danger">₹ {mrp}</span>
-                    </div> 
-                    <span className="text-success medium mt-3">Stock : {stock} left</span>
-                    <div className="d-grid gap-2 me-5 mt-4">
-                        <Link to={'/seller/home/view-product/'+productID} className="btn btn-info btn-sm mb-3">
-                            Details
-                        </Link>
-                    </div>
-                </div> 
-            </div> 
-        </div>
-  )
+import '../../styles/SellerPages.css';
+
+export default function ProductsCard({ productName, stock, mrp, offerPrice, productID, description }) {
+    const stockClass = stock <= 5 ? 'seller-product-row__stock seller-product-row__stock--low' : 'seller-product-row__stock';
+
+    return (
+        <article className="seller-product-row">
+            <img
+                className="seller-product-row__image"
+                src={`${import.meta.env.VITE_SERVER_IMG}/product-images/${productID}-01.jpg`}
+                alt={productName}
+            />
+            <div>
+                <h3 className="seller-product-row__name">{productName}</h3>
+                <p className="seller-product-row__desc">
+                    {description?.slice(0, 120)}{description?.length > 120 ? '…' : ''}
+                </p>
+                <span className={stockClass}>{stock} in stock</span>
+            </div>
+            <div className="seller-product-row__aside">
+                <div className="seller-product-row__prices">
+                    <span className="seller-product-row__offer">₹ {offerPrice}</span>
+                    {mrp > offerPrice && (
+                        <span className="seller-product-row__mrp">₹ {mrp}</span>
+                    )}
+                </div>
+                <Link
+                    to={`/seller/home/view-product/${productID}`}
+                    className="seller-btn seller-btn--secondary seller-product-row__cta"
+                >
+                    View details
+                </Link>
+            </div>
+        </article>
+    );
 }

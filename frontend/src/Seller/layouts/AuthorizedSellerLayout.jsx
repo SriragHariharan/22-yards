@@ -7,9 +7,10 @@ export default function AuthorizedSellerLayout() {
   return (
     <div>
         <Header/>
-        <Outlet/>
+        <main className="seller-app">
+            <Outlet/>
+        </main>
         <Footer/>
-        
     </div>
   )
 }
