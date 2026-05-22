@@ -18,6 +18,7 @@
     import BuyerAuthLayout from "../Buyer/layouts/BuyerAuthLayout";
     import SellerRootLayout from "../Seller/layouts/SellerRootLayout";
     import AuthorizedSellerLayout from "../Seller/layouts/AuthorizedSellerLayout";
+    import SellerProductRouteLayout from "../Seller/layouts/SellerProductRouteLayout";
     
     //pages
     import Homepage from "../Buyer/pages/Homepage";
@@ -26,6 +27,8 @@
     import Welcomepage from "../Seller/pages/Welcomepage";
     import HomepageSeller from "../Seller/pages/HomepageSeller";
     import ProductDetailsSeller from "../Seller/pages/ProductDetailsSeller";
+    import EditProductNamePage from "../Seller/pages/EditProductNamePage";
+    import EditProductPricePage from "../Seller/pages/EditProductPricePage";
     import AddNewProduct from "../Seller/pages/AddNewProduct";
     import AllProductsSeller from "../Seller/pages/AllProductsSeller";
     import Faq from "../Seller/pages/Faq";
@@ -103,7 +106,11 @@ export default function useRouter() {
                  <Route path="home" element={ SELLER ? <AuthorizedSellerLayout/> : <Navigate to={'/seller'}/> } >
                      <Route index element={ SELLER ? <HomepageSeller/> : <Navigate to={'/seller'}/>  } />
                      <Route path="view-all-products" element={ SELLER ? <AllProductsSeller/> : <Navigate to={'/seller'}/>} />
-                     <Route path="view-product/:id" element={ SELLER ? <ProductDetailsSeller/> : <Navigate to={'/seller'}/> } />
+                     <Route path="view-product/:id" element={ SELLER ? <SellerProductRouteLayout/> : <Navigate to={'/seller'}/> } >
+                         <Route index element={ SELLER ? <ProductDetailsSeller/> : <Navigate to={'/seller'}/> } />
+                         <Route path="edit-name" element={ SELLER ? <EditProductNamePage/> : <Navigate to={'/seller'}/> } />
+                         <Route path="edit-price" element={ SELLER ? <EditProductPricePage/> : <Navigate to={'/seller'}/> } />
+                     </Route>
                      <Route path="add-new-product" element={ SELLER ? <AddNewProduct/> : <Navigate to={'/seller'}/> } />
                      <Route path="faq" element={ SELLER ? <Faq/> : <Navigate to={'/seller'}/> } />
                      <Route path="orders" element={ SELLER ? <Orders/> : <Navigate to={'/seller'}/> } />
