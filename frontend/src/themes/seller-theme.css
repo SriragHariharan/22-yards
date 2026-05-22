@@ -1,0 +1,61 @@
+/**
+ * Seller portal — single source of truth for colors.
+ * Semantic tokens: surfaces, text, borders, accent, hero, semantic, effects.
+ * Change palette here only; component CSS uses var(--seller-*).
+ */
+[data-portal="seller"] {
+    /* Surfaces */
+    --seller-bg-page: #f4f4f5;
+    --seller-bg-surface: #ffffff;
+    --seller-bg-muted: #fafafa;
+    --seller-bg-subtle: #f4f4f5;
+
+    /* Text */
+    --seller-text-primary: #18181b;
+    --seller-text-secondary: #52525b;
+    --seller-text-muted: #a1a1aa;
+    --seller-text-inverse: #fafafa;
+
+    /* Borders */
+    --seller-border: #e4e4e7;
+    --seller-border-strong: #d4d4d8;
+
+    /* Accent — charcoal monochrome */
+    --seller-accent: #27272a;
+    --seller-accent-hover: #3f3f46;
+    --seller-accent-subtle: rgba(39, 39, 42, 0.08);
+    --seller-accent-ring: rgba(39, 39, 42, 0.2);
+
+    /* Aliases */
+    --seller-color-primary: var(--seller-accent);
+    --seller-color-bg: var(--seller-bg-page);
+
+    /* Hero (welcome panel) */
+    --seller-hero-from: #3f3f46;
+    --seller-hero-mid: #27272a;
+    --seller-hero-to: #18181b;
+
+    /* Semantic */
+    --seller-success: #166534;
+    --seller-success-bg: rgba(22, 101, 52, 0.1);
+    --seller-danger: #991b1b;
+    --seller-danger-bg: #fef2f2;
+    --seller-danger-border: #fecaca;
+
+    /* Legacy greens/reds used in components (map to semantic) */
+    --seller-success-bright: #16a34a;
+    --seller-warning: #ca8a04;
+    --seller-warning-bg: rgba(234, 179, 8, 0.12);
+    --seller-info: #2563eb;
+    --seller-info-bg: rgba(59, 130, 246, 0.12);
+    --seller-purple: #7c3aed;
+    --seller-purple-bg: rgba(168, 85, 247, 0.12);
+
+    /* Effects */
+    --seller-shadow-sm: 0 2px 12px rgba(0, 0, 0, 0.06);
+    --seller-shadow-md: 0 4px 20px rgba(0, 0, 0, 0.08);
+    --seller-shadow-accent: 0 4px 12px rgba(39, 39, 42, 0.25);
+    --seller-radius-sm: 6px;
+    --seller-radius-md: 8px;
+    --seller-radius-lg: 12px;
+}

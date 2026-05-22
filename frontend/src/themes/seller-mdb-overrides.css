@@ -1,0 +1,19 @@
+/* MDB / Bootstrap primary mapped to seller tokens */
+[data-portal="seller"] .btn-primary,
+[data-portal="seller"] .btn-primary:focus,
+[data-portal="seller"] .auth-form__submit {
+    background-color: var(--seller-accent) !important;
+    border-color: var(--seller-accent) !important;
+    color: var(--seller-text-inverse) !important;
+}
+
+[data-portal="seller"] .btn-primary:hover,
+[data-portal="seller"] .btn-primary:active,
+[data-portal="seller"] .auth-form__submit:hover {
+    background-color: var(--seller-accent-hover) !important;
+    border-color: var(--seller-accent-hover) !important;
+}
+
+[data-portal="seller"] .btn-primary:focus-visible {
+    box-shadow: 0 0 0 3px var(--seller-accent-ring) !important;
+}
