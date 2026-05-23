@@ -8,6 +8,7 @@ import '../styles/ProductDetails.css';
 import useSellerProductInstance from '../axios/useSellerProductInstance';
 import { removeProductDetails, setProductDetails } from '../../redux-tk/reducers/EditProductDetails';
 import Error from '../components/general/Error';
+import { getProductImageUrl } from '../../utils/productImage';
 
 export default function ProductDetailsSeller() {
     const [error, setError] = useState(null);
@@ -62,7 +63,6 @@ export default function ProductDetailsSeller() {
     const discount = product.mrp > 0
         ? Math.floor(((product.mrp - product.offerPrice) / product.mrp) * 100)
         : 0;
-    const imgBase = `${import.meta.env.VITE_SERVER_IMG}/product-images/${product._id}`;
 
     return (
         <>
@@ -76,7 +76,7 @@ export default function ProductDetailsSeller() {
                     <div className="product-detail__layout">
                         <aside>
                             <div className="product-detail__gallery-main">
-                                <img src={`${imgBase}-${image}.jpg`} alt={product.productName} />
+                                <img src={getProductImageUrl(product._id, image)} alt={product.productName} />
                             </div>
                             <div className="product-detail__thumbs">
                                 {['01', '02', '03'].map(thumb => (
@@ -86,7 +86,7 @@ export default function ProductDetailsSeller() {
                                         className={`product-detail__thumb${image === thumb ? ' product-detail__thumb--active' : ''}`}
                                         onClick={() => setImage(thumb)}
                                     >
-                                        <img src={`${imgBase}-${thumb}.jpg`} alt="" />
+                                        <img src={getProductImageUrl(product._id, thumb)} alt="" />
                                     </button>
                                 ))}
                             </div>

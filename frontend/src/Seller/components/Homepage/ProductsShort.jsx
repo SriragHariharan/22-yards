@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { getProductImageUrl } from '../../../utils/productImage';
 
 function ProductsShort({ productName, mrp, offerPrice, productID }) {
     const discount = mrp > 0 ? Math.round(((mrp - offerPrice) / mrp) * 100) : 0;
@@ -8,7 +9,7 @@ function ProductsShort({ productName, mrp, offerPrice, productID }) {
             <div className="product-card__image-wrap">
                 <img
                     className="product-card__image"
-                    src={`${import.meta.env.VITE_SERVER_IMG}/product-images/${productID}-01.jpg`}
+                    src={getProductImageUrl(productID)}
                     alt={productName}
                 />
                 {discount > 0 && (

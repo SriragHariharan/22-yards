@@ -1,4 +1,5 @@
 import React from 'react'
+import { getProductImageUrl } from '../../../utils/productImage'
 
 function formatPrice(x) {
     return x?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') ?? '0'
@@ -10,7 +11,7 @@ export default function CheckoutProductCard({ item }) {
       <div className="buyer-checkout-item__image-wrap">
         <span className="buyer-checkout-item__qty">{item?.quantity}</span>
         <img
-          src={`${import.meta.env.VITE_SERVER_IMG}/product-images/${item?.productID}-01.jpg`}
+          src={getProductImageUrl(item?.productID)}
           alt={item?.productName}
           className="buyer-checkout-item__image"
         />

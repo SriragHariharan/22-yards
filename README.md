@@ -30,11 +30,11 @@ Server runs at `http://localhost:4000`.
 
 ### Frontend
 
-Create `frontend/.env`:
+Create `frontend/.env` (replace `<cloud_name>` with the same value as `CLOUDINARY_CLOUD_NAME` in backend `.env`):
 
 ```env
-VITE_SERVER='http://localhost:4000/api/'
-VITE_SERVER_IMG='https://res.cloudinary.com/<cloud_name>/image/upload'
+VITE_SERVER=http://localhost:4000/api/
+VITE_SERVER_IMG=https://res.cloudinary.com/<cloud_name>/image/upload
 VITE_RZP_SECRET_KEY=<razorpay_key_id>
 ```
 

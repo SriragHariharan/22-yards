@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { getProductImageUrl } from '../../../utils/productImage'
 
 function numberWithCommas(x) {
     return x?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') ?? ''
@@ -11,7 +12,7 @@ export default function SimilarItemsCard({ product }) {
     return (
         <Link className="buyer-pdp__similar-item" to={`/view-product/${product._id}`}>
             <img
-                src={`${import.meta.env.VITE_SERVER_IMG}/product-images/${product._id}-01.jpg`}
+                src={getProductImageUrl(product._id)}
                 alt={product.productName}
                 className="buyer-pdp__similar-thumb"
                 loading="lazy"

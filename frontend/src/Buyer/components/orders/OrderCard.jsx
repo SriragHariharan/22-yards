@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import OrderTimeline from './OrderTimeline'
 import useBuyerAuthInstance from '../../axios/useBuyerAuthInstance'
 import ReactStars from "react-rating-stars-component";
+import { getProductImageUrl } from '../../../utils/productImage';
 
 function formatPrice(x) {
     return x?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') ?? '0'
@@ -63,7 +64,7 @@ export default function OrderCard({ order, onToast }) {
         <article className="buyer-order-card">
             <div className="buyer-order-card__inner">
                 <img
-                    src={`${import.meta.env.VITE_SERVER_IMG}/product-images/${order?.cart?.productID}-01.jpg`}
+                    src={getProductImageUrl(order?.cart?.productID)}
                     alt={order?.cart?.productName}
                     className="buyer-order-card__image"
                 />

@@ -2,6 +2,7 @@ import React, { useEffect, useState, useMemo } from 'react'
 import { Link } from 'react-router-dom'
 import BuyerProductInstance from '../../axios/BuyerProductInstance';
 import StarComponent from '../view-product-details/StarComponent';
+import { getProductImageUrl } from '../../../utils/productImage';
 
 function numberWithCommas(x) {
     return x?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') ?? ''
@@ -39,7 +40,7 @@ export default function ListView({ productName, description, mrp, offerPrice, st
                 <article className="buyer-product-list__card">
                     <div className="buyer-product-list__image-wrap">
                         <img
-                            src={`${import.meta.env.VITE_SERVER_IMG}/product-images/${productID}-01.jpg`}
+                            src={getProductImageUrl(productID)}
                             alt={productName}
                             className="buyer-product-list__image"
                             loading="lazy"

@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import BuyerProductInstance from '../../axios/BuyerProductInstance'
 import { Link } from 'react-router-dom'
+import { getProductImageUrl } from '../../../utils/productImage'
 
 function ProductSkeleton() {
   return (
@@ -25,7 +26,7 @@ function ProductCard({ product }) {
         <div className="buyer-product-card__image-wrap">
           <img
             className="buyer-product-card__image"
-            src={`${import.meta.env.VITE_SERVER_IMG}/product-images/${product._id}-01.jpg`}
+            src={getProductImageUrl(product._id)}
             alt={product.productName}
             loading="lazy"
           />

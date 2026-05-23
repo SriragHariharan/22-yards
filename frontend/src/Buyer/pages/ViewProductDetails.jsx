@@ -10,6 +10,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import ReviewsCard from '../components/view-product-details/ReviewsCard';
 import StarComponent from '../components/view-product-details/StarComponent';
 import ReactImageMagnify from 'react-image-magnify';
+import { getProductImageUrl } from '../../utils/productImage';
 
 function numberWithCommas(x) {
     return x?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") ?? '';
@@ -96,7 +97,6 @@ export default function ViewProductDetails() {
         return [Number(Math.ceil(reviewsTotal / reviews.length)), reviews.length]
     }, [reviews])
 
-    const imgBase = `${import.meta.env.VITE_SERVER_IMG}/product-images/${product?._id}`
     const stock = stockBadge(product?.stock ?? 0)
 
     return (
@@ -122,10 +122,10 @@ export default function ViewProductDetails() {
                                             smallImage: {
                                                 alt: product.productName,
                                                 isFluidWidth: true,
-                                                src: `${imgBase}-0${image}.jpg`
+                                                src: getProductImageUrl(product._id, `0${image}`)
                                             },
                                             largeImage: {
-                                                src: `${imgBase}-0${image}.jpg`,
+                                                src: getProductImageUrl(product._id, `0${image}`),
                                                 width: 2000,
                                                 height: 1800
                                             },
@@ -137,7 +137,7 @@ export default function ViewProductDetails() {
                                             <img
                                                 key={n}
                                                 onClick={() => setImage(n)}
-                                                src={`${imgBase}-0${n}.jpg`}
+                                                src={getProductImageUrl(product._id, `0${n}`)}
                                                 alt={`${product.productName} view ${n}`}
                                                 className={`buyer-pdp__thumb ${image === n ? 'buyer-pdp__thumb--active' : ''}`}
                                                 role="button"

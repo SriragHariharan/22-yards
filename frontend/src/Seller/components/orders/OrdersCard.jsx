@@ -1,4 +1,5 @@
 import useSellerProductInstance from '../../axios/useSellerProductInstance';
+import { getProductImageUrl } from '../../../utils/productImage';
 
 const STATUS_CLASS = {
     'order placed': 'order-card__status-badge--placed',
@@ -41,7 +42,7 @@ export default function OrdersCard({ product, onStatusChange }) {
             <div className="order-card__grid">
                 <div className="order-card__product">
                     <img
-                        src={`${import.meta.env.VITE_SERVER_IMG}/product-images/${product?.cart?.productID}-01.jpg`}
+                        src={getProductImageUrl(product?.cart?.productID)}
                         className="order-card__image"
                         alt=""
                     />

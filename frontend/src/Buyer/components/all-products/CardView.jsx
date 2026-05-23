@@ -1,5 +1,6 @@
 import React from 'react'
 import { Link } from 'react-router-dom'
+import { getProductImageUrl } from '../../../utils/productImage'
 
 function numberWithCommas(x) {
     return x?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') ?? ''
@@ -14,7 +15,7 @@ export default function CardView({ productName, mrp, offerPrice, stock, productI
                 <div className="buyer-product-card__image-wrap">
                     <img
                         className="buyer-product-card__image"
-                        src={`${import.meta.env.VITE_SERVER_IMG}/product-images/${productID}-01.jpg`}
+                        src={getProductImageUrl(productID)}
                         alt={productName}
                         loading="lazy"
                     />

@@ -1,7 +1,7 @@
 const sharp = require('sharp')
 const cloudinary = require('../config/cloudinary')
 
-const IMAGE_FOLDER = 'product-images'
+const IMAGE_FOLDER = '22yards/products'
 const IMAGE_KEYS = ['image1', 'image2', 'image3']
 const IMAGE_SUFFIXES = ['01', '02', '03']
 

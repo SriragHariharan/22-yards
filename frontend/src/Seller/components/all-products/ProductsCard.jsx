@@ -1,4 +1,5 @@
 import { Link } from 'react-router-dom';
+import { getProductImageUrl } from '../../../utils/productImage';
 
 import '../../styles/SellerPages.css';
 
@@ -9,7 +10,7 @@ export default function ProductsCard({ productName, stock, mrp, offerPrice, prod
         <article className="seller-product-row">
             <img
                 className="seller-product-row__image"
-                src={`${import.meta.env.VITE_SERVER_IMG}/product-images/${productID}-01.jpg`}
+                src={getProductImageUrl(productID)}
                 alt={productName}
             />
             <div>

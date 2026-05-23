@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useDispatch, useSelector } from 'react-redux';
 import { ChangeProductQuantity, RemoveCartItem, SetCartTotal } from '../../../redux-tk/reducers/CartReducer';
 import BuyerProductInstance from '../../axios/BuyerProductInstance';
+import { getProductImageUrl } from '../../../utils/productImage';
 
 function formatPrice(x) {
     return x?.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') ?? '0'
@@ -45,7 +46,7 @@ export default function CartItemsCard({ item, setBillAmount, onRemove }) {
     return (
         <article className="buyer-cart-item">
             <img
-                src={`${import.meta.env.VITE_SERVER_IMG}/product-images/${item.productID}-01.jpg`}
+                src={getProductImageUrl(item.productID)}
                 alt={item.productName}
                 className="buyer-cart-item__image"
             />
