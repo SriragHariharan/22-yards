@@ -10,6 +10,10 @@ app.use(bodyparser.json())
 app.use(bodyparser.urlencoded({ extended: false }))
 app.use(fileUpload())
 
+app.get('/test', (req, res) => {
+  res.json({ ok: true, message: 'Backend is running' })
+})
+
 const sellerRouter = require('./routes/SellerRouter')
 const buyerRouter = require('./routes/BuyerRouter')
 
